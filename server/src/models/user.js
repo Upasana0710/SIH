@@ -38,7 +38,12 @@ const userSchema = new mongoose.Schema({
     branch: {
         type: String,
         required: true
-    }
+    },
+    posts: {
+        type: [mongoose.Schema.Types.ObjectId],
+        references: "postSchema",
+        default: [],
+    },
 })
 
 export default mongoose.model("User", userSchema);
