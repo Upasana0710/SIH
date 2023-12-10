@@ -16,7 +16,7 @@ import { NavLink } from 'react-router-dom';
       </ul>
     
     <div>
-      <ul className='authenticate'><NavLink to="/login"><li >SIGN UP/IN</li></NavLink></ul>
+      <ul className='authenticate'><NavLink to="/login"><li >LOG IN</li></NavLink></ul>
        
     </div>
     </nav>

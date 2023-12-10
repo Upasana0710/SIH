@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar.jsx'
 import Carousel from './components/Carousel.jsx'
 import Section1 from './components/Section1.jsx'
-import Section3 from './components/section3.jsx'
+import Section3 from './components/Section3.jsx'
 import ContactUs from './components/Footer.jsx'
 import LoginSignUp from './components/login.jsx'
 
