@@ -52,8 +52,9 @@ export default function LoginSignUp() {
     e.preventDefault();
     setFormErrors2(validate2(formValues2));
     try{
-      const response = await signin(formValues);
+      const response = await signin(formValues2)
       if(response.data.message === "User doesn't exist.") setFormErrors2({...formErrors2, email: "User doesn't exist."})
+      if(response.data.message === "Invalid credentials") setFormErrors2({...formErrors2, password: "Invalid password"})
       setIsSubmit2(true);
     }catch(error){
       console.log(error);
@@ -103,9 +104,9 @@ export default function LoginSignUp() {
     } else if (values.password.length > 10) {
       errors.password = "Password cannot exceed more than 10 characters";
     }
-
     return errors;
   };
+
   useEffect(() => {}, [formErrors2]);
   const validate2 = (values) => {
     const errors2 = {};
@@ -312,7 +313,6 @@ export default function LoginSignUp() {
                     onChange={(e)=>setFormValues2({...formValues2, password: e.target.value})}
                   />
                 </div>
-
                 <p className="error">{formErrors2.password}</p>
 
                 <div className="forgot-password">
