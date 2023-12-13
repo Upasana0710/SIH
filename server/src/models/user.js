@@ -39,6 +39,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    studySub: [String],
+    teachSub: [{
+        name: String,
+        proficiency: String,
+    }],
     posts: {
         type: [mongoose.Schema.Types.ObjectId],
         references: "postSchema",

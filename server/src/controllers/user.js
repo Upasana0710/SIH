@@ -41,3 +41,39 @@ export const login = async(req, res) => {
         res.status(500).json({message: 'Could not sign in.'});
     }
 }
+
+export const addSubjects = async(req, res) => {
+
+    const subjects = req.body;
+    try{
+        if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
+        const user = await User.findById(req.user);
+
+        if (subjects.studySub) {
+            user.studySub = [...user.studySub, ...subjects.studySub];
+        }
+
+        if (subjects.teachSub) {
+            user.teachSub = [...user.teachSub, ...subjects.teachSub];
+        }
+
+        const updatedUser = await user.save();
+
+        res.json(updatedUser);
+    }catch(error){
+        res.status(500).json({message: error.message});
+    }
+}
+
+export const updateUser = async (req, res) => {
+    const user = req.body;
+    const { id } = req.params;
+    
+    try {
+      const updatedUser = await User.findByIdAndUpdate(id, { ...user, id }, { new: true });
+  
+      res.json(updatedUser);
+    } catch (error) {
+      console.log(error);
+    }
+  };
