@@ -63,11 +63,12 @@ export default function Carousel() {
             <h3><img className="carousal-img" src={qa}/></h3>
             <div className="carousal-content">
               <h1>ASK A QUESTION</h1>
-           <p><h3>Questions? We've got answers! We're here to assist you with concepts, topics, and any doubts you may have. Don't hesitate to reach out for guidance and support on your learning journey.</h3></p> 
+           <p><h3>Questions? We&apos;ve got answers! We&apos;re here to assist you with concepts, topics, and any doubts you may have. Don&apos;t hesitate to reach out for guidance and support on your learning journey.</h3></p> 
           </div>
           </div>
         
           
+          <p><h3>Questions? We&apos;ve got answers! We&apos;re here to assist you with concepts, topics, and any doubts you may have. Don&apos;t hesitate to reach out for guidance and support on your learning journey.</h3></p> 
         </Slider>
       </div>
       </AnimatedPage>
