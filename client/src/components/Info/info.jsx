@@ -6,14 +6,15 @@ import { addSubjects, getSubjects } from "../../api/api";
 import { useSelector } from "react-redux";
 
 const Info = () => {
-  const subjects = ["DSA", "DBMS", "DAA", "OS"];
+  // const subjects = ["DSA", "DBMS", "DAA", "OS"];
+  const [subjects, setSubjects] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
   const [studySub, setStudySub] = useState([]);
   const [teachSub, setTeachSub] = useState([]);
   useEffect(() => {
     const fetchSubjects = async () => {
       const response = await getSubjects(localStorage.getItem("user_info"));
-      // setSubjects(response.data.subjects);
+      setSubjects(response?.data?.subjects);
       console.log(response);
     };
     fetchSubjects();
@@ -62,7 +63,7 @@ const Info = () => {
                 key={index}
                 onClick={() => handleStudyCardClick(subject)}
               >
-                {subject}
+                {subject.name}
               </div>
             ))}
           </div>
@@ -73,7 +74,7 @@ const Info = () => {
         <div className="choice">
           <div className="heading">Which subjects do you want to teach?</div>
           <div className="cards">
-            {subjects.map((subject, index) => (
+            {subjects?.map((subject, index) => (
               <div
                 className={`card${
                   teachSub.includes(subject) ? "Selected" : ""
@@ -81,7 +82,7 @@ const Info = () => {
                 key={index}
                 onClick={() => handleTeachCardClick(subject)}
               >
-                {subject}
+                {subject.name}
               </div>
             ))}
           </div>
