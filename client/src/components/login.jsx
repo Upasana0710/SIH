@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import "../login.css";
 import AnimatedPage from "./AnimatedPage";
 import { signin, signup } from "../api/api";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/userSlice";
 
 export default function LoginSignUp() {
+  const dispatch = useDispatch();
   const [action, setAction] = useState("Sign Up");
   const initialValues = {
     name: "",
@@ -42,7 +45,11 @@ export default function LoginSignUp() {
     setFormErrors(validate(formValues));
     try{
       const response = await signup(formValues);
-      if(response.data.message === "User already exists.") setFormErrors({...formErrors, email: "User already exists"})
+      if(response.data.message === "User already exists.") {
+        setFormErrors({...formErrors, email: "User already exists"})
+        return;
+      }
+      dispatch(loginSuccess(response.data));
       setIsSubmit(true);
     }catch(error){
       console.log(error);
@@ -55,6 +62,7 @@ export default function LoginSignUp() {
       const response = await signin(formValues2)
       if(response.data.message === "User doesn't exist.") setFormErrors2({...formErrors2, email: "User doesn't exist."})
       if(response.data.message === "Invalid credentials") setFormErrors2({...formErrors2, password: "Invalid password"})
+      dispatch(loginSuccess(response.data));
       setIsSubmit2(true);
     }catch(error){
       console.log(error);
