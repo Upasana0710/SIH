@@ -1,0 +1,110 @@
+.new-post-modal {
+  position: fixed;
+  top: 15%;
+  left: 21.7%;
+  width: 55vw;
+  height: 60vh;
+  background-color: #fff; /* White background */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 50px;
+  transform: none;
+  -webkit-transform: translateY(0); /* Remove current static position */
+  animation: slide-in 0.4s ease-in-out forwards; /* Define animation */
+}
+@keyframes slide-in {
+  from {
+    -webkit-transform: translateY(-100vh); /* Start from off-screen above */
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateY(0); /* Slide down to its position */
+    opacity: 1;
+  }
+}
+
+.create-post {
+  position: relative;
+  top: -40px;
+  font-size: 30px;
+}
+
+.content-type-buttons {
+  position: relative;
+  top: -20px;
+  display: flex;
+
+  margin-bottom: 20px;
+}
+
+.content-type-buttons button {
+  padding: 10px 20px; /* Increased button size */
+  font-size: 16px; /* Increased font size */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #eee; /* Light gray background for buttons */
+  color: #333; /* Darker text for better contrast */
+  margin-right: 10px;
+}
+
+.content-type-buttons button:hover {
+  background-color: #ddd; /* Slightly darker shade on hover */
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.buttons button {
+  padding: 10px 20px; /* Increased button size */
+  font-size: 16px; /* Increased font size */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #eee; /* Light gray background for buttons */
+  color: #333; /* Darker text for better contrast */
+  margin-right: 10px;
+}
+
+.buttons button:hover {
+  background-color: 343950; /* Slightly darker shade on hover */
+}
+
+textarea,
+input {
+  padding: 10px; /* Increased padding for easier typing */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px; /* Adjust font size for consistency */
+  width: 100%; /* Make text areas and inputs span the full width */
+}
+
+.text-content {
+  height: 150px; /* Set specific height for textarea */
+  resize: none; /* Disable resizing for cleaner look */
+}
+
+.image-content,
+.video-content {
+}
+
+.link-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.link-url,
+.link-description {
+  margin-bottom: 5px;
+}
+
+/* Add any additional styles for specific areas as needed */

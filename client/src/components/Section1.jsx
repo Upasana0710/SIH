@@ -1,31 +1,30 @@
-import React from 'react';
-import letlogo from '../assets/letlogo.png';
-import AnimatedPage from './AnimatedPage';
+import React from "react";
+import letlogo from "../assets/letlogo.png";
+import AnimatedPage from "./AnimatedPage";
 
-
+import styles from "./Section1.module.css";
 
 export default function Section1() {
   return (
     <AnimatedPage>
-      <div>
-      <section id="section1">
-        <div className='textspace'>
-        <ul>
-        <li><h1 id="LET">Welcome to LET-Learn,Earn<br/>&Teach</h1>
-        
-        <h3 id="LET-CONTENT">Unlock the full potential of peer-to-peer learning  <br/>with our comprehensive solution, catering to all<br/>your educational needs in one convenient place</h3>
-        
-        </li>
-        <div id="imgposition">
-        <img id='image1' src={letlogo}/>
+      <section className={styles.hero_section}>
+        <div className={styles.hero_text_container}>
+          <h1 className={styles.hero_header}>
+            Welcome to LET
+            <br />
+            <p className={styles.hero_text_type}>Learn, Earn & Teach</p>
+          </h1>
+
+          <h3 className={styles.hero_desc}>
+            Unlock the full potential of peer-to-peer learning with our
+            comprehensive solution, catering to all your educational needs in
+            one convenient place
+          </h3>
         </div>
-        </ul>
+        <div className={styles.hero_img_container}>
+          <img id="hero_image" src={letlogo} alt="let-logo" />
         </div>
       </section>
-      
-    </div>
-    
     </AnimatedPage>
   );
 }
-

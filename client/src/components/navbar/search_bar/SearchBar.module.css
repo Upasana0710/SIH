@@ -1,0 +1,18 @@
+.container {
+  padding: 0.8rem 2rem;
+}
+
+.search_bar {
+  font-family: inherit;
+  width: 45vw;
+  padding: 0.7rem;
+  border: 2.5px solid #352f44;
+  border-radius: 20px;
+  padding-left: 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+.search_bar:focus {
+  border-color: 2.5px #0087ca;
+  outline: 3.5px solid #0087ca;
+}
