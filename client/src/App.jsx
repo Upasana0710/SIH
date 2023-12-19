@@ -49,6 +49,7 @@ function App() {
               <Route path="/info" element={<Info />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/newslet" element={<Newslet />} />
+              <Route path="/schedule" element={<Schedule/>} />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
