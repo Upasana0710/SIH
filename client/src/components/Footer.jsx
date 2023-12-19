@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import AnimatedPage from './AnimatedPage';
+import React, { useState } from "react";
+import AnimatedPage from "./AnimatedPage";
+import styles from "./Footer.module.css";
 
 function ContactUs() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (e) => {
@@ -18,73 +19,74 @@ function ContactUs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can add your form submission logic here
-    console.log('Form submitted with data:', formData);
-    // You can also make an API call to send this data to a server
-    // Reset the form after submission
+    console.log("Form submitted with data:", formData);
     setFormData({
-      name: '',
-      email: '',
-      message: '',
+      name: "",
+      email: "",
+      message: "",
     });
   };
 
   return (
     <AnimatedPage>
-    <div>
-    <section id="section5">
-      <h2 id="contact">CONTACT US</h2>
-      <div id="form-design">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <br/>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+      <section className={styles.contact_section}>
+        <h2 className={styles.contact_header}>CONTACT US</h2>
+        <div className={styles.contact_form_container}>
+          <form onSubmit={handleSubmit} className={styles.contact_form}>
+            <div className={styles.contact_input_container}>
+              <label htmlFor="name" className={styles.contact_label}>
+                Name:
+              </label>
+              <br />
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className={styles.contact_input}
+                required
+              />
+            </div>
+            <div className={styles.contact_input_container}>
+              <label htmlFor="email" className={styles.contact_label}>
+                Email:
+              </label>
+              <br />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className={styles.contact_input}
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className={styles.contact_input_container}>
+              <label htmlFor="message" className={styles.contact_label}>
+                Message:
+              </label>
+              <br />
+              <textarea
+                id="message"
+                name="message"
+                className={styles.contact_textarea}
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
+            <button type="submit" className={styles.contact_btn}>
+              Submit
+            </button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <br/>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="message">Message:</label>
-          <br/>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
-        <div className="submit-btn">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-      </div>
-     </section>
-     <div>
-      <footer>
-        <h5>made by Team LET</h5>
+      </section>
+      <footer className={styles.contact_footer}>
+        <h5 className={styles.contact_footer_content}>made by Team LET</h5>
       </footer>
-     </div>
-     </div>
-     </AnimatedPage>
-    
+    </AnimatedPage>
   );
 }
 
