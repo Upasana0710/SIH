@@ -10,13 +10,13 @@ const postSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        text: String,
         category: {
             type: String,
             required: true,
         },
         file: {
             type: String,
-            required: true,
         },
     },
     {

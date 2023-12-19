@@ -115,3 +115,23 @@ export const downloadResource = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+export const imageUpload = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    // Convert the buffer to base64
+    const base64Image = req.file.toString('base64');
+
+    // Save the base64 image to MongoDB
+    const newImage = new Image({ base64: base64Image });
+    await newImage.save();
+
+    res.status(201).json({ message: 'Image uploaded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
