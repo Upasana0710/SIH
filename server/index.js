@@ -9,6 +9,7 @@ import subjectRoutes from './src/routes/subject.js';
 import scheduleRoutes from './src/routes/schedule.js';
 import communityRoutes from './src/routes/community.js';
 import eventRoutes from './src/routes/event.js';
+import bookingRoutes from './src/routes/booking.js';
 dotenv.config();
 
 const app = express();
@@ -41,3 +42,4 @@ app.use('/subject', subjectRoutes);
 app.use('/schedule', scheduleRoutes);
 app.use('/community', communityRoutes);
 app.use('/event', eventRoutes);
+app.use('/booking', bookingRoutes);

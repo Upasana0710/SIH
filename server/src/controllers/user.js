@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
+import Booking from '../models/booking.js';
+import Subject from '../models/subject.js';
 
 export const register = async (req, res) => {
     const { email, password } = req.body;
@@ -43,12 +45,13 @@ export const login = async (req, res) => {
 }
 
 export const addSubjects = async (req, res) => {
-
     const subjects = req.body;
     try {
         if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
+
         const user = await User.findById(req.user);
 
+        // Add subjects to user schema
         if (subjects.studySub) {
             user.studySub = [...user.studySub, ...subjects.studySub];
         }
@@ -57,13 +60,32 @@ export const addSubjects = async (req, res) => {
             user.teachSub = [...user.teachSub, ...subjects.teachSub];
         }
 
+        // Update user schema
         const updatedUser = await user.save();
+
+        // Add user ID to subject schema
+        const addUserIdToSubject = async (subjectId, userId, field) => {
+            await Subject.findByIdAndUpdate(
+                subjectId,
+                { $addToSet: { [field]: userId } },
+                { new: true }
+            );
+        };
+
+        // Add user ID to corresponding subjects
+        for (const studySubId of subjects.studySub) {
+            await addUserIdToSubject(studySubId, user._id, 'students');
+        }
+
+        for (const teachSubId of subjects.teachSub) {
+            await addUserIdToSubject(teachSubId, user._id, 'teachers');
+        }
 
         res.status(201).json(updatedUser);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
 export const updateUser = async (req, res) => {
     const user = req.body;
@@ -104,3 +126,137 @@ export const searchUser = async (req, res) => {
         res.status(500).json(err);
     }
 };
+
+export const createSlots = async(req, res) => {
+    try{
+        if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
+
+        const {day, time} = req.body;
+
+        const user = await User.findById(req.user);
+
+        const existingSlot = user.slots?.find(slot => slot.day === day);
+
+        // Create a new slot object
+        if (existingSlot) {
+            // If the day already exists, add the new time to the existing day
+            existingSlot.time.push(time);
+        } else {
+            // If the day doesn't exist, create a new slot object for the day
+            user.slots.push({
+                day,
+                time: [time],
+            });
+        }
+
+        // Save the updated user
+        await user.save();
+        return res.status(201).json({ message: 'Slot created successfully', user });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json(error);
+    }
+}
+
+export const getTeacherSlots = async (req, res) => {
+    try {
+        if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
+        const {teacherId} = req.body;
+        const today = new Date();
+        const nextMonth = new Date(today);
+        nextMonth.setMonth(today.getMonth() + 1);
+
+        // Find the teacher by ID
+        const teacher = await User.findById(teacherId);
+
+        if (!teacher) {
+            return res.status(404).json({ message: 'Teacher not found.' });
+        }
+
+        // Extract and format existing slots of the teacher for the next month
+        const slots = generateTeacherSlots(teacher.slots, today, nextMonth);
+
+        // Find bookings for the specified teacher within the next month
+        const bookings = await Booking.find({
+            teacher: teacherId,
+            slot: { $gte: today.toISOString(), $lt: nextMonth.toISOString() },
+        });
+
+        // Update the slots array to mark booked slots as unavailable
+        bookings.forEach(booking => {
+            const bookedSlotIndex = slots.findIndex(slot => slot.time === booking.slot);
+            if (bookedSlotIndex !== -1) {
+                slots[bookedSlotIndex].available = false;
+            }
+        });
+
+        return res.status(200).json(slots);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error.' });
+    }
+};
+
+const generateTeacherSlots = (teacherSlots, startDate, endDate) => {
+    const slots = [];
+
+    const currentDate = new Date(startDate);
+
+    while (currentDate < endDate) {
+        const daySlots = teacherSlots.find(slot => slot.day === getDayName(currentDate.getDay()));
+        
+        if (daySlots) {
+            daySlots.time.forEach(time => {
+                slots.push({
+                    time: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), parseInt(time.split('-')[0]), 0).toISOString(),
+                    available: true,
+                });
+            });
+        }
+
+        currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+    }
+
+    return slots;
+};
+
+const getDayName = (dayIndex) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[dayIndex];
+};
+
+export const updateTeachRating = async (req, res) => {
+    try {
+        if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
+
+        const user = await User.findById(req.body.teacherId);
+
+        const { rating } = req.body;
+
+        if (!user.teachRating) {
+            // If no teachRating exists, create a new one
+            user.teachRating = {
+                rating: rating,
+                total: "1"
+            };
+        } else {
+            // Update existing teachRating
+            const currentRating = parseInt(user.teachRating.rating) || 0;
+            const currentTotal = parseInt(user.teachRating.total) || 0;
+
+            const newRating = (currentRating * currentTotal + parseInt(rating)) / (currentTotal + 1);
+
+            user.teachRating.rating = newRating.toString();
+            user.teachRating.total = (currentTotal + 1).toString();
+        }
+
+        await user.save();
+
+        return res.status(200).json({ message: 'Teach rating updated successfully', teachRating: user.teachRating });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json(error);
+    }
+};
+

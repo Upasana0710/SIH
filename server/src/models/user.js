@@ -39,8 +39,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    studySub: [String],
-    teachSub: [String],
+    studySub: [mongoose.Schema.Types.ObjectId],
+    teachSub: [mongoose.Schema.Types.ObjectId],
     posts: {
         type: [mongoose.Schema.Types.ObjectId],
         references: "postSchema",
@@ -51,8 +51,19 @@ const userSchema = new mongoose.Schema({
         references: "Community",
         default: [],
     },
-    teachRating: Number,
+    teachRating: {
+        rating: String,
+        total: String
+    },
     studentRating: Number,
+    slots: [{ 
+        day: String,
+        time: [String],
+    }],
+    booking: { 
+        type: [mongoose.Schema.Types.ObjectId],
+        references: "bookingSchema"
+    }
 })
 
 export default mongoose.model("User", userSchema);
