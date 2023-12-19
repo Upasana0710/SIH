@@ -13,7 +13,7 @@ const Header = ({ onShowModal }) => {
   return (
     <React.Fragment>
       <header className={styles.header}>
-        <Link to="/">
+        <Link to="/home">
           <img src={logoLET} alt="let-logo-img" className={styles.logo}></img>
         </Link>
 
