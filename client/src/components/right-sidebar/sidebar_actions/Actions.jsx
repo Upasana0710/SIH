@@ -10,7 +10,7 @@ const Actions = () => {
     { name: "Groups", id: "action3" },
     { name: "Your Activity", id: "action4" },
     { name: "Saved Posts", id: "action5" },
-    { name: "Downloads", id: "action6" },
+    { name: "Generate Schedule", id: "action6", path: "/schedule" },
   ];
 
   return (
@@ -18,7 +18,7 @@ const Actions = () => {
       <div className={styles.actions_section}>
         <ul className={styles.actions_list}>
           {actions.map((action) => [
-            <Action name={action.name} key={action.id}>
+            <Action name={action.name} key={action.id} path={action.path}>
               {action.name}
             </Action>,
           ])}
