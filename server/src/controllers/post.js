@@ -1,9 +1,11 @@
 import Post from '../models/post.js';
+import Community from '../models/community.js';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import mongoose from 'mongoose';
 
 // Ensure that the pdf_uploads directory exists
 
@@ -31,6 +33,7 @@ export const uploadFile = pdfUpload.single('file');
 export const createPost = async (req, res) => {
   try {
     const { title, category } = req.body;
+    const communityId = req.body.communityId;
     if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
 
     // Check if a file was uploaded
@@ -40,23 +43,38 @@ export const createPost = async (req, res) => {
 
     const pdfLink = `http://localhost:3300/pdfs/${req.file.filename}`;
 
+    // Validate if communityId is a valid ObjectId
+    const isValidCommunityId = mongoose.isValidObjectId(communityId);
+
     // Create a new Post document in the database
     const post = new Post({
       creator: req.user,
       title,
       category,
       file: pdfLink,
+      community: isValidCommunityId ? communityId : null, // Set to null if not a valid ObjectId
     });
 
     await post.save();
+
+    // If communityId is present, update the community's posts field
+    if (isValidCommunityId) {
+      // Find the community by ID and update its posts field
+      await Community.findByIdAndUpdate(
+        communityId,
+        { $addToSet: { posts: post._id } }, // Add the post ID to the posts array
+        { new: true }
+      );
+    }
 
     // Return a success message or the created post
     return res.status(201).json({ message: 'Post created successfully', post });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json(error);
   }
 };
+
 
 export const getPostsByCategory = async (req, res) => {
   try {

@@ -109,8 +109,8 @@ export default function Carousel() {
             <div className={styles.carousel_card_content}>
               <h1 className={styles.carousel_card_title}>ASK A QUESTION</h1>
               <p className={styles.carousel_card_desc}>
-                Questions? We've got answers! We're here to assist you with
-                concepts, topics, and any doubts you may have. Don't hesitate to
+                Questions? We&apos;ve got answers! We&apos;re here to assist you with
+                concepts, topics, and any doubts you may have. Don&apos;t hesitate to
                 reach out for guidance and support on your learning journey.
               </p>
             </div>
