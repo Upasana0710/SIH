@@ -12,6 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@mui/icons-material": "^5.15.1",
     "@mui/material": "^5.15.0",
     "@reduxjs/toolkit": "^2.0.1",
     "@types/react-transition-group": "^4.4.10",

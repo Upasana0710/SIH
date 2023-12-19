@@ -9,11 +9,11 @@ import Group from "./groups/Group";
 import Notification from "./notications/Notification";
 import SearchBar from "./search_bar/SearchBar";
 
-const Header = (props) => {
+const Header = ({ onShowModal }) => {
   return (
     <React.Fragment>
       <header className={styles.header}>
-        <Link to="/">
+        <Link to="/home">
           <img src={logoLET} alt="let-logo-img" className={styles.logo}></img>
         </Link>
 
@@ -23,7 +23,7 @@ const Header = (props) => {
         <div className={styles.actions}>
           <Notification />
           <Group />
-          <LoginButton onOpenModal={props.onShowModal} />
+          <LoginButton onOpenModal={onShowModal} />
         </div>
       </header>
     </React.Fragment>

@@ -59,7 +59,7 @@ export const addSubjects = async (req, res) => {
 
         const updatedUser = await user.save();
 
-        res.json(updatedUser);
+        res.status(201).json(updatedUser);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -14,23 +14,26 @@ dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT || 3300;
-mongoose.connect(process.env.MONGO_URL)
-    .then(()=>app.listen(PORT, ()=> {
-        console.log(`Server is running on port ${PORT}`);
-    }))
-    .catch((err)=>console.log(err))
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() =>
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    })
+  )
+  .catch((err) => console.log(err));
 
-const corsConfig={
-    credentials: "true",
-    origin: "http://localhost:5173",
-    optionSuccessStatus: "200",
+const corsConfig = {
+  credentials: "true",
+  origin: "http://localhost:5173",
+  optionSuccessStatus: "200",
 };
 
 app.use(compression());
 app.use(cors(corsConfig));
 
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb'}));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 app.use('/user',userRoutes);
 app.use('/post',postRoutes);
