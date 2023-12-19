@@ -8,6 +8,8 @@ import LoginSignUp from "./components/login.jsx";
 import Info from "./components/Info/info.jsx";
 import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Schedule from "./components/ScheduleGenerate/Schedule.jsx";
+import Home from "./components/Home.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -23,6 +25,8 @@ function App() {
           {currentUser ? (
             <>
               <Route path="/info" element={<Info />} />
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="/home" element={<Home />} />
             </>
           ) : (
             <>

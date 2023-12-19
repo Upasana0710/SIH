@@ -30,3 +30,12 @@ export const getSubjects = (token) => API.get(
   { headers: { Authorization: `Bearer ${token}` } },
   { withCredentials: true }
 );
+
+//Generate schedule
+export const generateSchedule = (request, token) =>
+  API.post(
+    "/schedule/create",
+    request,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true },
+  )

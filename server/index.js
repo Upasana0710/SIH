@@ -6,6 +6,7 @@ import compression from 'compression';
 import userRoutes from './src/routes/user.js';
 import postRoutes from './src/routes/post.js';
 import subjectRoutes from './src/routes/subject.js';
+import scheduleRoutes from './src/routes/schedule.js';
 dotenv.config();
 
 const app = express();
@@ -32,3 +33,4 @@ app.use(express.urlencoded({limit: '50mb'}));
 app.use('/user',userRoutes);
 app.use('/post',postRoutes);
 app.use('/subject', subjectRoutes);
+app.use('/schedule', scheduleRoutes);
