@@ -1,0 +1,20 @@
+.sidebar {
+  position: sticky;
+  height: calc(100dvh - 70px);
+  background-color: #352f44;
+  top: 70px;
+  left: 0;
+  width: 15vw;
+  overflow-y: hidden;
+  scroll-behavior: auto;
+}
+
+.sidebar_footer {
+  text-align: center;
+}
+
+.text {
+  font-size: 0.7rem;
+  font-family: inherit;
+  color: #fff;
+}
