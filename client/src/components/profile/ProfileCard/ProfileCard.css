@@ -1,8 +1,8 @@
 .profile-card {
-  width: 70%;
+  width: 80%;
   height: auto;
-  background-color: #343950;
-  margin: auto;
+  background-color: #edf6f6;
+  margin-left: 10%;
   border-radius: 5px;
   padding: 20px;
   position: relative;
@@ -24,11 +24,10 @@
 .profile-about {
   display: flex;
   justify-content: space-between;
-  color: whitesmoke;
+
   padding: 0.5rem;
 }
 .profile-name {
-  color: whitesmoke;
   position: relative;
   /* left: 42%; */
   padding: 1rem;

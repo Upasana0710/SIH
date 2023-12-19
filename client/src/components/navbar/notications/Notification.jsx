@@ -1,12 +1,11 @@
 import React from "react";
 import NavbarBtn from "../../../ui/NavbarBtn";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 const Notification = () => {
-  const iconClasses = "fa-regular fa-square-plus fa-xl";
-
   return (
     <NavbarBtn>
-      <i className={iconClasses}></i>
+      <NotificationsActiveIcon />
     </NavbarBtn>
   );
 };

@@ -5,6 +5,7 @@ import UserPost from "./PostCard/PostCard";
 import NewPost from "./NewPost/NewPost";
 
 import "./ProfilePage.css";
+import Sidebar from "../right-sidebar/Sidebar";
 
 const data = [
   {
@@ -39,15 +40,20 @@ function ProfilePage() {
   });
 
   return (
-    <section className="profile_container_section">
-      <ProfileCard
-        profilephoto={profilephoto}
-        name="This is my name"
-        about="This is my about.Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam corporis neque illum eum omnis quis inventore iusto cupiditate? Reiciendis provident sed iste sapiente, necessitatibus nesciunt unde laudantium natus expedita pariatur!"
-      />
-      <NewPost />
-      {posts}
-    </section>
+    <div className="profile-height">
+      <Sidebar />
+
+      <section className="profile_container_section">
+        <ProfileCard
+          profilephoto={profilephoto}
+          name="This is my name"
+          about="This is my about.Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam corporis neque illum eum omnis quis inventore iusto cupiditate? Reiciendis provident sed iste sapiente, necessitatibus nesciunt unde laudantium natus expedita pariatur!"
+        />
+
+        <NewPost />
+        {posts}
+      </section>
+    </div>
   );
 }
 

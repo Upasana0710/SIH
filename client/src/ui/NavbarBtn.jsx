@@ -2,11 +2,11 @@ import React from "react";
 
 import styles from "./NavbarBtn.module.css";
 
-const Navbar_Btn = (props) => {
+const Navbar_Btn = ({ onTouch, children }) => {
   return (
     <React.Fragment>
-      <button className={styles.btn} onClick={props && props.onTouch}>
-        <span className={styles.icon}>{props.children}</span>
+      <button className={styles.btn} onClick={onTouch}>
+        <span className={styles.icon}>{children}</span>
       </button>
     </React.Fragment>
   );

@@ -4,6 +4,7 @@ import Student from "../../assets/student.jpg";
 import Teaching from "../../assets/teaching.jpg";
 import { addSubjects, getSubjects } from "../../api/api";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Info = () => {
   // const subjects = ["DSA", "DBMS", "DAA", "OS"];
@@ -11,6 +12,8 @@ const Info = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [studySub, setStudySub] = useState([]);
   const [teachSub, setTeachSub] = useState([]);
+  const [isAdded, setIsAdded] = useState(false);
+
   useEffect(() => {
     const fetchSubjects = async () => {
       const response = await getSubjects(localStorage.getItem("user_info"));
@@ -40,14 +43,22 @@ const Info = () => {
   };
 
   const handleNext = async () => {
-    try{
-      const token = localStorage.getItem('user_info');
-      await addSubjects({studySub: studySub, teachSub: teachSub}, token);
-    }catch(error){
+    try {
+      const token = localStorage.getItem("user_info");
+      const response = await addSubjects(
+        { studySub: studySub, teachSub: teachSub },
+        token
+      );
+
+      if (response.status === 201) {
+        console.log("ADDING SUBJECTS SUCCESSFUL");
+
+        setIsAdded(true);
+      }
+    } catch (error) {
       console.log(error);
     }
-
-  }
+  };
   return (
     <div className="mainPage">
       <div className="mainCard" style={{ background: "#96dea1" }}>
@@ -88,8 +99,15 @@ const Info = () => {
           </div>
         </div>
       </div>
-      <div className='buttonContainer' onClick={()=>handleNext()}>
-        <div className='nextButton'>Next</div>
+      <div className="buttonContainer" onClick={() => handleNext()}>
+        <div className="nextButton">Next</div>
+        {isAdded && (
+          <div className="nextButton">
+            <Link to="/home" className={"home_link_text"}>
+              GO TO HOME
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

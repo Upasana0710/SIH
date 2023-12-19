@@ -1,12 +1,12 @@
 .post-card {
-  width: 50%;
+  width: 70%;
   height: auto;
   background-color: #fff;
   margin: 30px;
   border-radius: 5px;
   padding: 20px;
   position: relative;
-  margin-left: 24%;
+  margin-left: 15%;
 }
 
 .post-name {

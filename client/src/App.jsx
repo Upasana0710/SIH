@@ -16,6 +16,7 @@ import Hot from "./components/feed/hot/Hot";
 import Latest from "./components/feed/latest/Latest";
 import CommunityPage from "./components/feed/community/CommunityPage";
 import Discover from "./components/feed/discover/Discover";
+import ProfilePage from "./components/profile/ProfilePage.jsx";
 
 import TopicFeed from "./components/Topics/topics_list/TopicFeed";
 // import TopicDetails from "./components/Topics/topic_details/TopicDetails.jsx";
@@ -36,34 +37,34 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />}>
             <Route path="" element={<Section1 />} />
-            <Route path="/learn" element={<Carousel />} />
-            <Route path="/about" element={<Section3 />} />
-            <Route path="/contact" element={<ContactUs />} />
           </Route>
+          <Route path="/learn" element={<Carousel />} />
+          <Route path="/about" element={<Section3 />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/login" element={<LoginSignUp />} />
 
-          {currentUser ? (
+          {currentUser && (
             <>
               <Route path="/info" element={<Info />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
-                  <Route path="latest" element={<Latest />} />
-                  <Route path="hot" element={<Hot />} />
-                  <Route path="discover" element={<Discover />} />
-                  <Route path="communities" element={<CommunityPage />} />
                 </Route>
-                <Route path="topic" element={<Topic />}>
-                  <Route path="" element={<TopicFeed />} />
-                  <Route path="hot-topics" element={<HotTopicsList />} />
-                  <Route path="all-topics" element={<AllTopics />} />
-                  {/* <Route path=":topicId" element={<TopicDetails />} /> */}
-                </Route>
+                <Route path="profile" element={<ProfilePage />} />
               </Route>
-            </>
-          ) : (
-            <>
-              <Route path="/login" element={<LoginSignUp />} />
+              <Route path="/home/latest" element={<Latest />} />
+              <Route path="/home/hot" element={<Hot />} />
+              <Route path="/home/discover" element={<Discover />} />
+              <Route path="/home/communities" element={<CommunityPage />} />
+              <Route path="/home/profile" element={<ProfilePage />} />
+
+              <Route path="/topic" element={<Topic />}>
+                <Route path="" element={<TopicFeed />} />
+                {/* <Route path=":topicId" element={<TopicDetails />} /> */}
+              </Route>
+              <Route path="/topic/hot-topics" element={<HotTopicsList />} />
+              <Route path="/topic/all-topics" element={<AllTopics />} />
             </>
           )}
         </Routes>

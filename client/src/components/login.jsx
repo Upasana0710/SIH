@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import "../login.css";
 import AnimatedPage from "./AnimatedPage";
 import { signin, signup } from "../api/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logout } from "../redux/userSlice";
 
 import styles from "./login.module.css";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 export default function LoginSignUp() {
   const [action, setAction] = useState("Sign Up");
+  const { currentUser } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
   const initialValues = {
     name: "",
@@ -102,7 +103,10 @@ export default function LoginSignUp() {
 
         if (response.status === 200) {
           console.log("LOG IN SUCCESSFUL");
+
           dispatch(loginSuccess(response.data));
+          // redirect("/info");
+
           setLogin(true);
         }
       } catch (error) {
