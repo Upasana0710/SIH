@@ -15,6 +15,9 @@ const postSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        community: {
+            type: mongoose.Schema.Types.ObjectId,
+        },
         file: {
             type: String,
         },

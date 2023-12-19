@@ -46,6 +46,13 @@ const userSchema = new mongoose.Schema({
         references: "postSchema",
         default: [],
     },
+    communities: {
+        type: [mongoose.Schema.Types.ObjectId],
+        references: "Community",
+        default: [],
+    },
+    teachRating: Number,
+    studentRating: Number,
 })
 
 export default mongoose.model("User", userSchema);

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Schedule from "./components/ScheduleGenerate/Schedule.jsx";
 import Home from "./components/Home.jsx";
+import Newslet from "./components/Newslet/Newslet.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -27,6 +28,7 @@ function App() {
               <Route path="/info" element={<Info />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/newslet" element={<Newslet />} />
             </>
           ) : (
             <>

@@ -39,3 +39,11 @@ export const generateSchedule = (request, token) =>
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true },
   )
+
+//Newslet
+export const getNews = (token) =>
+  API.get(
+    "/event/getEvents",
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true },
+  )
