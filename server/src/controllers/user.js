@@ -133,6 +133,17 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const getByToken = async (req, res) => {
+  if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+  try {
+    const user = await User.findById(req.user);
+    return res.json(user);
+  } catch (error) {
+    console.log(error);
+    return res.json(error);
+  }
+};
+
 export const searchUser = async (req, res) => {
   const query = req.query.name;
   try {

@@ -71,3 +71,10 @@ export const getTeachers = (request, token) =>
   );
 
 export const getUser = (request) => API.get(`/user/getUser/${request}`);
+
+export const getUserByToken = (token) =>
+  API.get(
+    `/user/getByToken`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { getUser } from "../../api/api";
+import { getUser, getUserByToken } from "../../api/api";
 
 import ProfileCard from "./ProfileCard/ProfileCard";
 import profilephoto from "../../assets/profilephoto.png";
@@ -72,14 +72,26 @@ const data = [
 function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
+  const [myUser, setMyUser] = useState(false);
 
   const userId = params.get("uid");
 
+  let userDetails;
+
   useEffect(() => {
     async function fetchUser() {
+      console.log(userId);
       try {
         if (userId) {
+          setMyUser(false);
           const response = await getUser(userId);
+          userDetails = response.data;
+          console.log(userDetails);
+        } else {
+          setMyUser(true);
+          const response = await getUserByToken(
+            localStorage.getItem("user_info")
+          );
           userDetails = response.data;
           console.log(userDetails);
         }
@@ -89,8 +101,6 @@ function ProfilePage() {
     }
     fetchUser();
   }, [userId]);
-
-  let userDetails;
 
   const posts = data.map((item) => {
     return (
@@ -110,9 +120,18 @@ function ProfilePage() {
       <section className="profile_container_section">
         <ProfileCard
           profilephoto={profilephoto}
-          name={userDetails.name}
+          name={userDetails ? userDetails.name : data[0].name}
           about="This is my about.Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam corporis neque illum eum omnis quis inventore iusto cupiditate? Reiciendis provident sed iste sapiente, necessitatibus nesciunt unde laudantium natus expedita pariatur!"
         />
+        {userId && (
+          <div className="redirect_container">
+            <button type="button" className="redirect_slot_booking_button">
+              <Link to="/home/slot" className="redirect_link_slot">
+                GO TO SLOT BOOKING
+              </Link>
+            </button>
+          </div>
+        )}
 
         <NewPost />
         {posts}
