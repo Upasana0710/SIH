@@ -55,16 +55,17 @@ function App() {
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
+                  <Route path="schedule" element={<Schedule />} />
+                  <Route path="lobby" element={<Lobby />} />
+                  <Route path="latest" element={<Latest />} />
+                  <Route path="hot" element={<Hot />} />
+                  <Route path="discover" element={<Discover />} />
+                  <Route path="communities" element={<CommunityPage />} />
                 </Route>
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="schedule" element={<Schedule />} />
-                <Route path="lobby" element={<Lobby />} />
+                <Route path="profile" element={<ProfilePage />}>
+                  <Route path=":profId" element={<ProfilePage />} />
+                </Route>
               </Route>
-              <Route path="/home/latest" element={<Latest />} />
-              <Route path="/home/hot" element={<Hot />} />
-              <Route path="/home/discover" element={<Discover />} />
-              <Route path="/home/communities" element={<CommunityPage />} />
-              <Route path="/home/profile" element={<ProfilePage />} />
 
               <Route path="/room/:roomId" element={<Room />} />
               <Route path="/room/review" element={<Review />} />

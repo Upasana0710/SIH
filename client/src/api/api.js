@@ -62,3 +62,12 @@ export const updateTeachRating = (request, token) => {
     { withCredentials: true }
   );
 };
+
+export const getTeachers = (request, token) =>
+  API.get(
+    `/subject/bestTeachers?name=${request}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+export const getUser = (request) => API.get(`/user/getUser/${request}`);

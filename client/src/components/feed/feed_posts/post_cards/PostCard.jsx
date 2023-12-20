@@ -1,13 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 import styles from "./PostCard.module.css";
 import Btn02 from "../../../../ui/Btn_02";
 import Btn03 from "../../../../ui/Btn_03";
+import Btn04 from "../../../../ui/Btn_04";
 
 const PostCard = (props) => {
   const [isShowLess, setIsShowLess] = useState(true);
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
+
+  const navigate = useNavigate();
 
   const opinionHandler = (opinion) => {
     if (opinion === "like") {
@@ -29,6 +36,8 @@ const PostCard = (props) => {
       isShowLess ? "More" : "Less"
     }...`}</p>
   );
+
+  const topic = props.post.topic[0];
 
   const likeClasses = `${
     like ? "fa-solid fa-thumbs-up liked" : "fa-solid fa-thumbs-up"
@@ -52,10 +61,18 @@ const PostCard = (props) => {
     </div>
   );
 
+  // const handleTopic = (topic) => {
+  //   navigate(`/topic/${topic}`);
+  // };
+
+  // const handleConcept = (concept) => {
+  //   navigate(`/topic/${topic}?${concept}`);
+  // };
+
   const topics = (
     <div className={styles.post_topics}>
       {props.post.topic.map((topic) => (
-        <Btn02>{topic}</Btn02>
+        <Btn02 key={topic}>{topic}</Btn02>
       ))}
     </div>
   );
@@ -63,7 +80,7 @@ const PostCard = (props) => {
   const concepts = (
     <div className={styles.post_concepts}>
       {props.post.concepts.map((concept) => (
-        <Btn03>{concept}</Btn03>
+        <Btn03 key={concept}>{concept}</Btn03>
       ))}
     </div>
   );
@@ -103,18 +120,18 @@ const PostCard = (props) => {
         <div className={styles.post_ratings}>
           <div className={styles.ratings_section}>
             <div className={styles.post_stats}>
-              <i
-                className={likeClasses}
+              <ThumbUpIcon
+                style={{ color: "white" }}
                 onClick={() => opinionHandler("like")}
-              ></i>
+              />
               {props.post.likes}
             </div>
             <div className={styles.post_stats}>
-              <i
-                className={dislikeClasses}
+              <ThumbDownIcon
+                style={{ color: "white" }}
                 onClick={() => opinionHandler("dislike")}
-              ></i>
-              {props.post.dislikes}
+              />
+              {/* {props.post.dislikes} */}
             </div>
           </div>
         </div>
