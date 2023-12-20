@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   padding-bottom: 1rem;
-  max-height: 30vh;
+  max-height: 50vh;
   position: sticky;
   overflow-y: auto;
   scroll-behavior: smooth;

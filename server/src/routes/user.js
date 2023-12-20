@@ -8,6 +8,7 @@ import {
   createSlots,
   getTeacherSlots,
   updateTeachRating,
+  getByToken,
 } from "../controllers/user.js";
 import { auth } from "../middleware/auth.js";
 
@@ -21,5 +22,6 @@ router.get("/search", [auth], searchUser);
 router.patch("/createSlots", [auth], createSlots);
 router.post("/display", [auth], getTeacherSlots);
 router.patch("/rating", [auth], updateTeachRating);
+router.get("/getByToken", [auth], getByToken);
 
 export default router;

@@ -34,6 +34,8 @@ import Topic from "./routes/Topic";
 import Landing from "./components/Landing.jsx";
 import Review from "./screens/Review.jsx";
 
+import SlotBooking from "./slots/SlotBooking.jsx";
+
 function App() {
   const { currentUser } = useSelector((state) => state.user);
   return (
@@ -51,20 +53,21 @@ function App() {
           {currentUser && (
             <>
               <Route path="/info" element={<Info />} />
-              <Route path="/newslet" element={<Newslet />} />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
-                  <Route path="schedule" element={<Schedule />} />
                   <Route path="lobby" element={<Lobby />} />
                   <Route path="latest" element={<Latest />} />
                   <Route path="hot" element={<Hot />} />
                   <Route path="discover" element={<Discover />} />
                   <Route path="communities" element={<CommunityPage />} />
                 </Route>
+                <Route path="schedule" element={<Schedule />} />
+                <Route path="newslet" element={<Newslet />} />
                 <Route path="profile" element={<ProfilePage />}>
                   <Route path=":profId" element={<ProfilePage />} />
                 </Route>
+                <Route path="slot" element={<SlotBooking />} />
               </Route>
 
               <Route path="/room/:roomId" element={<Room />} />
