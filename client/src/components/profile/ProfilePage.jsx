@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { getUser } from "../../api/api";
+
 import ProfileCard from "./ProfileCard/ProfileCard";
 import profilephoto from "../../assets/profilephoto.png";
 import UserPost from "./PostCard/PostCard";
@@ -66,6 +70,28 @@ const data = [
 ];
 
 function ProfilePage() {
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+
+  const userId = params.get("uid");
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        if (userId) {
+          const response = await getUser(userId);
+          userDetails = response.data;
+          console.log(userDetails);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchUser();
+  }, [userId]);
+
+  let userDetails;
+
   const posts = data.map((item) => {
     return (
       <UserPost
@@ -84,7 +110,7 @@ function ProfilePage() {
       <section className="profile_container_section">
         <ProfileCard
           profilephoto={profilephoto}
-          name="This is my name"
+          name={userDetails.name}
           about="This is my about.Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam corporis neque illum eum omnis quis inventore iusto cupiditate? Reiciendis provident sed iste sapiente, necessitatibus nesciunt unde laudantium natus expedita pariatur!"
         />
 

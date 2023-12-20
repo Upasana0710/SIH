@@ -7,10 +7,10 @@ import styles from "./TabNav.module.css";
 const TabNav = () => {
   const tabs = [
     { name: "Home Feed", id: "#1", to: "" },
-    { name: "Latest", id: "#2", to: "latest" },
-    { name: "Hot", id: "#3", to: "hot" },
-    { name: "Discover", id: "#4", to: "discover" },
-    { name: "Communities", id: "#5", to: "communities" },
+    { name: "Latest", id: "#2", to: "/home/latest" },
+    { name: "Hot", id: "#3", to: "/home/hot" },
+    { name: "Discover", id: "#4", to: "/home/discover" },
+    { name: "Communities", id: "#5", to: "/home/communities" },
   ];
 
   const [tabSelect, setTabSelect] = useState(tabs[0].id);

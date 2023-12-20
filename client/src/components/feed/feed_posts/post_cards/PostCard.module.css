@@ -47,6 +47,8 @@
 }
 
 .post_content {
+  -webkit-text-fill-color: #fff;
+
   padding: 0.5rem 1rem;
   margin-bottom: 0.8rem;
 }
