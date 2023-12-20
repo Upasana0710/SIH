@@ -1,12 +1,14 @@
 import React from "react";
 
 import styles from "./Action.module.css";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Action = (props) => {
   return (
     <React.Fragment>
-      <NavLink to={props.path} className={styles.action_list}>{props.children}</NavLink>
+      <Link className={styles.action_list} to={props.path}>
+        {props.children}
+      </Link>
     </React.Fragment>
   );
 };

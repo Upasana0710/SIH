@@ -5,7 +5,7 @@ import {
   AccordionSummary,
 } from "@mui/material";
 import React, { useState } from "react";
-import "./schedule.css";
+import styles from "./schedule.module.css";
 import { generateSchedule } from "../../api/api";
 // import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
@@ -39,19 +39,19 @@ const Schedule = ({ onClose }) => {
   };
 
   return (
-    <div className="mainPage">
-      <div className="container">
-        <div className="modal">
-          <div className="borderContainer">
-            <div className="heading">Generate Schedule</div>
-            <div className="closeContainer" onClick={() => onClose()}>
+    <div className={styles.mainPage}>
+      <div className={styles.container}>
+        <div className={styles.modal}>
+          <div className={styles.borderContainer}>
+            <div className={styles.heading}>Generate Schedule</div>
+            <div className={styles.closeContainer} onClick={() => onClose()}>
               {/* <CloseRoundedIcon style={{ fontSize: "24px" }} /> */}x
             </div>
-            <div className="noContainer">
+            <div className={styles.noContainer}>
               <input
                 type="number"
                 placeholder="Total no of days"
-                className="inputBox"
+                className={styles.inputBox}
                 value={inputValues.t_days === 0 ? "" : inputValues.t_days}
                 onChange={(e) =>
                   setInputValues({
@@ -65,7 +65,7 @@ const Schedule = ({ onClose }) => {
                 placeholder="Hours per day"
                 min="4"
                 max="10"
-                className="inputBox"
+                className={styles.inputBox}
                 value={
                   inputValues.hoursPerDay === 0 ? "" : inputValues.hoursPerDay
                 }
@@ -77,37 +77,40 @@ const Schedule = ({ onClose }) => {
                 }
               />
             </div>
-            <div className="chooseText">Choose type of session:</div>
-            <div className="noContainer">
+            <div className={styles.chooseText}>Choose type of session:</div>
+            <div className={styles.noContainer}>
               <div
-                className={`buttonContainer${
-                  selectedType === "30min" ? "Selected" : ""
+                className={`${styles.buttonContainer} ${
+                  selectedType === "60min" ? `${styles.selected}` : ""
                 }`}
                 onClick={() => handleTypeSelection("30min")}
               >
                 30 min
               </div>
               <div
-                className={`buttonContainer${
-                  selectedType === "60min" ? "Selected" : ""
+                className={`${styles.buttonContainer} ${
+                  selectedType === "60min" ? `${styles.selected}` : ""
                 }`}
                 onClick={() => handleTypeSelection("60min")}
               >
                 60 min
               </div>
             </div>
-            <div className="generateButton" onClick={() => handleGenerate()}>
+            <div
+              className={styles.generateButton}
+              onClick={() => handleGenerate()}
+            >
               Generate
             </div>
-            <div className="scheduleContainer">
+            <div className={styles.scheduleContainer}>
               {schedule.map((day, index) => (
                 <Accordion key={index}>
                   <AccordionSummary>Day {day.day}</AccordionSummary>
-                  <AccordionDetails className="sessions">
+                  <AccordionDetails className={styles.sessions}>
                     {day.sessions.map((session, index) => (
                       <div
                         key={index}
-                        className="session"
+                        className={styles.session}
                         style={{
                           background:
                             session.type === "Recap/Revision"

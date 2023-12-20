@@ -24,11 +24,15 @@ import TopicFeed from "./components/Topics/topics_list/TopicFeed";
 import HotTopicsList from "./components/Topics/topics_list/HotTopicsList";
 import AllTopics from "./components/Topics/topics_list/AllTopics";
 
+import Lobby from "./screens/Lobby.jsx";
+import Room from "./screens/Room.jsx";
+
 import Root from "./routes/Root";
 // import Error from "./routes/Error.jsx";
 import Home from "./routes/Home";
 import Topic from "./routes/Topic";
 import Landing from "./components/Landing.jsx";
+import Review from "./screens/Review.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -47,20 +51,23 @@ function App() {
           {currentUser && (
             <>
               <Route path="/info" element={<Info />} />
-              <Route path="/schedule" element={<Schedule />} />
               <Route path="/newslet" element={<Newslet />} />
-              <Route path="/schedule" element={<Schedule/>} />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
                 </Route>
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="schedule" element={<Schedule />} />
+                <Route path="lobby" element={<Lobby />} />
               </Route>
               <Route path="/home/latest" element={<Latest />} />
               <Route path="/home/hot" element={<Hot />} />
               <Route path="/home/discover" element={<Discover />} />
               <Route path="/home/communities" element={<CommunityPage />} />
               <Route path="/home/profile" element={<ProfilePage />} />
+
+              <Route path="/room/:roomId" element={<Room />} />
+              <Route path="/room/review" element={<Review />} />
 
               <Route path="/topic" element={<Topic />}>
                 <Route path="" element={<TopicFeed />} />
@@ -69,8 +76,6 @@ function App() {
               <Route path="/topic/hot-topics" element={<HotTopicsList />} />
               <Route path="/topic/all-topics" element={<AllTopics />} />
             </>
-            
-  
           )}
         </Routes>
       </Router>

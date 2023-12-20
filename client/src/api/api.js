@@ -11,9 +11,13 @@ export const signup = (user) => API.post("/user/register", user);
 export const signin = (user) => API.post("/user/login", user);
 
 // add user's subjects
-export const addSubjects = (request, token) => API.patch("/user/addInfo", request,
-  { headers: { Authorization: `Bearer ${token}` } },
-  { withCredentials: true });
+export const addSubjects = (request, token) =>
+  API.patch(
+    "/user/addInfo",
+    request,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
 
 // post creation
 export const createPost = (post, token) =>
@@ -21,15 +25,16 @@ export const createPost = (post, token) =>
     "/post/create",
     post,
     { headers: { Authorization: `Bearer ${token}` } },
-    { withCredentials: true },
+    { withCredentials: true }
   );
 
 //Get subjects
-export const getSubjects = (token) => API.get(
-  "/subject/list",
-  { headers: { Authorization: `Bearer ${token}` } },
-  { withCredentials: true }
-);
+export const getSubjects = (token) =>
+  API.get(
+    "/subject/list",
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
 
 //Generate schedule
 export const generateSchedule = (request, token) =>
@@ -37,13 +42,23 @@ export const generateSchedule = (request, token) =>
     "/schedule/create",
     request,
     { headers: { Authorization: `Bearer ${token}` } },
-    { withCredentials: true },
-  )
+    { withCredentials: true }
+  );
 
 //Newslet
 export const getNews = (token) =>
   API.get(
     "/event/getEvents",
     { headers: { Authorization: `Bearer ${token}` } },
-    { withCredentials: true },
-  )
+    { withCredentials: true }
+  );
+
+// Update User Rating
+export const updateTeachRating = (request, token) => {
+  API.post(
+    "/user/rating",
+    request,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+};
