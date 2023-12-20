@@ -7,6 +7,7 @@ import { useSocket } from "../context/SocketProvider";
 const Lobby = () => {
   const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
+  const [role, setRole] = useState("student");
 
   const socket = useSocket();
   const navigate = useNavigate();
@@ -23,9 +24,9 @@ const Lobby = () => {
     (data) => {
       const { username, room } = data;
       console.log(username, room);
-      navigate(`/room/${room}?user=${username}`);
+      navigate(`/room/${room}?user=${username}&role=${role}`);
     },
-    [navigate]
+    [navigate, role]
   );
 
   useEffect(() => {
@@ -64,6 +65,38 @@ const Lobby = () => {
               value={room}
               onChange={(e) => setRoom(e.target.value)}
             />
+          </div>
+
+          <div className={styles.form_section}>
+            <label className={styles.form_label}>Role</label>
+            <div className={styles.role_options}>
+              <div className={styles.role_div}>
+                <input
+                  type="radio"
+                  id="teacher"
+                  name="role"
+                  value="teacher"
+                  checked={role === "teacher"}
+                  onChange={() => setRole("teacher")}
+                />
+                <label htmlFor="teacher" className={styles.role_label}>
+                  Teacher
+                </label>
+              </div>
+              <div className={styles.role_div}>
+                <input
+                  type="radio"
+                  id="student"
+                  name="role"
+                  value="student"
+                  checked={role === "student"}
+                  onChange={() => setRole("student")}
+                />
+                <label htmlFor="student" className={styles.role_label}>
+                  Student
+                </label>
+              </div>
+            </div>
           </div>
 
           <button type="submit" className={styles.form_submit_btn}>

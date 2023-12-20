@@ -59,3 +59,16 @@
   cursor: pointer;
   background-color: darkcyan;
 }
+
+.role_options {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  justify-content: space-between;
+}
+
+.role_div {
+  display: flex;
+  flex-direction: row;
+  gap: 0.7rem;
+}

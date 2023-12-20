@@ -10,7 +10,7 @@ const Actions = () => {
     { name: "Groups", id: "action3", path: "/home" },
     { name: "Join a Room", id: "action4", path: "/home/lobby" },
     { name: "Saved Posts", id: "action5", path: "/home" },
-    { name: "Downloads", id: "action6", path: "/home" },
+    { name: "Schedule Generator", id: "action6", path: "/home/schedule" },
   ];
 
   return (

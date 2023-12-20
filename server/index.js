@@ -46,10 +46,6 @@ app.use("/schedule", scheduleRoutes);
 app.use("/community", communityRoutes);
 app.use("/event", eventRoutes);
 app.use("/booking", bookingRoutes);
-app.use("/user", userRoutes);
-app.use("/post", postRoutes);
-app.use("/subject", subjectRoutes);
-app.use("/schedule", scheduleRoutes);
 
 const io = new Server(8000, {
   cors: true,

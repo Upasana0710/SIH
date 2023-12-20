@@ -13,6 +13,7 @@ const Room = () => {
   const params = new URLSearchParams(search);
 
   const user = params.get("user");
+  const role = params.get("role");
 
   const socket = useSocket();
 
@@ -138,7 +139,7 @@ const Room = () => {
     socket.emit("room:leave", { user, socketId: socket.id });
 
     // Navigate to home
-    navigate(`/home`);
+    navigate(`/room/review?user=${user}&role=${role}`);
   };
 
   useEffect(() => {

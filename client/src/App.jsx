@@ -32,6 +32,7 @@ import Root from "./routes/Root";
 import Home from "./routes/Home";
 import Topic from "./routes/Topic";
 import Landing from "./components/Landing.jsx";
+import Review from "./screens/Review.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -50,14 +51,13 @@ function App() {
           {currentUser && (
             <>
               <Route path="/info" element={<Info />} />
-              <Route path="/schedule" element={<Schedule />} />
               <Route path="/newslet" element={<Newslet />} />
-              <Route path="/schedule" element={<Schedule/>} />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
                 </Route>
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="schedule" element={<Schedule />} />
                 <Route path="lobby" element={<Lobby />} />
               </Route>
               <Route path="/home/latest" element={<Latest />} />
@@ -67,6 +67,7 @@ function App() {
               <Route path="/home/profile" element={<ProfilePage />} />
 
               <Route path="/room/:roomId" element={<Room />} />
+              <Route path="/room/review" element={<Review />} />
 
               <Route path="/topic" element={<Topic />}>
                 <Route path="" element={<TopicFeed />} />
@@ -75,8 +76,6 @@ function App() {
               <Route path="/topic/hot-topics" element={<HotTopicsList />} />
               <Route path="/topic/all-topics" element={<AllTopics />} />
             </>
-            
-  
           )}
         </Routes>
       </Router>
