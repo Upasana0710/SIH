@@ -10,15 +10,6 @@ import scheduleRoutes from "./src/routes/schedule.js";
 import communityRoutes from "./src/routes/community.js";
 import eventRoutes from "./src/routes/event.js";
 import bookingRoutes from "./src/routes/booking.js";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import compression from "compression";
-import userRoutes from "./src/routes/user.js";
-import postRoutes from "./src/routes/post.js";
-import subjectRoutes from "./src/routes/subject.js";
-import scheduleRoutes from "./src/routes/schedule.js";
 
 import { Server } from "socket.io";
 
