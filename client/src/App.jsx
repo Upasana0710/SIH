@@ -23,6 +23,9 @@ import TopicFeed from "./components/Topics/topics_list/TopicFeed";
 import HotTopicsList from "./components/Topics/topics_list/HotTopicsList";
 import AllTopics from "./components/Topics/topics_list/AllTopics";
 
+import Lobby from "./screens/Lobby.jsx";
+import Room from "./screens/Room.jsx";
+
 import Root from "./routes/Root";
 // import Error from "./routes/Error.jsx";
 import Home from "./routes/Home";
@@ -37,11 +40,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />}>
             <Route path="" element={<Section1 />} />
+            <Route path="/learn" element={<Carousel />} />
+            <Route path="/about" element={<Section3 />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/login" element={<LoginSignUp />} />
           </Route>
-          <Route path="/learn" element={<Carousel />} />
-          <Route path="/about" element={<Section3 />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/login" element={<LoginSignUp />} />
 
           {currentUser && (
             <>
@@ -52,12 +55,15 @@ function App() {
                   <Route path="" element={<FeedPost />} />
                 </Route>
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="lobby" element={<Lobby />} />
               </Route>
               <Route path="/home/latest" element={<Latest />} />
               <Route path="/home/hot" element={<Hot />} />
               <Route path="/home/discover" element={<Discover />} />
               <Route path="/home/communities" element={<CommunityPage />} />
               <Route path="/home/profile" element={<ProfilePage />} />
+
+              <Route path="/room/:roomId" element={<Room />} />
 
               <Route path="/topic" element={<Topic />}>
                 <Route path="" element={<TopicFeed />} />

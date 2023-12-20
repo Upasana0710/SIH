@@ -7,6 +7,9 @@ import userRoutes from "./src/routes/user.js";
 import postRoutes from "./src/routes/post.js";
 import subjectRoutes from "./src/routes/subject.js";
 import scheduleRoutes from "./src/routes/schedule.js";
+
+import { Server } from "socket.io";
+
 dotenv.config();
 
 const app = express();
@@ -37,3 +40,49 @@ app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 app.use("/subject", subjectRoutes);
 app.use("/schedule", scheduleRoutes);
+
+const io = new Server(8000, {
+  cors: true,
+});
+
+const emailToSocketIdMap = new Map();
+const socketIdToEmailMap = new Map();
+
+io.on("connection", (socket) => {
+  console.log("Socket Connected", socket.io);
+
+  socket.on("room:join", (data) => {
+    const { username, room } = data;
+    emailToSocketIdMap.set(username, socket.id);
+    socketIdToEmailMap.set(socket.id, username);
+    io.to(room).emit("user:joined", { username, id: socket.id });
+    socket.join(room);
+    io.to(socket.id).emit("room:join", data);
+  });
+
+  socket.on("room:leave", ({ user, socketId }) => {
+    console.log(`${user} left the room`);
+    emailToSocketIdMap.delete(user);
+    socketIdToEmailMap.delete(socketId);
+    socket.leaveAll();
+    io.emit("user:left", { user });
+  });
+
+  socket.on("user:call", ({ to, offer, user }) => {
+    io.to(to).emit("incoming:call", { from: socket.id, offer, user });
+  });
+
+  socket.on("call:accepted", ({ to, ans }) => {
+    io.to(to).emit("call:accepted", { from: socket.id, ans });
+  });
+
+  socket.on("peer:nego:needed", ({ to, offer }) => {
+    console.log("peer:nego:needed", offer);
+    io.to(to).emit("peer:nego:needed", { from: socket.id, offer });
+  });
+
+  socket.on("peer:nego:done", ({ to, ans }) => {
+    console.log("peer:nego:done", ans);
+    io.to(to).emit("peer:nego:final", { from: socket.id, ans });
+  });
+});
