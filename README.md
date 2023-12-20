@@ -71,7 +71,11 @@ Now, both your back-end and front-end will work simultaneously, making the websi
 
 ## Demo
 
-_Provide a brief overview of the demo or link to a demo video._
+
+https://github.com/Upasana0710/Study-App/assets/100614635/4efbd946-c46d-4778-89e1-a90348453043
+
+
+
 
 ## About Collaborator
 
