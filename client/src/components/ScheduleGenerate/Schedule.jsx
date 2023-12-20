@@ -39,7 +39,7 @@ const Schedule = ({ onClose }) => {
   };
 
   return (
-    <Modal open={true}>
+    <div className="mainPage">
       <div className="container">
         <div className="modal">
           <div className="borderContainer">
@@ -126,7 +126,7 @@ const Schedule = ({ onClose }) => {
           </div>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 };
 

@@ -9,6 +9,7 @@ import Info from "./components/Info/info.jsx";
 import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Schedule from "./components/ScheduleGenerate/Schedule.jsx";
+import Newslet from "./components/Newslet/Newslet.jsx";
 // import Home from "./components/Home.jsx";
 
 import FeedPost from "./components/feed/feed_posts/post_cards/FeedPost";
@@ -50,6 +51,8 @@ function App() {
             <>
               <Route path="/info" element={<Info />} />
               <Route path="/schedule" element={<Schedule />} />
+              <Route path="/newslet" element={<Newslet />} />
+              <Route path="/schedule" element={<Schedule/>} />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
@@ -72,6 +75,8 @@ function App() {
               <Route path="/topic/hot-topics" element={<HotTopicsList />} />
               <Route path="/topic/all-topics" element={<AllTopics />} />
             </>
+            
+  
           )}
         </Routes>
       </Router>
