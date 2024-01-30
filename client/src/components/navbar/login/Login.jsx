@@ -1,14 +1,14 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import styles from "./Login.module.css";
-import LoginModal from "./LoginModal";
+import styles from './Login.module.css';
+import LoginModal from './LoginModal';
 
-import Card from "../../../ui/Card";
-import { Link, redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { loginSuccess, logout } from "../../../redux/userSlice";
+import Card from '../../../ui/Card';
+import { Link, redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { loginSuccess, logout } from '../../../redux/userSlice';
 
 const Login = (props) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -18,10 +18,10 @@ const Login = (props) => {
   const handleUserLogAction = () => {
     if (currentUser) {
       dispatch(logout());
-      navigate("/login");
+      navigate('/authenticate/signin');
     }
 
-    navigate("/login");
+    navigate('/authenticate/signup');
   };
 
   const cartModalContent = (
@@ -37,7 +37,7 @@ const Login = (props) => {
             <li className={styles.modal_action}>Billing</li>
             <li className={styles.modal_action}>Account Settings</li>
             <li className={styles.modal_action} onClick={handleUserLogAction}>
-              {currentUser ? "Log Out" : "Log In"}
+              {currentUser ? 'Log Out' : 'Log In'}
             </li>
           </ul>
         </div>

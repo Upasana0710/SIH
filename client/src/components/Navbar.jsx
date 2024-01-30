@@ -64,20 +64,6 @@ export default function Navbar(props) {
               Contact
             </NavLink>
           </li>
-          {currentUser && (
-            <li className={styles.landing_link}>
-              <NavLink
-                to="/home"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.landing_active} ${styles.nav_link} `
-                    : `${styles.nav_link}`
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-          )}
         </ul>
       </div>
 
@@ -95,7 +81,7 @@ export default function Navbar(props) {
                 ? `${styles.landing_active_authenticate} ${styles.authenticate} ${styles.authenticate_link}`
                 : `${styles.authenticate} ${styles.authenticate_link}`
             }
-            to="/login"
+            to="/authenticate/signin"
           >
             Login
           </NavLink>
