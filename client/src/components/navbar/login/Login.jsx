@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Login.module.css";
 import LoginModal from "./LoginModal";
@@ -12,14 +13,15 @@ import { loginSuccess, logout } from "../../../redux/userSlice";
 const Login = (props) => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUserLogAction = () => {
     if (currentUser) {
       dispatch(logout());
-      redirect("/login");
+      navigate("/login");
     }
 
-    redirect("/login");
+    navigate("/login");
   };
 
   const cartModalContent = (

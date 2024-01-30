@@ -73,7 +73,7 @@ const SearchBar = () => {
               <div className={styles.display_results}>
                 {array.length !== 0 &&
                   array.map((ar) => (
-                    <div key={ar._id}>
+                    <div key={ar._id} className={styles.results_container}>
                       <NavLink
                         to={`profile?uid=${ar._id}`}
                         style={{
@@ -82,8 +82,8 @@ const SearchBar = () => {
                         }}
                       >
                         {ar.name}
-                        {ar.teachRating}
                       </NavLink>
+                      {ar.teachRating}
                     </div>
                   ))}
               </div>

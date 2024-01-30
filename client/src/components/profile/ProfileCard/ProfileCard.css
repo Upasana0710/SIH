@@ -25,7 +25,7 @@
   display: flex;
   justify-content: space-between;
 
-  padding: 0.5rem;
+  padding: 1rem;
 }
 .profile-name {
   position: relative;
@@ -34,4 +34,10 @@
 }
 .teach-subjects {
   color: whitesmoke;
+}
+
+.profile_container_credentials {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

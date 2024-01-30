@@ -56,12 +56,13 @@ function App() {
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
-                  <Route path="lobby" element={<Lobby />} />
+
                   <Route path="latest" element={<Latest />} />
                   <Route path="hot" element={<Hot />} />
                   <Route path="discover" element={<Discover />} />
                   <Route path="communities" element={<CommunityPage />} />
                 </Route>
+                <Route path="lobby" element={<Lobby />} />
                 <Route path="schedule" element={<Schedule />} />
                 <Route path="newslet" element={<Newslet />} />
                 <Route path="profile" element={<ProfilePage />}>
