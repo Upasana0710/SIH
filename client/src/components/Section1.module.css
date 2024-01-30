@@ -41,6 +41,23 @@
   padding: 1rem 0.7rem;
 }
 
+.hero_btn {
+  min-width: 10rem;
+  text-align: left;
+  background-color: #0c0678;
+  color: #fff;
+  font: inherit;
+  padding: 1rem;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.hero_btn:hover {
+  background-color: rgb(83, 83, 231);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 0%;

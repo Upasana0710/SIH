@@ -30,7 +30,7 @@
 }
 
 .list_container {
-  width: 40%;
+  width: 50%;
   text-align: center;
 }
 
@@ -53,7 +53,7 @@
 .nav_link:after {
   background: none repeat scroll 0 0 transparent;
   bottom: 0;
-  content: "";
+  content: '';
   display: block;
   height: 2px;
   left: 50%;
@@ -71,7 +71,7 @@
 .landing_active:after {
   background: none repeat scroll 0 0 transparent;
   bottom: 0;
-  content: "";
+  content: '';
   display: block;
   height: 2px;
   left: 0;
@@ -98,5 +98,27 @@
 }
 
 .authenticate {
-  padding: 0 2rem;
+  padding: 0.7rem 2rem;
+  background-color: #0087ca;
+  border-radius: 25px;
+  border: none;
+  font: inherit;
+  color: #fff;
+  font-size: 1.2rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.authenticate_link {
+  text-decoration: none;
+  font: inherit;
+  font-size: 1.2rem;
+}
+
+.authenticate:hover {
+  background-color: #0c0678;
+  cursor: pointer;
+}
+
+.landing_active_authenticate {
+  background: #0c0678;
 }
