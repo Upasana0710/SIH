@@ -17,7 +17,7 @@ export default function Section1() {
     if (currentUser) {
       navigate('/home');
     } else {
-      navigate('/login');
+      navigate('/authenticate/signup');
     }
   };
   return (
