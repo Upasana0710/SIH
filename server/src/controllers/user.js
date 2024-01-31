@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import User from "../models/user.js";
-import Booking from "../models/booking.js";
-import Subject from "../models/subject.js";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import User from '../models/user.js';
+import Booking from '../models/booking.js';
+import Subject from '../models/subject.js';
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
@@ -10,7 +10,7 @@ export const register = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
 
-    if (existingUser) return res.json({ message: "User already exists." });
+    if (existingUser) return res.json({ message: 'User already exists.' });
 
     const hashPassword = await bcrypt.hash(password, 12);
     const result = await User.create({
@@ -25,8 +25,8 @@ export const register = async (req, res) => {
       programme: req.body.programme,
       branch: req.body.branch,
     });
-    const token = jwt.sign({ email: result.email, id: result._id }, "test", {
-      expiresIn: "24h",
+    const token = jwt.sign({ email: result.email, id: result._id }, 'test', {
+      expiresIn: '24h',
     });
     res.status(201).json({ result: result, token });
   } catch (error) {
@@ -41,31 +41,35 @@ export const login = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
 
-    if (!existingUser) return res.json({ message: "User doesn't exist." });
+    if (!existingUser)
+      return res.status(404).json({ message: "User doesn't exist." });
 
     const isPasswordCorrect = await bcrypt.compare(
       password,
       existingUser.password
     );
 
-    if (!isPasswordCorrect) return res.json({ message: "Invalid credentials" });
+    if (!isPasswordCorrect)
+      return res
+        .status(401)
+        .json({ message: 'UNAUTHORIZED: Invalid credentials' });
 
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
-      "test",
-      { expiresIn: "24h" }
+      'test',
+      { expiresIn: '24h' }
     );
 
     res.status(200).json({ result: existingUser, token });
   } catch (error) {
-    res.status(500).json({ message: "Could not sign in." });
+    res.status(500).json({ message: 'Could not sign in.' });
   }
 };
 
 export const addSubjects = async (req, res) => {
   const subjects = req.body;
   try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
 
     const user = await User.findById(req.user);
 
@@ -92,11 +96,11 @@ export const addSubjects = async (req, res) => {
 
     // Add user ID to corresponding subjects
     for (const studySubId of subjects.studySub) {
-      await addUserIdToSubject(studySubId, user._id, "students");
+      await addUserIdToSubject(studySubId, user._id, 'students');
     }
 
     for (const teachSubId of subjects.teachSub) {
-      await addUserIdToSubject(teachSubId, user._id, "teachers");
+      await addUserIdToSubject(teachSubId, user._id, 'teachers');
     }
 
     res.status(201).json(updatedUser);
@@ -134,7 +138,7 @@ export const getUser = async (req, res) => {
 };
 
 export const getByToken = async (req, res) => {
-  if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+  if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
   try {
     const user = await User.findById(req.user);
     return res.json(user);
@@ -148,7 +152,7 @@ export const searchUser = async (req, res) => {
   const query = req.query.name;
   try {
     const users = await User.find({
-      name: { $regex: query, $options: "i" },
+      name: { $regex: query, $options: 'i' },
     })
       .sort({ teachRating: -1 }) // Sort by teacher rating in descending order
       .limit(10); // Limit the results to 10 users
@@ -162,7 +166,7 @@ export const searchUser = async (req, res) => {
 
 export const createSlots = async (req, res) => {
   try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
 
     const { day, time } = req.body;
 
@@ -184,7 +188,7 @@ export const createSlots = async (req, res) => {
 
     // Save the updated user
     await user.save();
-    return res.status(201).json({ message: "Slot created successfully", user });
+    return res.status(201).json({ message: 'Slot created successfully', user });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -193,7 +197,7 @@ export const createSlots = async (req, res) => {
 
 export const getTeacherSlots = async (req, res) => {
   try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
     const { teacherId } = req.body;
     const today = new Date();
     const nextMonth = new Date(today);
@@ -203,7 +207,7 @@ export const getTeacherSlots = async (req, res) => {
     const teacher = await User.findById(teacherId);
 
     if (!teacher) {
-      return res.status(404).json({ message: "Teacher not found." });
+      return res.status(404).json({ message: 'Teacher not found.' });
     }
 
     // Extract and format existing slots of the teacher for the next month
@@ -228,7 +232,7 @@ export const getTeacherSlots = async (req, res) => {
     return res.status(200).json(slots);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal Server Error." });
+    return res.status(500).json({ message: 'Internal Server Error.' });
   }
 };
 
@@ -249,7 +253,7 @@ const generateTeacherSlots = (teacherSlots, startDate, endDate) => {
             currentDate.getFullYear(),
             currentDate.getMonth(),
             currentDate.getDate(),
-            parseInt(time.split("-")[0]),
+            parseInt(time.split('-')[0]),
             0
           ).toISOString(),
           available: true,
@@ -265,20 +269,20 @@ const generateTeacherSlots = (teacherSlots, startDate, endDate) => {
 
 const getDayName = (dayIndex) => {
   const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
   ];
   return days[dayIndex];
 };
 
 export const updateTeachRating = async (req, res) => {
   try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
 
     const user = await User.findById(req.body.teacherId);
 
@@ -288,7 +292,7 @@ export const updateTeachRating = async (req, res) => {
       // If no teachRating exists, create a new one
       user.teachRating = {
         rating: rating,
-        total: "1",
+        total: '1',
       };
     } else {
       // Update existing teachRating
@@ -305,7 +309,7 @@ export const updateTeachRating = async (req, res) => {
     await user.save();
 
     return res.status(200).json({
-      message: "Teach rating updated successfully",
+      message: 'Teach rating updated successfully',
       teachRating: user.teachRating,
     });
   } catch (error) {

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import styles from "./SearchBar.module.css";
-import { getTeachers } from "../../../api/api";
+import React, { useState, useEffect } from 'react';
+import styles from './SearchBar.module.css';
+import { getTeachers } from '../../../api/api';
 
-import CloseIcon from "@mui/icons-material/Close";
-import { NavLink } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
+import { NavLink } from 'react-router-dom';
 
 const SearchBar = () => {
-  const [searched, setSearched] = useState("");
+  const [searched, setSearched] = useState('');
   const [array, setArray] = useState([]);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -25,11 +25,9 @@ const SearchBar = () => {
     console.log(array);
   }, [array]);
   const handleSearch = async () => {
-    const token = localStorage.getItem("user_info");
+    const token = localStorage.getItem('user_info');
     const response = await getTeachers(searched, token);
     setArray(response.data);
-    console.log(response);
-    console.log(array);
   };
 
   const handleSubmit = (e) => {
@@ -42,7 +40,7 @@ const SearchBar = () => {
       <div className={styles.container}>
         <div
           className={`${styles.background_overlay} ${
-            isFocused ? styles.search_form_focused : ""
+            isFocused ? styles.search_form_focused : ''
           }`}
         ></div>
         <form
@@ -77,8 +75,8 @@ const SearchBar = () => {
                       <NavLink
                         to={`profile?uid=${ar._id}`}
                         style={{
-                          display: "flex",
-                          justifyContent: "space-between",
+                          display: 'flex',
+                          justifyContent: 'space-between',
                         }}
                       >
                         {ar.name}
