@@ -15,7 +15,6 @@ const Signin = () => {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState(initialErrors);
-  const [isSubmit, setIsSubmit] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [login, setLogin] = useState(false);
@@ -23,7 +22,6 @@ const Signin = () => {
   const resetForm = () => {
     setFormErrors(initialErrors);
     setFormValues(initialValues);
-    setIsSubmit(false);
   };
 
   const validate = (values) => {
@@ -32,18 +30,25 @@ const Signin = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     if (!values.email) {
-      errors.email = ' Email is required!';
+      errors.email = 'Email is required!';
       flag = false;
     } else if (!regex.test(values.email)) {
       errors.email = 'This is not a valid email format!';
       flag = false;
     }
+
     if (!values.password) {
       errors.password = 'Password is required';
       flag = false;
     } else if (values.password.length < 4 || values.password.length > 10) {
       errors.password =
         'Password must be more than 4 characters and cannot exceed more than 10 characters';
+      flag = false;
+    }
+
+    if (values.email === 'not found' || values.password === 'invalid') {
+      errors.email = 'Invalid Credentials';
+      errors.password = 'Invalid Credentials';
       flag = false;
     }
 
@@ -100,26 +105,34 @@ const Signin = () => {
     if (formIsValid) {
       try {
         const response = await signin(formValues);
-        if (response.data.message === "User doesn't exist.") {
-          setFormErrors({ ...formErrors, email: "User doesn't exist." });
-          setFormIsValid(false);
-        }
-        if (response.data.message === 'Invalid credentials') {
-          setFormErrors({ ...formErrors, password: 'Invalid password' });
-          setFormIsValid(false);
-        }
-        setIsSubmit(true);
 
-        if (response.status === 200) {
+        if (response.status === 200 && formIsValid) {
           console.log('LOG IN SUCCESSFUL');
 
           dispatch(loginSuccess(response.data));
-          // redirect("/info");
-
           setLogin(true);
+          resetForm();
         }
       } catch (error) {
-        console.log(error);
+        if (error.response) {
+          if (
+            error.response.status === 404 &&
+            error.response.data.message === "User doesn't exist."
+          ) {
+            const errors = { ...formValues, email: 'not found' };
+            setFormErrors(validate(errors));
+          }
+          if (
+            error.response.status === 401 &&
+            error.response.data.message === 'UNAUTHORIZED: Invalid credentials'
+          ) {
+            const errors = { ...formValues, password: 'invalid' };
+            console.log(errors);
+            setFormErrors(validate(errors));
+          }
+        } else {
+          console.log(error);
+        }
       }
     }
   };

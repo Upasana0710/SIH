@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Schedule from './components/ScheduleGenerate/Schedule.jsx';
 import Newslet from './components/Newslet/Newslet.jsx';
-// import Home from "./components/Home.jsx";
 
 import FeedPost from './components/feed/feed_posts/post_cards/FeedPost';
 import Hot from './components/feed/hot/Hot';
@@ -18,7 +17,6 @@ import Discover from './components/feed/discover/Discover';
 import ProfilePage from './components/profile/ProfilePage.jsx';
 
 import TopicFeed from './components/Topics/topics_list/TopicFeed';
-// import TopicDetails from "./components/Topics/topic_details/TopicDetails.jsx";
 import HotTopicsList from './components/Topics/topics_list/HotTopicsList';
 import AllTopics from './components/Topics/topics_list/AllTopics';
 
