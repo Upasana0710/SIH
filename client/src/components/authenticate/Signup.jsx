@@ -38,7 +38,6 @@ const Signup = () => {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState(initialErrors);
-  const [isSubmit, setIsSubmit] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
 
   const resetForm = () => {
@@ -106,6 +105,11 @@ const Signup = () => {
       flag = false;
     }
 
+    if (values.email === 'exists') {
+      errors.email = 'User already exists.';
+      flag = false;
+    }
+
     if (flag) setFormIsValid(true);
 
     return errors;
@@ -117,18 +121,23 @@ const Signup = () => {
     if (formIsValid) {
       try {
         const response = await signup(formValues);
-        if (response.data.message === 'User already exists.') {
-          setFormErrors({ ...formErrors, email: 'User already exists' });
-          setFormIsValid(false);
-        }
-        setIsSubmit(true);
 
         if (response.status === 201) {
           console.log('REGISTRATION SUCCESSFUL');
           setRegister(true);
         }
       } catch (error) {
-        console.log(error);
+        if (error.message) {
+          if (
+            error.response.status === 401 &&
+            error.response.data.message === 'User already exists.'
+          ) {
+            const errors = { ...formValues, email: 'exists' };
+            setFormErrors(validate(errors));
+          }
+        } else {
+          console.log(error);
+        }
       }
     }
   };
