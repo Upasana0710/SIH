@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import "./info.css";
-import Student from "../../assets/student.jpg";
-import Teaching from "../../assets/teaching.jpg";
-import { addSubjects, getSubjects } from "../../api/api";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './info.css';
+import Student from '../../assets/student.jpg';
+import Teaching from '../../assets/teaching.jpg';
+import { addSubjects, getSubjects } from '../../api/api';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const Info = () => {
+import ConfigureNav from './ConfigureNav';
+
+const ConfigureProfile = () => {
   // const subjects = ["DSA", "DBMS", "DAA", "OS"];
   const [subjects, setSubjects] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
@@ -16,7 +18,7 @@ const Info = () => {
 
   useEffect(() => {
     const fetchSubjects = async () => {
-      const response = await getSubjects(localStorage.getItem("user_info"));
+      const response = await getSubjects(localStorage.getItem('user_info'));
       setSubjects(response?.data?.subjects);
       console.log(response);
     };
@@ -44,14 +46,14 @@ const Info = () => {
 
   const handleNext = async () => {
     try {
-      const token = localStorage.getItem("user_info");
+      const token = localStorage.getItem('user_info');
       const response = await addSubjects(
         { studySub: studySub, teachSub: teachSub },
         token
       );
 
       if (response.status === 201) {
-        console.log("ADDING SUBJECTS SUCCESSFUL");
+        console.log('ADDING SUBJECTS SUCCESSFUL');
 
         setIsAdded(true);
       }
@@ -61,7 +63,8 @@ const Info = () => {
   };
   return (
     <div className="mainPage">
-      <div className="mainCard" style={{ background: "#96dea1" }}>
+      <ConfigureNav />
+      <div className="mainCard" style={{ background: '#96dea1' }}>
         <img src={Student} className="image" />
         <div className="choice">
           <div className="heading">Which subjects do you want to study?</div>
@@ -69,7 +72,7 @@ const Info = () => {
             {subjects?.map((subject, index) => (
               <div
                 className={`card${
-                  studySub.includes(subject) ? "Selected" : ""
+                  studySub.includes(subject) ? 'Selected' : ''
                 }`}
                 key={index}
                 onClick={() => handleStudyCardClick(subject)}
@@ -80,7 +83,7 @@ const Info = () => {
           </div>
         </div>
       </div>
-      <div className="mainCard" style={{ background: "#e5a067" }}>
+      <div className="mainCard" style={{ background: '#e5a067' }}>
         <img src={Teaching} className="image" />
         <div className="choice">
           <div className="heading">Which subjects do you want to teach?</div>
@@ -88,7 +91,7 @@ const Info = () => {
             {subjects?.map((subject, index) => (
               <div
                 className={`card${
-                  teachSub.includes(subject) ? "Selected" : ""
+                  teachSub.includes(subject) ? 'Selected' : ''
                 }`}
                 key={index}
                 onClick={() => handleTeachCardClick(subject)}
@@ -103,7 +106,7 @@ const Info = () => {
         <div className="nextButton">Next</div>
         {isAdded && (
           <div className="nextButton">
-            <Link to="/home" className={"home_link_text"}>
+            <Link to="/home" className={'home_link_text'}>
               GO TO HOME
             </Link>
           </div>
@@ -113,4 +116,4 @@ const Info = () => {
   );
 };
 
-export default Info;
+export default ConfigureProfile;

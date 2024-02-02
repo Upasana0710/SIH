@@ -67,6 +67,33 @@ export const login = async (req, res) => {
   }
 };
 
+export const getUserSubjects = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
+
+    const user = await User.findById(req.user);
+    const userStudySubs = [];
+    const userTeachSubs = [];
+
+    for (const subject of user.studySub) {
+      const subjectDetails = await Subject.findById(subject._id);
+      userStudySubs.push(subjectDetails);
+    }
+
+    for (const subject of user.teachSub) {
+      const subjectDetails = await Subject.findById(subject._id);
+      userTeachSubs.push(subjectDetails);
+    }
+
+    return res
+      .status(200)
+      .json({ studySubjects: userStudySubs, teachSubjects: userTeachSubs });
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
+  }
+};
+
 export const addSubjects = async (req, res) => {
   const subjects = req.body;
   try {
@@ -76,11 +103,11 @@ export const addSubjects = async (req, res) => {
 
     // Add subjects to user schema
     if (subjects.studySub) {
-      user.studySub = [...user.studySub, ...subjects.studySub];
+      user.studySub = [...subjects.studySub];
     }
 
     if (subjects.teachSub) {
-      user.teachSub = [...user.teachSub, ...subjects.teachSub];
+      user.teachSub = [...subjects.teachSub];
     }
 
     // Update user schema

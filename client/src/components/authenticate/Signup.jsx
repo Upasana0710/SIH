@@ -1,12 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { signup } from '../../api/api';
+import { signin, signup } from '../../api/api';
+import { getUserByToken } from '../../api/api';
 
 import styles from './AuthenticateForm.module.css';
+import { Link } from 'react-router-dom';
+import { loginSuccess } from '../../redux/userSlice';
 
 const Signup = () => {
   const dispatch = useDispatch();
+
+  const { currentUser } = useSelector((state) => state.user);
 
   const initialValues = {
     name: '',
@@ -34,6 +39,9 @@ const Signup = () => {
   };
 
   const [register, setRegister] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [userId, setUserId] = useState(null);
+
   const formRef = useRef(null);
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -115,6 +123,27 @@ const Signup = () => {
     return errors;
   };
 
+  useEffect(() => {
+    async function fetchUserIdByToken() {
+      if (currentUser) {
+        try {
+          const response = await getUserByToken(
+            localStorage.getItem('user_info')
+          );
+          const userDetails = response.data;
+          console.log(userDetails);
+          if (userDetails) {
+            setUserId(userDetails._id);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+    fetchUserIdByToken();
+    if (currentUser) setLogin(true);
+  }, [currentUser, userId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
@@ -125,6 +154,19 @@ const Signup = () => {
         if (response.status === 201) {
           console.log('REGISTRATION SUCCESSFUL');
           setRegister(true);
+
+          const loginResponse = await signin({
+            email: formValues.email,
+            password: formValues.password,
+          });
+
+          if (loginResponse.status === 200) {
+            console.log('LOG IN SUCCESSFUL');
+
+            dispatch(loginSuccess(loginResponse.data));
+            setLogin(true);
+            resetForm();
+          }
         }
       } catch (error) {
         if (error.message) {
@@ -167,7 +209,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.name}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="instituteEmail">
             Enter your Institute E-mail ID:
@@ -192,7 +233,6 @@ const Signup = () => {
             </p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="dob">
             Enter your Date of Birth:
@@ -212,7 +252,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.dob}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="gender">
             Enter your Gender:
@@ -272,7 +311,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.gender}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="phone">
             Enter your Phone No.:
@@ -291,7 +329,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.phone}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="city">
             Enter your City:
@@ -310,7 +347,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.city}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="programme">
             Enter your Programme:
@@ -334,7 +370,6 @@ const Signup = () => {
             </p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="branch">
             Enter your Branch:
@@ -353,7 +388,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.branch}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="email">
             Enter your Personal E-mail:
@@ -372,7 +406,6 @@ const Signup = () => {
             <p className={styles.authentication_errors}>{formErrors.email}</p>
           )}
         </div>
-
         <div className={styles.authenticate_input_container}>
           <label className={styles.authenticate_label} htmlFor="password">
             Enter your Password:
@@ -396,29 +429,44 @@ const Signup = () => {
             </p>
           )}
         </div>
-
-        <div className={styles.authenticate_actions_btn_container}>
-          <button
-            type="submit"
-            className={`${styles.sign_up} ${styles.authenticate_btn}`}
-          >
-            Submit
-          </button>
-          <button
-            type="reset"
-            onClick={resetForm}
-            className={`${styles.reset} ${styles.authenticate_btn}`}
-          >
-            Reset
-          </button>
-        </div>
+        {!login && (
+          <div className={styles.authenticate_actions_btn_container}>
+            <button
+              type="submit"
+              className={`${styles.sign_up} ${styles.authenticate_btn}`}
+            >
+              Submit
+            </button>
+            <button
+              type="reset"
+              onClick={resetForm}
+              className={`${styles.reset} ${styles.authenticate_btn}`}
+            >
+              Reset
+            </button>
+          </div>
+        )}
         {register && (
           <div className={styles.login_message}>
-            <p className={styles.login_message_para}>
-              REGISTRATION SUCCESSFUL <br />
-              PLEASE SIGN IN TO CONTINUE
-            </p>
+            <p className={styles.login_message_para}>REGISTRATION SUCCESSFUL</p>
+            <br />
           </div>
+        )}
+        {login && userId && (
+          <>
+            <p className={styles.login_message_para}>You are logged in</p>
+            <button
+              type="button"
+              className={`${styles.authenticate_btn} ${styles.home_link_btn}`}
+            >
+              <Link
+                to={`/configure-profile/${userId}`}
+                className={styles.home_link_text}
+              >
+                COMPLETE YOUR PROFILE
+              </Link>
+            </button>
+          </>
         )}
       </div>
     </form>

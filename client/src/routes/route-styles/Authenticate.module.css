@@ -27,7 +27,7 @@
   border-radius: 15px;
   color: #fff;
   font-size: 1.3rem;
-  width: 25%;
+  min-width: 25%;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px #999;
 }
