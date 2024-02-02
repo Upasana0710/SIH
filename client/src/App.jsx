@@ -3,7 +3,7 @@ import Carousel from './components/Carousel.jsx';
 import Section1 from './components/Section1.jsx';
 import Section3 from './components/Section3.jsx';
 import ContactUs from './components/Footer.jsx';
-import Info from './components/Info/info.jsx';
+import ConfigureProfile from './components/info/ConfigureProfile.jsx';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Schedule from './components/ScheduleGenerate/Schedule.jsx';
@@ -34,6 +34,7 @@ import SlotBooking from './slots/SlotBooking.jsx';
 import Signin from './components/authenticate/Signin.jsx';
 import Signup from './components/authenticate/Signup.jsx';
 import Authenticate from './routes/Authenticate.jsx';
+import ConfigureLayout from './components/info/ConfigureLayout.jsx';
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -54,7 +55,10 @@ function App() {
 
           {currentUser && (
             <>
-              <Route path="/info" element={<Info />} />
+              <Route
+                path="/configure-profile/:profId"
+                element={<ConfigureLayout />}
+              />
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />

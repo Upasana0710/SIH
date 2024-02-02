@@ -1,20 +1,28 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API = axios.create({
-  baseURL: "http://localhost:3300",
+  baseURL: 'http://localhost:3300',
 });
 
 // sign up
-export const signup = (user) => API.post("/user/register", user);
+export const signup = (user) => API.post('/user/register', user);
 
 // sign in
-export const signin = (user) => API.post("/user/login", user);
+export const signin = (user) => API.post('/user/login', user);
 
 // add user's subjects
 export const addSubjects = (request, token) =>
   API.patch(
-    "/user/addInfo",
+    '/user/addInfo',
     request,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+//  get user's subjects
+export const getUserSubjects = (token) =>
+  API.get(
+    '/user/getInfo',
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
@@ -22,7 +30,7 @@ export const addSubjects = (request, token) =>
 // post creation
 export const createPost = (post, token) =>
   API.post(
-    "/post/create",
+    '/post/create',
     post,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
@@ -31,7 +39,7 @@ export const createPost = (post, token) =>
 //Get subjects
 export const getSubjects = (token) =>
   API.get(
-    "/subject/list",
+    '/subject/list',
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
@@ -39,7 +47,7 @@ export const getSubjects = (token) =>
 //Generate schedule
 export const generateSchedule = (request, token) =>
   API.post(
-    "/schedule/create",
+    '/schedule/create',
     request,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
@@ -48,7 +56,7 @@ export const generateSchedule = (request, token) =>
 //Newslet
 export const getNews = (token) =>
   API.get(
-    "/event/getEvents",
+    '/event/getEvents',
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
@@ -56,7 +64,7 @@ export const getNews = (token) =>
 // Update User Rating
 export const updateTeachRating = (request, token) => {
   API.post(
-    "/user/rating",
+    '/user/rating',
     request,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { signin } from '../../api/api';
 
@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Signin = () => {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
 
   const initialValues = { email: '', password: '' };
   const initialErrors = { email: false, password: false };
@@ -70,14 +71,6 @@ const Signin = () => {
       <button
         type="button"
         className={`${styles.authenticate_btn} ${styles.home_link_btn}`}
-      >
-        <Link to="/info" className={styles.home_link_text}>
-          CONTINUE
-        </Link>
-      </button>
-      <button
-        type="button"
-        className={`${styles.authenticate_btn} ${styles.home_link_btn}`}
         onClick={() => {
           setLogin(false);
           dispatch(logout());
@@ -88,7 +81,7 @@ const Signin = () => {
     </div>
   );
 
-  if (login) {
+  if (login || currentUser) {
     return (
       <>
         <div className={styles.logged_in}>
@@ -206,7 +199,6 @@ const Signin = () => {
             </div>
           </>
         )}
-        {login && { loggedInContent }}
       </div>
     </form>
   );

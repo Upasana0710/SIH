@@ -75,6 +75,7 @@
 }
 
 .login_message_para {
+  margin: 2rem 0 1rem;
   color: #0c0678;
   font-size: 1.3rem;
 }
@@ -87,7 +88,7 @@
   border-radius: 15px;
   color: #fff;
   font-size: 1.3rem;
-  width: 25%;
+  min-width: 25%;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px #999;
 }
