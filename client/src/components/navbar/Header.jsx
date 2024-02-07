@@ -1,13 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import logoLET from "../../assets/letmainlogo.png";
-import styles from "./Header.module.css";
+import logoLET from '../../assets/letmainlogo.png';
+import styles from './Header.module.css';
 
-import LoginButton from "./login/LoginButton";
-import Group from "./groups/Group";
-import Notification from "./notications/Notification";
-import SearchBar from "./search_bar/SearchBar";
+import LoginButton from './login/LoginButton';
+import Group from './groups/Group';
+import Notification from './notications/Notification';
+import SearchBar from './search_bar/SearchBar';
 
 const Header = ({ onShowModal }) => {
   return (
@@ -18,7 +18,7 @@ const Header = ({ onShowModal }) => {
         </Link>
 
         <div className={styles.search_bar}>
-          <SearchBar></SearchBar>
+          <SearchBar />
         </div>
         <div className={styles.actions}>
           <Notification />
