@@ -2,10 +2,10 @@
   position: absolute;
   flex: 1 1 auto;
   margin: 1.2rem;
-  max-width: calc(100% - 20vw);
+  max-width: calc(100% - 35vw);
   padding: 2rem;
   max-height: 87%;
-  background-color: #343950;
+  background-color: #3f3951;
   border-radius: 15px;
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -41,4 +41,17 @@
 .redirect_link_slot {
   color: #fff;
   text-decoration: none;
+}
+
+.no_post{
+ 
+    width: 70%;
+    height: auto;
+    background-color: #fff;
+    margin: 30px;
+    border-radius: 5px;
+    padding: 20px;
+    position: relative;
+    margin-left: 15%;
+  
 }

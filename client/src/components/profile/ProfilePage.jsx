@@ -3,16 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { getUser, getUserByToken } from '../../api/api';
 
-import ProfileCard from './ProfileCard/ProfileCard';
-import profilephoto from '../../assets/profilephoto.png';
-import UserPost from './PostCard/PostCard';
-import NewPost from './NewPost/NewPost';
+import ProfileCard from "./ProfileCard/ProfileCard";
+
+import UserPost from "./PostCard/PostCard";
+import NewPost from "./NewPost/NewPost";
 
 import Sidebar from '../right-sidebar/Sidebar';
 
 import './ProfilePage.css';
 
-const data = [
+
+const data1 = [
   {
     profilephoto: 'profilephoto.png',
     postname: 'Upasana',
@@ -60,6 +61,9 @@ const data = [
     dislikes: 431,
   },
 ];
+let userDetails;
+let user_posts;
+
 
 let userDetails;
 
@@ -67,8 +71,9 @@ function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const [myUser, setMyUser] = useState(false);
+  const [hasUserdetails,setHasuserDetails]=useState(false);
 
-  const userId = params.get('uid');
+  const userId = params.get("uid");
 
   useEffect(() => {
     async function fetchUser() {
@@ -78,6 +83,7 @@ function ProfilePage() {
           setMyUser(false);
           const response = await getUser(userId);
           userDetails = response.data;
+          setHasuserDetails(true);
           console.log(userDetails);
         } else {
           setMyUser(true);
@@ -85,6 +91,7 @@ function ProfilePage() {
             localStorage.getItem('user_info')
           );
           userDetails = response.data;
+          setHasuserDetails(true);
           console.log(userDetails);
         }
       } catch (err) {
@@ -94,34 +101,18 @@ function ProfilePage() {
     fetchUser();
   }, [userId]);
 
-  const posts = data.map((item) => {
-    return (
-      <UserPost
-        key={item.postname}
-        profilephoto={item.profilephoto}
-        postname={item.postname}
-        post={item.post}
-      />
-    );
-  });
+    
 
+    user_posts=data1.map((item)=>
+    <UserPost 
+    title={item.postname}
+    text={item.post}/>)
   return (
     <div className="profile-height">
       <Sidebar />
 
-      <section className="profile_container_section">
-        <ProfileCard
-          // profilephoto={profilephoto}
-          // name={'Upasana'}
-          // credentials={'Engineering'}
-          // branch={'CSE'}
-          // college={'KIIT University'}
-          // rating={'2'}
-          // about={
-          //   'I am 21-year-old senior majoring in Computer Science at Kiit University. With a stellar GPA of 9.4, I am not just a dedicated student but also an active participant in various aspects of university life.'
-          // }
-          user={userDetails}
-        />
+      <section className="profile_container_section">        
+        { hasUserdetails && <ProfileCard user={userDetails}/> }
         {userId && (
           <div className="redirect_container">
             <button type="button" className="redirect_slot_booking_button">
@@ -133,8 +124,9 @@ function ProfilePage() {
         )}
 
         <NewPost />
-        {posts}
+        {user_posts}
       </section>
+     
     </div>
   );
 }
