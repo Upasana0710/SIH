@@ -12,7 +12,8 @@ import mongoose from 'mongoose';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const pdfUploadsDir = path.join(__dirname, '../pdf_uploads');
+const pdfUploadsDir = path.join(__dirname, '../uploads');
+
 if (!fs.existsSync(pdfUploadsDir)) {
   fs.mkdirSync(pdfUploadsDir);
 }
@@ -22,59 +23,60 @@ const pdfStorage = multer.diskStorage({
     cb(null, pdfUploadsDir);
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(
+      null,
+      file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+    );
   },
 });
 
-const pdfUpload = multer({ storage: pdfStorage });
+const upload = multer({ storage: pdfStorage });
 
-export const uploadFile = pdfUpload.single('file');
+export const uploadFile = upload.single('file');
 
 export const createPost = async (req, res) => {
   try {
-    const { title, category } = req.body;
-    const communityId = req.body.communityId;
+    const { title, category, text, community } = req.body;
+
     if (!req.user) return res.status(401).json({ message: 'Unauthenticated.' });
 
-    // Check if a file was uploaded
-    if (!req.file) {
-      return res.status(400).json({ message: 'No PDF file uploaded' });
+    let fileLink;
+
+    if (req.body.file) {
+      console.log('FILE DETECTED');
+      const filename = req.body.file.name;
+      fileLink = `http://localhost:3300/uploads/${filename}`;
     }
 
-    const pdfLink = `http://localhost:3300/pdfs/${req.file.filename}`;
+    const isValidCommunityId = mongoose.isValidObjectId(community);
 
-    // Validate if communityId is a valid ObjectId
-    const isValidCommunityId = mongoose.isValidObjectId(communityId);
-
-    // Create a new Post document in the database
     const post = new Post({
-      creator: req.user,
+      creator: req.user._id,
       title,
       category,
-      file: pdfLink,
-      community: isValidCommunityId ? communityId : null, // Set to null if not a valid ObjectId
+      text,
+      file: fileLink,
+      community: isValidCommunityId ? community : null,
     });
+
+    console.log(post);
 
     await post.save();
 
-    // If communityId is present, update the community's posts field
     if (isValidCommunityId) {
-      // Find the community by ID and update its posts field
       await Community.findByIdAndUpdate(
-        communityId,
-        { $addToSet: { posts: post._id } }, // Add the post ID to the posts array
+        community,
+        { $addToSet: { posts: post._id } },
         { new: true }
       );
     }
 
-    // Return a success message or the created post
     return res.status(201).json({ message: 'Post created successfully', post });
   } catch (error) {
     console.error(error);
     return res.status(500).json(error);
   }
 };
-
 
 export const getPostsByCategory = async (req, res) => {
   try {
@@ -84,14 +86,18 @@ export const getPostsByCategory = async (req, res) => {
 
     // Check if category is provided
     if (!category) {
-      return res.status(400).json({ message: 'Category parameter is required' });
+      return res
+        .status(400)
+        .json({ message: 'Category parameter is required' });
     }
 
     // Fetch posts by category from the database
     const posts = await Post.find({ category });
 
     // Return the posts in the response
-    return res.status(200).json({ message: 'Posts fetched successfully', posts });
+    return res
+      .status(200)
+      .json({ message: 'Posts fetched successfully', posts });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -132,7 +138,7 @@ export const downloadResource = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
-}
+};
 
 export const imageUpload = async (req, res) => {
   try {
@@ -152,4 +158,4 @@ export const imageUpload = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}
+};

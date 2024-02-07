@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { getUser, getUserByToken } from "../../api/api";
+import { getUser, getUserByToken } from '../../api/api';
 
-import ProfileCard from "./ProfileCard/ProfileCard";
-import profilephoto from "../../assets/profilephoto.png";
-import UserPost from "./PostCard/PostCard";
-import NewPost from "./NewPost/NewPost";
+import ProfileCard from './ProfileCard/ProfileCard';
+import profilephoto from '../../assets/profilephoto.png';
+import UserPost from './PostCard/PostCard';
+import NewPost from './NewPost/NewPost';
 
-import Sidebar from "../right-sidebar/Sidebar";
+import Sidebar from '../right-sidebar/Sidebar';
 
-import "./ProfilePage.css";
+import './ProfilePage.css';
 
 const data = [
   {
-    profilephoto: "profilephoto.png",
-    postname: "Upasana",
+    profilephoto: 'profilephoto.png',
+    postname: 'Upasana',
     post: `
     Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
     
@@ -29,7 +29,7 @@ const data = [
   },
 
   {
-    postname: "Upasana",
+    postname: 'Upasana',
     post: `
     A greedy algorithm is a strategy that makes the best choice at each step, with the goal of finding a globally optimal solution. This means the algorithm picks the best solution at the moment without regard for consequences.\n
     
@@ -38,7 +38,7 @@ const data = [
     dislikes: 431,
   },
   {
-    postname: "Upasana",
+    postname: 'Upasana',
     post: `
     An array is a collection of items stored at contiguous memory locations. The idea is to store multiple items of the same type together. This makes it easier to calculate the position of each element by simply adding an offset to a base value, i.e., the memory location of the first element of the array (generally denoted by the name of the array)..\n
     
@@ -47,7 +47,7 @@ const data = [
     dislikes: 431,
   },
   {
-    postname: "Upasana",
+    postname: 'Upasana',
     post: `
     Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
     
@@ -61,14 +61,14 @@ const data = [
   },
 ];
 
+let userDetails;
+
 function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const [myUser, setMyUser] = useState(false);
 
-  const userId = params.get("uid");
-
-  let userDetails;
+  const userId = params.get('uid');
 
   useEffect(() => {
     async function fetchUser() {
@@ -82,7 +82,7 @@ function ProfilePage() {
         } else {
           setMyUser(true);
           const response = await getUserByToken(
-            localStorage.getItem("user_info")
+            localStorage.getItem('user_info')
           );
           userDetails = response.data;
           console.log(userDetails);
@@ -111,15 +111,16 @@ function ProfilePage() {
 
       <section className="profile_container_section">
         <ProfileCard
-          profilephoto={profilephoto}
-          name={"Upasana"}
-          credentials={"Engineering"}
-          branch={"CSE"}
-          college={"KIIT University"}
-          rating={"2"}
-          about={
-            "I am 21-year-old senior majoring in Computer Science at Kiit University. With a stellar GPA of 9.4, I am not just a dedicated student but also an active participant in various aspects of university life."
-          }
+          // profilephoto={profilephoto}
+          // name={'Upasana'}
+          // credentials={'Engineering'}
+          // branch={'CSE'}
+          // college={'KIIT University'}
+          // rating={'2'}
+          // about={
+          //   'I am 21-year-old senior majoring in Computer Science at Kiit University. With a stellar GPA of 9.4, I am not just a dedicated student but also an active participant in various aspects of university life.'
+          // }
+          user={userDetails}
         />
         {userId && (
           <div className="redirect_container">
