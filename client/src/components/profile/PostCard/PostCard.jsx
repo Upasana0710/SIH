@@ -4,9 +4,10 @@ import "./PostCard.css";
 function UserPost(props) {
   return (
     <div className="post-card">
-      <img src={props.profilephoto} alt="" className="post-photo" />
-      <h5 className="post-name">{props.postname}</h5>
-      <div className="post">{props.post}</div>
+     
+      <h5 className="post-name">{props.title}</h5>
+      {/* <h5 className="post-name">Category{props.category}</h5> */}
+      <div className="post">{props.text}</div>
     </div>
   );
 }
