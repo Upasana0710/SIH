@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { getUser, getUserByToken } from "../../api/api";
+import { getUser, getUserByToken } from '../../api/api';
 
 import ProfileCard from "./ProfileCard/ProfileCard";
 
 import UserPost from "./PostCard/PostCard";
 import NewPost from "./NewPost/NewPost";
 
-import Sidebar from "../right-sidebar/Sidebar";
+import Sidebar from '../right-sidebar/Sidebar';
 
-import "./ProfilePage.css";
+import './ProfilePage.css';
 
 
 const data1 = [
   {
-    profilephoto: "profilephoto.png",
-    postname: "Upasana",
+    profilephoto: 'profilephoto.png',
+    postname: 'Upasana',
     post: `
     Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
     
@@ -30,7 +30,7 @@ const data1 = [
   },
 
   {
-    postname: "Upasana",
+    postname: 'Upasana',
     post: `
     A greedy algorithm is a strategy that makes the best choice at each step, with the goal of finding a globally optimal solution. This means the algorithm picks the best solution at the moment without regard for consequences.\n
     
@@ -39,7 +39,7 @@ const data1 = [
     dislikes: 431,
   },
   {
-    postname: "Upasana",
+    postname: 'Upasana',
     post: `
     An array is a collection of items stored at contiguous memory locations. The idea is to store multiple items of the same type together. This makes it easier to calculate the position of each element by simply adding an offset to a base value, i.e., the memory location of the first element of the array (generally denoted by the name of the array)..\n
     
@@ -48,7 +48,7 @@ const data1 = [
     dislikes: 431,
   },
   {
-    postname: "Upasana",
+    postname: 'Upasana',
     post: `
     Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
     
@@ -65,6 +65,8 @@ let userDetails;
 let user_posts;
 
 
+let userDetails;
+
 function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
@@ -72,8 +74,6 @@ function ProfilePage() {
   const [hasUserdetails,setHasuserDetails]=useState(false);
 
   const userId = params.get("uid");
-
- 
 
   useEffect(() => {
     async function fetchUser() {
@@ -88,7 +88,7 @@ function ProfilePage() {
         } else {
           setMyUser(true);
           const response = await getUserByToken(
-            localStorage.getItem("user_info")
+            localStorage.getItem('user_info')
           );
           userDetails = response.data;
           setHasuserDetails(true);
@@ -111,8 +111,7 @@ function ProfilePage() {
     <div className="profile-height">
       <Sidebar />
 
-      <section className="profile_container_section">
-        
+      <section className="profile_container_section">        
         { hasUserdetails && <ProfileCard user={userDetails}/> }
         {userId && (
           <div className="redirect_container">

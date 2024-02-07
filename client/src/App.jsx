@@ -35,6 +35,7 @@ import Signin from './components/authenticate/Signin.jsx';
 import Signup from './components/authenticate/Signup.jsx';
 import Authenticate from './routes/Authenticate.jsx';
 import ConfigureLayout from './components/info/ConfigureLayout.jsx';
+import CreatePostLayout from './components/create-post/CreatePostLayout.jsx';
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -74,6 +75,10 @@ function App() {
                 <Route path="profile" element={<ProfilePage />}>
                   <Route path=":profId" element={<ProfilePage />} />
                 </Route>
+                <Route
+                  path="create-post/:profId"
+                  element={<CreatePostLayout />}
+                />
                 <Route path="slot" element={<SlotBooking />} />
               </Route>
 
