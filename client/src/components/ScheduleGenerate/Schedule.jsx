@@ -1,22 +1,17 @@
-import {
-  Modal,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-} from "@mui/material";
-import React, { useState } from "react";
-import styles from "./schedule.module.css";
-import { generateSchedule } from "../../api/api";
-// import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import React, { useState } from 'react';
+import styles from './schedule.module.css';
+import { generateSchedule } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
-// eslint-disable-next-line react/prop-types
-const Schedule = ({ onClose }) => {
+const Schedule = () => {
+  const navigate = useNavigate();
   const [inputValues, setInputValues] = useState({
     t_days: 0,
     hoursPerDay: 0,
-    sessionLength: "",
+    sessionLength: '',
   });
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState('');
   const [schedule, setSchedule] = useState([]);
 
   const handleTypeSelection = (type) => {
@@ -32,10 +27,14 @@ const Schedule = ({ onClose }) => {
     });
     const response = await generateSchedule(
       inputValues,
-      localStorage.getItem("user_info")
+      localStorage.getItem('user_info')
     );
     console.log(response);
     setSchedule(response.data);
+  };
+
+  const onClose = () => {
+    navigate('/home');
   };
 
   return (
@@ -51,8 +50,10 @@ const Schedule = ({ onClose }) => {
               <input
                 type="number"
                 placeholder="Total no of days"
+                min="0"
+                max="60"
                 className={styles.inputBox}
-                value={inputValues.t_days === 0 ? "" : inputValues.t_days}
+                value={inputValues.t_days === 0 ? '' : inputValues.t_days}
                 onChange={(e) =>
                   setInputValues({
                     ...inputValues,
@@ -67,7 +68,7 @@ const Schedule = ({ onClose }) => {
                 max="10"
                 className={styles.inputBox}
                 value={
-                  inputValues.hoursPerDay === 0 ? "" : inputValues.hoursPerDay
+                  inputValues.hoursPerDay === 0 ? '' : inputValues.hoursPerDay
                 }
                 onChange={(e) =>
                   setInputValues({
@@ -77,31 +78,31 @@ const Schedule = ({ onClose }) => {
                 }
               />
             </div>
-            <div className={styles.chooseText}>Choose type of session:</div>
+            <div className={styles.schedule_text}>Choose type of session:</div>
             <div className={styles.noContainer}>
-              <div
-                className={`${styles.buttonContainer} ${
-                  selectedType === "60min" ? `${styles.selected}` : ""
+              <btn
+                className={`${styles.schedule_btn} ${
+                  selectedType === '30min' ? `${styles.selected}` : ''
                 }`}
-                onClick={() => handleTypeSelection("30min")}
+                onClick={() => handleTypeSelection('30min')}
               >
                 30 min
-              </div>
-              <div
-                className={`${styles.buttonContainer} ${
-                  selectedType === "60min" ? `${styles.selected}` : ""
+              </btn>
+              <btn
+                className={`${styles.schedule_btn} ${
+                  selectedType === '60min' ? `${styles.selected}` : ''
                 }`}
-                onClick={() => handleTypeSelection("60min")}
+                onClick={() => handleTypeSelection('60min')}
               >
                 60 min
-              </div>
+              </btn>
             </div>
-            <div
-              className={styles.generateButton}
+            <btn
+              className={`${styles.schedule_btn} ${styles.generate_btn}`}
               onClick={() => handleGenerate()}
             >
               Generate
-            </div>
+            </btn>
             <div className={styles.scheduleContainer}>
               {schedule.map((day, index) => (
                 <Accordion key={index}>
@@ -113,13 +114,17 @@ const Schedule = ({ onClose }) => {
                         className={styles.session}
                         style={{
                           background:
-                            session.type === "Recap/Revision"
-                              ? "#87eeee"
-                              : "f8deb1",
+                            session.type === 'Recap/Revision'
+                              ? '#87eeee'
+                              : '#f8deb1',
                         }}
                       >
-                        <div>{session.type}</div>
-                        <div>{session.time}</div>
+                        <div className={styles.type}>{session.type}</div>
+                        <div>
+                          {session.time.map((t) => {
+                            return <p key={t}>{t}</p>;
+                          })}
+                        </div>
                       </div>
                     ))}
                   </AccordionDetails>
