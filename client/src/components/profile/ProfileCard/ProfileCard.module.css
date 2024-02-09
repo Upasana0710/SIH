@@ -1,93 +1,72 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
-
-* {
-	box-sizing: border-box;
-}
-
-body {
-	font-family: Montserrat, sans-serif;
-	display: flex;
-  justify-content: center;
-	flex-direction: column;
-   min-height: 100vh;
-	
-}
-
-.user_name{
-	margin: 10px 0;
+.user_name {
+  margin: 10px 0;
   text-transform: uppercase;
   font-size: 25px;
 }
 
-.heading{
+.heading {
   font-size: 15px;
-	margin: 5px 0;
-	text-transform: uppercase;
+  margin: 5px 0;
+  text-transform: uppercase;
   color: #f6eeee;
 }
-.user_email{
-  color:grey;
+.user_email {
+  color: grey;
   position: relative;
-  top:-10px;
+  top: -10px;
 }
 .user_bio {
-	font-size: 14px;
-	line-height: 21px;
- 
+  font-size: 14px;
+  line-height: 21px;
 }
 
 .card_container {
-	background-color:  #292435;
-	border-radius: 15px;
-	box-shadow: 0px 15px 30px -7px rgba(0,0,0,0.75);
-	color:  #f6eeee;
-	padding-top: 30px;
-	position: relative;
+  background-color: #292435;
+  border-radius: 15px;
+  box-shadow: 0px 15px 30px -7px rgba(0, 0, 0, 0.75);
+  color: #f6eeee;
+  padding-top: 30px;
+  position: relative;
   margin: auto;
-	width: 380px;
-	max-width: 100%;
-	text-align: center;
+  width: 500px;
+  max-width: 100%;
+  text-align: center;
 }
-
 
 .skills {
   color: #f6eeee;
-	background-color:#1a1c27;
-	text-align: left;
-	padding: 15px;
-	margin-top: 30px;
+  background-color: #1a1c27;
+  text-align: left;
+  padding: 15px;
+  margin-top: 30px;
   font-size: large;
   text-transform: uppercase;
   border-bottom-left-radius: 15px;
-  border-bottom-right-radius:15px;
+  border-bottom-right-radius: 15px;
 }
-.skills2{
+.skills2 {
   display: flex;
 }
 
-
-
-.courses{
-  width:180px;
+.courses {
+  width: 180px;
   list-style-type: none;
-	margin: 0;
-	padding: 0;
-  
+  margin: 0;
+  padding: 0;
 }
 .course_list {
-	border: 1px solid #2D2747;
-	border-radius: 2px;
-	display: inline-block;
-	font-size: 12px;
-	margin: 5px 7px 7px 0;
-	padding: 8px;
+  border: 1px solid #2d2747;
+  border-radius: 2px;
+  display: inline-block;
+  font-size: 12px;
+  margin: 5px 7px 7px 0;
+  padding: 8px;
   color: #f6eeee;
 }
 
-.vertical_line{
-  border-left:1px solid rgb(240, 241, 240);
+.vertical_line {
+  border-left: 1px solid rgb(240, 241, 240);
   height: 25vh;
   position: relative;
   left: -20px;
 }
-

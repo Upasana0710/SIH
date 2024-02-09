@@ -1,7 +1,8 @@
 .lobby_page {
+  margin-top: 6rem;
   min-height: calc(100vh-70px);
   padding: 2.2rem 4.5rem 2.7rem;
-  background-color: #bbb;
+  background-color: inherit;
   text-align: center;
   overflow-y: hidden;
 }

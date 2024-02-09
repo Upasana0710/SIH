@@ -1,3 +1,7 @@
+.feed_posts_container {
+  margin-top: 3rem;
+}
+
 .add_post_btn {
   position: fixed;
   bottom: 5vh;
