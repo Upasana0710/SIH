@@ -101,28 +101,47 @@ function ProfilePage() {
     fetchUser();
   }, [userId]);
 
-  user_posts = data1.map((item) => (
-    <UserPost key={item.postid} title={item.postname} text={item.post} />
-  ));
+  user_posts = hasUserdetails ? (
+    data1.map((item) => (
+      <UserPost key={item.postid} title={userDetails.name} text={item.post} />
+    ))
+  ) : (
+    <h3>Loading posts!</h3>
+  );
   return (
     <div>
       <Sidebar />
       <section className={styles.profile_container_section}>
-        {hasUserdetails && <ProfileCard user={userDetails} />}
-        {userId && (
-          <div className={styles.redirect_container}>
-            <button
-              type="button"
-              className={styles.redirect_slot_booking_button}
-            >
-              <Link to="/home/slot" className={styles.redirect_link_slot}>
-                GO TO SLOT BOOKING
-              </Link>
-            </button>
+        <div className={styles.profile_main_section}>
+          {hasUserdetails && <ProfileCard user={userDetails} />}
+          <div className={styles.vertical_line}></div>
+          <div className={styles.profile_actions}>
+            {userId && (
+              <div className={styles.redirect_container}>
+                <button
+                  type="button"
+                  className={styles.redirect_slot_booking_button}
+                >
+                  <Link to="/home/slot" className={styles.redirect_link_slot}>
+                    GO TO SLOT BOOKING
+                  </Link>
+                </button>
+              </div>
+            )}
+            {!userId && (
+              <button type="button" className={styles.redirect_post_button}>
+                <Link
+                  to={`/home/create-post/${userId}`}
+                  target="_blank"
+                  className={styles.redirect_link_slot}
+                >
+                  CREATE A POST
+                </Link>
+              </button>
+            )}
           </div>
-        )}
-
-        <NewPost />
+        </div>
+        <div className={styles.horizontal_line}></div>
         {user_posts}
       </section>
     </div>
