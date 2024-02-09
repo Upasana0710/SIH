@@ -67,4 +67,31 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 5px;
+
+}
+
+.search_name{
+  color: rgb(36, 36, 76);
+ font-size: medium;
+ font-weight:bold;
+}
+
+.search_name:hover{
+  color: rgb(75, 18, 18);
+}
+
+.search_rating{
+  font-size: medium;
+  color:rgb(36, 36, 76);
+  font-weight: bold;
+}
+.user_display{
+  color: rgb(36, 36, 76);
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: relative;
+  top:-1rem;
+  left:1rem;
+  text-decoration: underline;
 }
