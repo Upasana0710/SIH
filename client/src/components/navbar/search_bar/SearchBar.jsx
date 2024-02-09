@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './SearchBar.module.css';
 import { getTeachers } from '../../../api/api';
 
@@ -11,12 +11,16 @@ const SearchBar = () => {
 
   const [isFocused, setIsFocused] = useState(false);
 
+  const searchBarRef = useRef(null);
+
   const handleFocus = () => {
     setIsFocused(true);
   };
 
-  const handleBlur = () => {
-    setIsFocused(false);
+  const handleClickOutside = (e) => {
+    if (searchBarRef.current && !searchBarRef.current.contains(e.target)) {
+      setIsFocused(false);
+    }
   };
 
   const searchResults = [];
@@ -63,28 +67,34 @@ const SearchBar = () => {
           {isFocused && (
             <div className={styles.advanced_filters}>
               <div className={styles.search_bar_controls}>
-                <CloseIcon
-                  className={styles.close_icon_search}
+                <div
+                  className={styles.close_btn_container}
                   onClick={() => setIsFocused(false)}
-                />
+                >
+                  <CloseIcon
+                    className={styles.close_icon_search}
+                    onClick={() => setIsFocused(false)}
+                  />
+                </div>
               </div>
               <div className={styles.display_results}>
-              <div className={styles.user_display}>USERS</div>
+                <div className={styles.user_display}>USERS</div>
                 {array.length !== 0 &&
                   array.map((ar) => (
                     <div key={ar._id} className={styles.results_container}>
-                      
                       <NavLink
                         to={`profile?uid=${ar._id}`}
                         style={{
                           display: 'flex',
                           justifyContent: 'space-between',
-                          textDecoration:'none'
+                          textDecoration: 'none',
                         }}
                       >
-                      <div className={styles.search_name}> {ar.name}</div>
+                        <div className={styles.search_name}> {ar.name}</div>
                       </NavLink>
-                      <div className={styles.search_rating}>Rating:{ar.teachRating}⭐</div>
+                      <div className={styles.search_rating}>
+                        Rating:{ar.teachRating}⭐
+                      </div>
                     </div>
                   ))}
               </div>
