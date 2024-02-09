@@ -69,19 +69,22 @@ const SearchBar = () => {
                 />
               </div>
               <div className={styles.display_results}>
+              <div className={styles.user_display}>USERS</div>
                 {array.length !== 0 &&
                   array.map((ar) => (
                     <div key={ar._id} className={styles.results_container}>
+                      
                       <NavLink
                         to={`profile?uid=${ar._id}`}
                         style={{
                           display: 'flex',
                           justifyContent: 'space-between',
+                          textDecoration:'none'
                         }}
                       >
-                        {ar.name}
+                      <div className={styles.search_name}> {ar.name}</div>
                       </NavLink>
-                      {ar.teachRating}
+                      <div className={styles.search_rating}>Rating:{ar.teachRating}⭐</div>
                     </div>
                   ))}
               </div>
