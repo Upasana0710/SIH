@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { getUser, getUserByToken } from '../../api/api';
 
-import ProfileCard from "./ProfileCard/ProfileCard";
+import ProfileCard from './ProfileCard/ProfileCard';
 
-import UserPost from "./PostCard/PostCard";
-import NewPost from "./NewPost/NewPost";
+import UserPost from './PostCard/PostCard';
+import NewPost from './NewPost/NewPost';
 
 import Sidebar from '../right-sidebar/Sidebar';
 
-import './ProfilePage.css';
-
+import styles from './ProfilePage.module.css';
 
 const data1 = [
   {
     profilephoto: 'profilephoto.png',
+    postid: 1,
     postname: 'Upasana',
     post: `
     Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
@@ -31,6 +31,7 @@ const data1 = [
 
   {
     postname: 'Upasana',
+    postid: 2,
     post: `
     A greedy algorithm is a strategy that makes the best choice at each step, with the goal of finding a globally optimal solution. This means the algorithm picks the best solution at the moment without regard for consequences.\n
     
@@ -40,6 +41,7 @@ const data1 = [
   },
   {
     postname: 'Upasana',
+    postid: 3,
     post: `
     An array is a collection of items stored at contiguous memory locations. The idea is to store multiple items of the same type together. This makes it easier to calculate the position of each element by simply adding an offset to a base value, i.e., the memory location of the first element of the array (generally denoted by the name of the array)..\n
     
@@ -49,6 +51,7 @@ const data1 = [
   },
   {
     postname: 'Upasana',
+    postid: 4,
     post: `
     Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
     
@@ -64,16 +67,13 @@ const data1 = [
 let userDetails;
 let user_posts;
 
-
-let userDetails;
-
 function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const [myUser, setMyUser] = useState(false);
-  const [hasUserdetails,setHasuserDetails]=useState(false);
+  const [hasUserdetails, setHasUserDetails] = useState(false);
 
-  const userId = params.get("uid");
+  const userId = params.get('uid');
 
   useEffect(() => {
     async function fetchUser() {
@@ -83,7 +83,7 @@ function ProfilePage() {
           setMyUser(false);
           const response = await getUser(userId);
           userDetails = response.data;
-          setHasuserDetails(true);
+          setHasUserDetails(true);
           console.log(userDetails);
         } else {
           setMyUser(true);
@@ -91,7 +91,7 @@ function ProfilePage() {
             localStorage.getItem('user_info')
           );
           userDetails = response.data;
-          setHasuserDetails(true);
+          setHasUserDetails(true);
           console.log(userDetails);
         }
       } catch (err) {
@@ -101,22 +101,21 @@ function ProfilePage() {
     fetchUser();
   }, [userId]);
 
-    
-
-    user_posts=data1.map((item)=>
-    <UserPost 
-    title={item.postname}
-    text={item.post}/>)
+  user_posts = data1.map((item) => (
+    <UserPost key={item.postid} title={item.postname} text={item.post} />
+  ));
   return (
-    <div className="profile-height">
+    <div>
       <Sidebar />
-
-      <section className="profile_container_section">        
-        { hasUserdetails && <ProfileCard user={userDetails}/> }
+      <section className={styles.profile_container_section}>
+        {hasUserdetails && <ProfileCard user={userDetails} />}
         {userId && (
-          <div className="redirect_container">
-            <button type="button" className="redirect_slot_booking_button">
-              <Link to="/home/slot" className="redirect_link_slot">
+          <div className={styles.redirect_container}>
+            <button
+              type="button"
+              className={styles.redirect_slot_booking_button}
+            >
+              <Link to="/home/slot" className={styles.redirect_link_slot}>
                 GO TO SLOT BOOKING
               </Link>
             </button>
@@ -126,7 +125,6 @@ function ProfilePage() {
         <NewPost />
         {user_posts}
       </section>
-     
     </div>
   );
 }

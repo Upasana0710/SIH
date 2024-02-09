@@ -1,5 +1,5 @@
 .sidebar {
-  position: sticky;
+  position: fixed;
   height: calc(100dvh - 70px);
   background-color: #352f44;
   top: 70px;
