@@ -61,7 +61,7 @@ const data1 = [
     dislikes: 431,
   },
 ];
-let userDetails;
+
 let user_posts;
 
 
