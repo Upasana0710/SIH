@@ -6,11 +6,11 @@ import { getUser, getUserByToken } from '../../api/api';
 import ProfileCard from './ProfileCard/ProfileCard';
 
 import UserPost from './PostCard/PostCard';
-import NewPost from './NewPost/NewPost';
 
 import Sidebar from '../right-sidebar/Sidebar';
 
 import styles from './ProfilePage.module.css';
+import { useSelector } from 'react-redux';
 
 const data1 = [
   {
@@ -65,15 +65,18 @@ const data1 = [
   },
 ];
 
+let userDetails;
 let user_posts;
 
 function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const [myUser, setMyUser] = useState(false);
+  const [myUser, setMyUser] = useState(null);
   const [hasUserdetails, setHasUserDetails] = useState(false);
 
   const userId = params.get('uid');
+
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     async function fetchUser() {
@@ -83,6 +86,9 @@ function ProfilePage() {
           setMyUser(false);
           const response = await getUser(userId);
           userDetails = response.data;
+          if (userId === currentUser._id) {
+            setMyUser(true);
+          }
           setHasUserDetails(true);
           console.log(userDetails);
         } else {
@@ -116,7 +122,7 @@ function ProfilePage() {
           {hasUserdetails && <ProfileCard user={userDetails} />}
           <div className={styles.vertical_line}></div>
           <div className={styles.profile_actions}>
-            {userId && (
+            {userId && !myUser && (
               <div className={styles.redirect_container}>
                 <button
                   type="button"
@@ -128,7 +134,7 @@ function ProfilePage() {
                 </button>
               </div>
             )}
-            {!userId && (
+            {(!userId || myUser) && (
               <button type="button" className={styles.redirect_post_button}>
                 <Link
                   to={`/home/create-post/${userId}`}

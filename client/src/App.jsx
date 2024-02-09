@@ -72,9 +72,7 @@ function App() {
                 <Route path="lobby" element={<Lobby />} />
                 <Route path="schedule" element={<Schedule />} />
                 <Route path="newslet" element={<Newslet />} />
-                <Route path="profile" element={<ProfilePage />}>
-                  <Route path=":profId" element={<ProfilePage />} />
-                </Route>
+                <Route path="profile" element={<ProfilePage />} />
                 <Route
                   path="create-post/:profId"
                   element={<CreatePostLayout />}
