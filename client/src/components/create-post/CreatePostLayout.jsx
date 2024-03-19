@@ -1,148 +1,302 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { Dropzone, FileMosaic } from '@files-ui/react';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Dropzone, FileMosaic } from "@files-ui/react";
 
-import { getSubjects, createPost } from '../../api/api';
+import { getSubjects, createPost } from "../../api/api";
 
-import styles from './CreatePostLayout.module.css';
+import styles from "./CreatePostLayout.module.css";
 
 const CreatePostLayout = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const initialValues = {
+    title: "",
+    text: "",
+    category: [],
+    concepts: [],
+    communities: [],
+    file: null,
+  };
+
+  const [formValues, setFormValues] = useState(initialValues);
+  const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
   const [subjects, setSubjects] = useState([]);
 
+  const [communityInput, setCommunityInput] = useState("");
+  const [conceptInput, setConceptInput] = useState("");
+
   const resetForm = () => {
-    setValue('title', '');
-    setValue('text', '');
-    setValue('category', '');
-    setValue('community', '');
-    setValue('file', null);
+    setFormValues(initialValues);
   };
 
   useEffect(() => {
     const fetchSubjects = async () => {
-      const response = await getSubjects(localStorage.getItem('user_info'));
+      const response = await getSubjects(localStorage.getItem("user_info"));
       const resData = response?.data?.subjects;
-      console.log(resData);
       setSubjects(resData);
     };
     fetchSubjects();
   }, [setSubjects]);
 
-  const onFileChange = (e) => {
-    setValue('file', e.target.files);
+  // const onFileChange = (e) => {
+  //   setValue("file", e.target.files);
+  // };
+
+  // const updateFiles = (incomingFiles) => {
+  //   setFiles(incomingFiles);
+  // };
+
+  // const removeFile = (id) => {
+  //   setFiles(files.filter((x) => x.id !== id));
+  // };
+
+  const addCommunityInput = () => {
+    if (communityInput.trim() !== "") {
+      setFormValues({
+        ...formValues,
+        communities: [...formValues.communities, communityInput.trim()],
+      });
+      setCommunityInput("");
+    }
   };
 
-  const updateFiles = (incomingFiles) => {
-    setFiles(incomingFiles);
+  const addConceptInput = () => {
+    if (conceptInput.trim() !== "") {
+      setFormValues({
+        ...formValues,
+        concepts: [...formValues.concepts, conceptInput.trim()],
+      });
+      setConceptInput("");
+    }
   };
 
-  const removeFile = (id) => {
-    setFiles(files.filter((x) => x.id !== id));
+  const validateForm = () => {
+    const errors = {};
+    if (!formValues.title || formValues.title.length < 10) {
+      errors.title = "Title should be at least 10 characters long";
+    }
+    if (!formValues.text || formValues.text.length < 30) {
+      errors.text = "Text Body should be at least 30 characters long";
+    }
+    if (formValues.category.length === 0) {
+      errors.category = "Category is required";
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
-  const onSubmit = async (data) => {
-    const postData = { ...data, file: files[0] };
-    console.log(postData);
-    try {
-      const response = await createPost(
-        postData,
-        localStorage.getItem('user_info')
-      );
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const isFormValid = validateForm();
+    if (isFormValid) {
+      const postData = formValues;
+      try {
+        const response = await createPost(
+          postData,
+          localStorage.getItem("user_info")
+        );
 
-      if (response.status === 201) {
-        resetForm();
-        console.log('SENDING DATA SUCCESSFULL');
+        if (response.status === 201) {
+          resetForm();
+          console.log("SENDING DATA SUCCESSFULL");
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
   };
 
   return (
     <div className={styles.create_post_container}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={styles.create_post_form}
-      >
+      <form onSubmit={onSubmit} className={styles.create_post_form}>
         <h3 className={styles.create_post_header}>CREATE A POST</h3>
 
         <label className={styles.create_form_label}>
           Title:
           <input
             type="text"
-            {...register('title', {
-              required: 'Title is required',
-              minLength: {
-                value: 10,
-                message: 'Title should be at least 10 characters long',
-              },
-            })}
+            value={formValues.title}
+            onChange={(e) =>
+              setFormValues({ ...formValues, title: e.target.value })
+            }
           />
           {errors.title && (
-            <p className={styles.error_message}>{errors.title.message}</p>
+            <p className={styles.error_message}>{errors.title}</p>
           )}
         </label>
 
         <label className={styles.create_form_label}>
           Text Body:
           <textarea
-            {...register('text', {
-              required: 'Text Body is required',
-              minLength: {
-                value: 30,
-                message: 'Text Body should be at least 30 characters long',
-              },
-            })}
+            value={formValues.text}
+            onChange={(e) =>
+              setFormValues({ ...formValues, text: e.target.value })
+            }
           />
-          {errors.text && (
-            <p className={styles.error_message}>{errors.text.message}</p>
-          )}
+          {errors.text && <p className={styles.error_message}>{errors.text}</p>}
         </label>
 
         <label className={styles.create_form_label}>
-          Category:
-          <select
-            {...register('category', { required: 'Category is required' })}
-          >
-            {subjects.map((subject, index) => (
-              <option key={index} value={subject.name}>
-                {subject.name}
-              </option>
+          <div className={styles.select_options}>
+            Category:
+            {formValues.category.map((category) => (
+              <span
+                key={category}
+                className={`${styles.subject_span} ${styles.cat}`}
+                onClick={() => {
+                  if (formValues.category.includes(category)) {
+                    setFormValues({
+                      ...formValues,
+                      category: formValues.category.filter(
+                        (comm) => comm !== category
+                      ),
+                    });
+                  } else {
+                    setFormValues({
+                      ...formValues,
+                      category: [...formValues.category, category],
+                    });
+                  }
+                }}
+              >
+                {subjects.find((subject) => subject._id === category).name}
+              </span>
             ))}
-          </select>
+          </div>
+          <div className={styles.select_options}>
+            {subjects.map((subject) => (
+              <span
+                key={subject._id}
+                className={`${styles.subject_span} ${
+                  formValues.category.includes(subject._id)
+                    ? styles.selected
+                    : ""
+                }`}
+                onClick={() => {
+                  if (formValues.category.includes(subject._id)) {
+                    setFormValues({
+                      ...formValues,
+                      category: formValues.category.filter(
+                        (id) => id !== subject._id
+                      ),
+                    });
+                  } else {
+                    setFormValues({
+                      ...formValues,
+                      category: [...formValues.category, subject._id],
+                    });
+                  }
+                }}
+              >
+                {subject.name}
+              </span>
+            ))}
+          </div>
           {errors.category && (
-            <p className={styles.error_message}>{errors.category.message}</p>
+            <p className={styles.error_message}>{errors.category}</p>
           )}
         </label>
 
         <label className={styles.create_form_label}>
           Post in Community (optional):
-          <input type="text" {...register('community')} />
+          <div className={styles.select_options}>
+            {formValues.communities.map((community) => (
+              <span
+                key={community}
+                className={styles.subject_span}
+                onClick={() => {
+                  if (formValues.communities.includes(community)) {
+                    setFormValues({
+                      ...formValues,
+                      communities: formValues.communities.filter(
+                        (comm) => comm !== community
+                      ),
+                    });
+                  } else {
+                    setFormValues({
+                      ...formValues,
+                      communities: [...formValues.communities, community],
+                    });
+                  }
+                }}
+              >
+                {community}
+              </span>
+            ))}
+          </div>
+          <div className={styles.input_add_container}>
+            <input
+              type="text"
+              value={communityInput}
+              onChange={(e) => setCommunityInput(e.target.value)}
+            />
+            <button
+              type="button"
+              className={styles.add_btn}
+              onClick={addCommunityInput}
+            >
+              Add
+            </button>
+          </div>
+        </label>
+
+        <label className={styles.create_form_label}>
+          Concepts covered (optional):
+          <div className={styles.select_options}>
+            {formValues.concepts.map((concept) => (
+              <span
+                key={concept}
+                className={styles.subject_span}
+                onClick={() => {
+                  if (formValues.concepts.includes(concept)) {
+                    setFormValues({
+                      ...formValues,
+                      concepts: formValues.concepts.filter(
+                        (con) => con !== concept
+                      ),
+                    });
+                  } else {
+                    setFormValues({
+                      ...formValues,
+                      concepts: [...formValues.concepts, concept],
+                    });
+                  }
+                }}
+              >
+                {concept}
+              </span>
+            ))}
+          </div>
+          <div className={styles.input_add_container}>
+            <input
+              type="text"
+              value={conceptInput}
+              onChange={(e) => setConceptInput(e.target.value)}
+            />
+            <button
+              type="button"
+              className={styles.add_btn}
+              onClick={addConceptInput}
+            >
+              Add
+            </button>
+          </div>
         </label>
 
         <label className={styles.create_form_label}>
           Upload File (optional):
           <Dropzone
-            onChange={updateFiles}
+            // onChange={updateFiles}
             value={files}
             accept="image/*, .pdf, .doc, .docx, .xlsx"
             maxFileSize={20480 * 1024}
             maxFiles={1}
             color="#0c0678"
-            //cleanFiles
-            actionButtons={{ position: 'bottom', cleanButton: {} }}
+            actionButtons={{ position: "bottom", cleanButton: {} }}
           >
             {files.map((file) => (
-              <FileMosaic key={file.id} {...file} onDelete={removeFile} info />
+              <FileMosaic key={file.id} {...file} info />
             ))}
           </Dropzone>
         </label>

@@ -19,13 +19,14 @@
 .create_form_label {
   font-size: 1.2rem;
   padding-bottom: 0.5rem;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
-.create_form_label input[type='text'],
+.create_form_label input[type="text"],
 .create_form_label textarea,
 .create_form_label select,
-.create_form_label input[type='file'] {
+.create_form_label input[type="file"] {
   border: 3px solid #83b1d7;
   transition: border 0.3s ease;
   outline: none;
@@ -33,6 +34,8 @@
   margin-bottom: 0.8rem;
   font: inherit;
   font-size: 1rem;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
 }
 
 .create_form_label textarea {
@@ -44,13 +47,57 @@
   display: block;
 }
 
-.create_form_label input[type='file'] {
+.create_form_label input[type="file"] {
   outline: 5px dashed #0c0678;
 }
 
-.create_form_label input[type='text']:focus,
+.create_form_label input[type="text"]:focus,
 .create_form_label textarea:focus {
   border: 3px solid #0c0678;
+}
+
+.select_options {
+  margin: 0.5rem 0;
+}
+
+.subject_span {
+  background-color: #016abc;
+  border: 1px solid #0c0678;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  margin-right: 0.8rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.cat {
+  background-color: #322bb7;
+}
+
+.subject_span:hover {
+  background-color: #0c0678;
+  color: #fff;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: rgb(33, 145, 33);
+  color: #fff;
+}
+
+.input_add_container input {
+  width: 90%;
+}
+
+.input_add_container button {
+  padding: 0.7rem 1rem;
+  background-color: #016abc;
+  font: inherit;
+  font-size: 1rem;
+  color: #fff;
+  border: none;
+  margin: auto 0.3rem;
+  border-radius: 0.5rem;
 }
 
 .form_btns_container {
