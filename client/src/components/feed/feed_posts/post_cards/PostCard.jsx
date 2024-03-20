@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -9,10 +10,51 @@ import Btn02 from "../../../../ui/Btn_02";
 import Btn03 from "../../../../ui/Btn_03";
 import Btn04 from "../../../../ui/Btn_04";
 
+import { getSubjectFromId, getUser } from "../../../../api/api";
+
 const PostCard = (props) => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const [isShowLess, setIsShowLess] = useState(true);
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
+
+  const { category, creator, createdAt } = props.post;
+
+  const [username, setUsername] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getUser(creator);
+        if (!response.status === 200) {
+          setUsername("Unknown");
+        } else {
+          setUsername(response?.data?.name);
+        }
+
+        const categoryNames = await Promise.all(
+          category.map(async (id) => {
+            const response = await getSubjectFromId(
+              id,
+              localStorage.getItem("user_info")
+            );
+            if (response.status !== 200) {
+              return "Unknown";
+            } else {
+              return response.data.subject.name;
+            }
+          })
+        );
+        setCategories(categoryNames);
+      } catch (error) {
+        console.log(`Error in Post Card: ${error}`);
+      }
+    };
+
+    fetchData();
+  }, [category, creator]);
 
   const navigate = useNavigate();
 
@@ -37,8 +79,6 @@ const PostCard = (props) => {
     }...`}</p>
   );
 
-  const topic = props.post.topic[0];
-
   const likeClasses = `${
     like ? "fa-solid fa-thumbs-up liked" : "fa-solid fa-thumbs-up"
   }`;
@@ -54,7 +94,7 @@ const PostCard = (props) => {
         }`}
       >
         <div>
-          <p className={styles.content_text}>{props.post.content}</p>
+          <p className={styles.content_text}>{props.post.text}</p>
         </div>
       </div>
       <div className={`${isShowLess ? styles.background : ""}`}></div>
@@ -71,7 +111,7 @@ const PostCard = (props) => {
 
   const topics = (
     <div className={styles.post_topics}>
-      {props.post.topic.map((topic) => (
+      {categories.map((topic) => (
         <Btn02 key={topic}>{topic}</Btn02>
       ))}
     </div>
@@ -85,17 +125,19 @@ const PostCard = (props) => {
     </div>
   );
 
+  const dateObj = new Date(createdAt);
+
   const date = {
-    month: props.post.date.toLocaleString("en-US", { month: "long" }),
-    day: props.post.date.toLocaleString("en-US", { day: "2-digit" }),
-    year: props.post.date.getFullYear(),
+    month: dateObj.toLocaleString("en-US", { month: "long" }),
+    day: dateObj.toLocaleString("en-US", { day: "2-digit" }),
+    year: dateObj.getFullYear(),
   };
 
   return (
     <React.Fragment>
       <div className={styles.post_card}>
         <div className={styles.post_header}>
-          <h4 className={styles.post_title}>{props.post.name}</h4>
+          <h4 className={styles.post_title}>{props.post.title}</h4>
         </div>
         <div className={styles.post_details}>
           <div className={styles.post_tags}>
@@ -104,7 +146,7 @@ const PostCard = (props) => {
           </div>
           <div className={styles.post_public}>
             <div className={styles.post_author}>
-              <p className={styles.author_name}>{props.post.author}</p>
+              <p className={styles.author_name}>{username}</p>
             </div>
             <div className={styles.post_date}>
               <p className={styles.date}>
@@ -131,7 +173,7 @@ const PostCard = (props) => {
                 style={{ color: "white" }}
                 onClick={() => opinionHandler("dislike")}
               />
-              {/* {props.post.dislikes} */}
+              {props.post.dislikes}
             </div>
           </div>
         </div>

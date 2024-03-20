@@ -26,6 +26,8 @@ const CreatePostLayout = () => {
   const [communityInput, setCommunityInput] = useState("");
   const [conceptInput, setConceptInput] = useState("");
 
+  const [postSuccess, setPostSuccess] = useState(false);
+
   const resetForm = () => {
     setFormValues(initialValues);
   };
@@ -99,7 +101,7 @@ const CreatePostLayout = () => {
 
         if (response.status === 201) {
           resetForm();
-          console.log("SENDING DATA SUCCESSFULL");
+          setPostSuccess(true);
         }
       } catch (err) {
         console.log(err);
@@ -304,6 +306,7 @@ const CreatePostLayout = () => {
           <button type="submit" className={styles.form_submit_btn}>
             Create Post
           </button>
+          {postSuccess && <h3>Post Successfully created!</h3>}
         </div>
       </form>
     </div>

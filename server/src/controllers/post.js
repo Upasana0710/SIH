@@ -32,15 +32,27 @@ const pdfStorage = multer.diskStorage({
 
 const upload = multer({ storage: pdfStorage });
 
-export const getPosts = async (req, res) => {
+// export const getPosts = async (req, res) => {
+//   try {
+//     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+
+//     const posts = await Post.find();
+//     console.log(posts);
+
+//     return res.status(200).json({ message: "Posts fetched!", posts: posts });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
+export const fetchPosts = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
 
     const posts = await Post.find();
 
-    return res
-      .status(200)
-      .json({ message: "Posts fetched successfully", posts });
+    return res.status(200).json({ message: "Posts fetched!", posts: posts });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });

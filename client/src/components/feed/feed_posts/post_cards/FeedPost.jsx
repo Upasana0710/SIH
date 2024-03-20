@@ -6,8 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import styles from "./FeedPost.module.css";
 import PostCard from "./PostCard";
 import { useSelector } from "react-redux";
-import { getUserByToken } from "../../../../api/api";
-import { getPosts } from "../../../../api/api";
+import { getUserByToken, getPosts } from "../../../../api/api";
 
 const feed_posts = [
   {
@@ -81,7 +80,6 @@ const FeedPost = () => {
             localStorage.getItem("user_info")
           );
           const userDetails = response.data;
-          console.log(userDetails);
           if (userDetails) {
             setUserId(userDetails._id);
             const response = await getPosts(localStorage.getItem("user_info"));
@@ -100,7 +98,7 @@ const FeedPost = () => {
   return (
     <React.Fragment>
       <div className={styles.feed_posts_container}>
-        {feed_posts.map((post) => (
+        {feedPosts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
       </div>

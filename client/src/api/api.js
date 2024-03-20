@@ -31,7 +31,7 @@ export const getUserSubjects = (token) =>
 
 export const getSubjectFromId = (subjectId, token) =>
   API.get(
-    "/subject/" + subjectId,
+    `/subject/getSubject?id=${subjectId}`,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
@@ -40,7 +40,7 @@ export const getSubjectFromId = (subjectId, token) =>
 
 export const getPosts = (token) =>
   API.get(
-    "/post/posts",
+    "/post/list",
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
@@ -96,7 +96,7 @@ export const getTeachers = (request, token) =>
     { withCredentials: true }
   );
 
-export const getUser = (request) => API.get(`/user/getUser/${request}`);
+export const getUser = (id) => API.get(`/user/getUser?id=${id}`);
 
 export const getUserByToken = (token) =>
   API.get(

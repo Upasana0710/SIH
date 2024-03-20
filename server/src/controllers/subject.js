@@ -21,19 +21,24 @@ export const getSubjects = async (req, res) => {
 
     const subjects = await Subject.find();
 
-    return res.status(201).json({ subjects: subjects });
+    return res.status(200).json({ subjects: subjects });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
 export const getSubjectFromId = async (req, res) => {
+  const id = req.query.id;
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
 
-    const subject = await Subject.findById(req.params.id);
+    const subject = await Subject.findById(id);
 
-    return res.status(201).json({ subject: subject });
+    if (!subject) {
+      return res.status(404).json({ message: "Subject not found." });
+    }
+
+    return res.status(200).json({ subject: subject });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

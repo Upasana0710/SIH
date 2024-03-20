@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/create", [auth], createSubject);
 router.get("/list", [auth], getSubjects);
-router.get("/:id", [auth], getSubjectFromId);
+router.get("/getSubject", [auth], getSubjectFromId);
 router.get("/bestTeachers", [auth], searchSubjectAndTeachers);
 
 export default router;
