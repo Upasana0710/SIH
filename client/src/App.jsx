@@ -35,6 +35,7 @@ import Signup from "./components/authenticate/Signup.jsx";
 import Authenticate from "./routes/Authenticate.jsx";
 import ConfigureLayout from "./components/Info/ConfigureLayout.jsx";
 import CreatePostLayout from "./components/create-post/CreatePostLayout.jsx";
+import AddCommunity from "./components/create-community/AddCommunity.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -76,6 +77,7 @@ function App() {
                   path="create-post/:profId"
                   element={<CreatePostLayout />}
                 />
+                <Route path="create-community" element={<AddCommunity />} />
                 <Route path="slot" element={<SlotBooking />} />
               </Route>
 

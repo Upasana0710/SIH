@@ -1,3 +1,9 @@
+.feed_posts_container {
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
 .p_special {
   color: white;
   font-size: 1.4rem;
@@ -8,4 +14,15 @@
   width: 70%;
   margin: 4rem auto;
   text-align: center;
+}
+
+.communities_list {
+  padding: 3rem 2rem;
+  color: #fff;
+  font-size: 1.3rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  font-family: inherit;
 }

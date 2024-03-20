@@ -54,10 +54,27 @@ export const createPost = (post, token) =>
     { withCredentials: true }
   );
 
+// community creation
+export const createCommunity = (community, token) =>
+  API.post(
+    "/community/create",
+    community,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
 //Get subjects
 export const getSubjects = (token) =>
   API.get(
     "/subject/list",
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+// Get Communities
+export const getCommunities = (token) =>
+  API.get(
+    "/community/getAll",
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
