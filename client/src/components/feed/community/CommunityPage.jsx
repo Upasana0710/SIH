@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import styles from "./CommunityPage.module.css";
-
-import { getCommunities } from "../../../api/api";
+import { getCommunities, getUserCommunities } from "../../../api/api";
 
 const CommunityPage = () => {
+  const [currentTab, setCurrentTab] = useState("all");
   const [communites, setCommunities] = useState([]);
+
+  const { currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
 
@@ -17,21 +20,36 @@ const CommunityPage = () => {
   ));
 
   useEffect(() => {
-    const fetchAllCommunities = async () => {
-      try {
-        const response = await getCommunities(
-          localStorage.getItem("user_info")
-        );
+    setCommunities([]);
+    const fetchCommunities = async () => {
+      if (currentTab === "all")
+        try {
+          const response = await getCommunities(
+            localStorage.getItem("user_info")
+          );
 
-        if (response.status === 200) {
-          setCommunities(response.data.communities);
+          if (response.status === 200) {
+            setCommunities(response.data.communities);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      else if (currentTab === "user") {
+        try {
+          const response = await getUserCommunities(
+            currentUser._id,
+            localStorage.getItem("user_info")
+          );
+          if (response.status === 200) {
+            setCommunities(response.data.communities);
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
-    fetchAllCommunities();
-  });
+    fetchCommunities();
+  }, [currentTab, currentUser._id]);
 
   if (communites.length === 0) {
     output = (
@@ -56,6 +74,29 @@ const CommunityPage = () => {
             Create Community
           </button>
         </div>
+        <div className={styles.community_tab_view}>
+          <p
+            onClick={() => setCurrentTab("user")}
+            className={
+              currentTab === "user"
+                ? `${styles.selected} ${styles.community_tab_link}`
+                : styles.community_tab_link
+            }
+          >
+            Your Communities
+          </p>
+          <p
+            onClick={() => setCurrentTab("all")}
+            className={
+              currentTab === "all"
+                ? `${styles.selected} ${styles.community_tab_link}`
+                : styles.community_tab_link
+            }
+          >
+            All Communities
+          </p>
+        </div>
+
         <ul className={styles.communities_list}>{output}</ul>
       </div>
     </React.Fragment>

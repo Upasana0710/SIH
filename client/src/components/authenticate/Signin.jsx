@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { signin } from '../../api/api';
+import { signin } from "../../api/api";
 
-import styles from './AuthenticateForm.module.css';
-import { loginSuccess, logout } from '../../redux/userSlice';
-import { Link } from 'react-router-dom';
+import styles from "./AuthenticateForm.module.css";
+import { loginSuccess, logout } from "../../redux/userSlice";
+import { Link } from "react-router-dom";
 
 const Signin = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
 
-  const initialValues = { email: '', password: '' };
+  const initialValues = { email: "", password: "" };
   const initialErrors = { email: false, password: false };
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -31,25 +31,25 @@ const Signin = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     if (!values.email) {
-      errors.email = 'Email is required!';
+      errors.email = "Email is required!";
       flag = false;
     } else if (!regex.test(values.email)) {
-      errors.email = 'This is not a valid email format!';
+      errors.email = "This is not a valid email format!";
       flag = false;
     }
 
     if (!values.password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
       flag = false;
-    } else if (values.password.length < 4 || values.password.length > 10) {
+    } else if (values.password.length < 4 || values.password.length > 20) {
       errors.password =
-        'Password must be more than 4 characters and cannot exceed more than 10 characters';
+        "Password must be more than 4 characters and cannot exceed more than 20 characters";
       flag = false;
     }
 
-    if (values.email === 'not found' || values.password === 'invalid') {
-      errors.email = 'Invalid Credentials';
-      errors.password = 'Invalid Credentials';
+    if (values.email === "not found" || values.password === "invalid") {
+      errors.email = "Invalid Credentials";
+      errors.password = "Invalid Credentials";
       flag = false;
     }
 
@@ -100,7 +100,7 @@ const Signin = () => {
         const response = await signin(formValues);
 
         if (response.status === 200 && formIsValid) {
-          console.log('LOG IN SUCCESSFUL');
+          console.log("LOG IN SUCCESSFUL");
 
           dispatch(loginSuccess(response.data));
           setLogin(true);
@@ -112,14 +112,14 @@ const Signin = () => {
             error.response.status === 404 &&
             error.response.data.message === "User doesn't exist."
           ) {
-            const errors = { ...formValues, email: 'not found' };
+            const errors = { ...formValues, email: "not found" };
             setFormErrors(validate(errors));
           }
           if (
             error.response.status === 401 &&
-            error.response.data.message === 'UNAUTHORIZED: Invalid credentials'
+            error.response.data.message === "UNAUTHORIZED: Invalid credentials"
           ) {
-            const errors = { ...formValues, password: 'invalid' };
+            const errors = { ...formValues, password: "invalid" };
             console.log(errors);
             setFormErrors(validate(errors));
           }

@@ -27,6 +27,16 @@ export const getUserSubjects = (token) =>
     { withCredentials: true }
   );
 
+// get user's communities
+
+export const getUserCommunities = (id, token) =>
+  API.get(
+    "/community/getUser",
+    { id: id },
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
 // get subject from ID
 
 export const getSubjectFromId = (subjectId, token) =>

@@ -44,6 +44,22 @@ export const getCommunities = async (req, res) => {
   }
 };
 
+export const getUserCommunities = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    const user_id = req.body.id;
+
+    const user = User.findById(user_id).populate("communities");
+
+    if (!user) return res.status(404).json({ message: "User not found." });
+
+    return res.status(200).json({ communities: user.communities });
+  } catch (error) {
+    console.log(error);
+    return res.json(error);
+  }
+};
+
 export const getCommunity = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });

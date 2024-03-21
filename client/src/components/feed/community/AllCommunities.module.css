@@ -1,0 +1,22 @@
+.p_special {
+  color: white;
+  font-size: 1.4rem;
+}
+
+.error_box {
+  position: relative;
+  width: 70%;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.communities_list {
+  padding: 3rem 2rem;
+  color: #fff;
+  font-size: 1.3rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  font-family: inherit;
+}

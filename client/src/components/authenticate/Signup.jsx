@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { signin, signup } from '../../api/api';
-import { getUserByToken } from '../../api/api';
+import { signin, signup } from "../../api/api";
+import { getUserByToken } from "../../api/api";
 
-import styles from './AuthenticateForm.module.css';
-import { Link } from 'react-router-dom';
-import { loginSuccess } from '../../redux/userSlice';
+import styles from "./AuthenticateForm.module.css";
+import { Link } from "react-router-dom";
+import { loginSuccess } from "../../redux/userSlice";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -14,16 +14,16 @@ const Signup = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   const initialValues = {
-    name: '',
-    email: '',
-    instituteEmail: '',
-    dob: '',
-    gender: '',
-    phone: '',
-    city: '',
-    programme: '',
-    branch: '',
-    password: '',
+    name: "",
+    email: "",
+    instituteEmail: "",
+    dob: "",
+    gender: "",
+    phone: "",
+    city: "",
+    programme: "",
+    branch: "",
+    password: "",
   };
   const initialErrors = {
     name: false,
@@ -58,63 +58,63 @@ const Signup = () => {
     let flag = true;
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if (!values.name) {
-      errors.name = 'Name is required!';
+      errors.name = "Name is required!";
       flag = false;
     }
     if (!values.instituteEmail) {
-      errors.instituteEmail = ' Institute Email is required!';
+      errors.instituteEmail = " Institute Email is required!";
       flag = false;
     } else if (!regex.test(values.instituteEmail)) {
-      errors.instituteEmail = 'This is not a valid email format!';
+      errors.instituteEmail = "This is not a valid email format!";
       flag = false;
     }
     if (!values.dob) {
-      errors.dob = 'Date of dob is required!';
+      errors.dob = "Date of dob is required!";
       flag = false;
     }
     if (!values.gender) {
-      errors.gender = 'Gender is required!';
+      errors.gender = "Gender is required!";
       flag = false;
     }
     if (!values.phone) {
-      errors.phone = 'Phone is required!';
+      errors.phone = "Phone is required!";
       flag = false;
     } else if (values.phone.length !== 10) {
-      errors.phone = 'Invalid Phone Number';
+      errors.phone = "Invalid Phone Number";
       flag = false;
     }
     if (!values.city) {
-      errors.city = 'City is required!';
+      errors.city = "City is required!";
       flag = false;
     }
     if (!values.programme) {
-      errors.programme = 'Programme is required!';
+      errors.programme = "Programme is required!";
       flag = false;
     }
     if (!values.branch) {
-      errors.branch = 'Branch is required!';
+      errors.branch = "Branch is required!";
       flag = false;
     }
     if (!values.email) {
-      errors.email = 'Email is required!';
+      errors.email = "Email is required!";
       flag = false;
     } else if (!regex.test(values.email)) {
-      errors.email = 'This is not a valid email format!';
+      errors.email = "This is not a valid email format!";
       flag = false;
     }
     if (!values.password) {
-      errors.password = 'Password is required!';
+      errors.password = "Password is required!";
       flag = false;
     } else if (values.password.length < 4) {
-      errors.password = 'Password must be more than 4 characters';
+      errors.password = "Password must be more than 4 characters";
       flag = false;
-    } else if (values.password.length > 10) {
-      errors.password = 'Password cannot exceed more than 10 characters';
+    } else if (values.password.length > 20) {
+      errors.password = "Password cannot exceed more than 20 characters";
       flag = false;
     }
 
-    if (values.email === 'exists') {
-      errors.email = 'User already exists.';
+    if (values.email === "exists") {
+      errors.email = "User already exists.";
       flag = false;
     }
 
@@ -128,7 +128,7 @@ const Signup = () => {
       if (currentUser) {
         try {
           const response = await getUserByToken(
-            localStorage.getItem('user_info')
+            localStorage.getItem("user_info")
           );
           const userDetails = response.data;
           console.log(userDetails);
@@ -152,7 +152,7 @@ const Signup = () => {
         const response = await signup(formValues);
 
         if (response.status === 201) {
-          console.log('REGISTRATION SUCCESSFUL');
+          console.log("REGISTRATION SUCCESSFUL");
           setRegister(true);
 
           const loginResponse = await signin({
@@ -161,7 +161,7 @@ const Signup = () => {
           });
 
           if (loginResponse.status === 200) {
-            console.log('LOG IN SUCCESSFUL');
+            console.log("LOG IN SUCCESSFUL");
 
             dispatch(loginSuccess(loginResponse.data));
             setLogin(true);
@@ -172,9 +172,9 @@ const Signup = () => {
         if (error.message) {
           if (
             error.response.status === 401 &&
-            error.response.data.message === 'User already exists.'
+            error.response.data.message === "User already exists."
           ) {
-            const errors = { ...formValues, email: 'exists' };
+            const errors = { ...formValues, email: "exists" };
             setFormErrors(validate(errors));
           }
         } else {
@@ -262,7 +262,7 @@ const Signup = () => {
               <input
                 type="radio"
                 name="gender"
-                checked={formValues.gender === 'Male'}
+                checked={formValues.gender === "Male"}
                 value="Male"
                 onChange={(e) =>
                   setFormValues({
@@ -278,7 +278,7 @@ const Signup = () => {
               <input
                 type="radio"
                 name="gender"
-                checked={formValues.gender === 'Female'}
+                checked={formValues.gender === "Female"}
                 value="Female"
                 onChange={(e) =>
                   setFormValues({
@@ -294,7 +294,7 @@ const Signup = () => {
               <input
                 type="radio"
                 name="gender"
-                checked={formValues.gender === 'Other'}
+                checked={formValues.gender === "Other"}
                 value="Other"
                 onChange={(e) =>
                   setFormValues({

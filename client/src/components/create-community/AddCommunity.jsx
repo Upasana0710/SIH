@@ -4,9 +4,12 @@ import styles from "./AddCommunity.module.css";
 import { useSelector } from "react-redux";
 
 import { createCommunity } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 const AddCommunity = () => {
   const { currentUser } = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
 
   const initialValues = {
     title: "",
@@ -55,6 +58,9 @@ const AddCommunity = () => {
         resetForm();
         console.log(response?.data?.community);
         setCreateSuccess(true);
+        setTimeout(() => {
+          return navigate("/home/communities");
+        }, 2000);
       } else {
         console.log(response);
       }

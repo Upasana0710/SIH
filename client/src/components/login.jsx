@@ -172,9 +172,6 @@ export default function LoginSignUp() {
     } else if (values.password.length < 4) {
       errors.password = "Password must be more than 4 characters";
       flag = false;
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
-      flag = false;
     }
 
     if (flag) setFormIsValid(true);
@@ -200,9 +197,6 @@ export default function LoginSignUp() {
       flag = false;
     } else if (values.password.length < 4) {
       errors2.password = "Password must be more than 4 characters";
-      flag = false;
-    } else if (values.password.length > 10) {
-      errors2.password = "Password cannot exceed more than 10 characters";
       flag = false;
     }
 
