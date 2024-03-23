@@ -63,9 +63,13 @@ export const getUserCommunities = async (req, res) => {
 export const getCommunity = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
-    const { id } = req.params;
+    const id = req.query.id;
     const community = await Community.findById(id).populate("posts");
-    return res.json(community);
+
+    if (!community)
+      return res.status(404).json({ message: "Community not found!" });
+
+    return res.status(200).json({ community: community });
   } catch (error) {
     console.log(error);
     return res.json(error);

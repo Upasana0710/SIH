@@ -73,6 +73,8 @@
   background-color: #31363f;
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
+  text-decoration: none;
+  color: #fff;
 }
 
 .community_item:hover {

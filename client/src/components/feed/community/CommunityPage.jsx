@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import styles from "./CommunityPage.module.css";
@@ -8,40 +8,48 @@ import { getCommunities, getUserCommunities } from "../../../api/api";
 const CommunityPage = () => {
   const [currentTab, setCurrentTab] = useState("all");
   const [communites, setCommunities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { currentUser } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
 
-  let output = communites.map((community) => (
-    <li key={community._id} className={styles.community_item}>
-      {community.title}
-    </li>
-  ));
+  let output = communites.map((community) => {
+    const link = `/home/community/${community._id}`;
+    return (
+      <Link to={link} key={community._id} className={styles.community_item}>
+        {community.title}
+      </Link>
+    );
+  });
 
   useEffect(() => {
     setCommunities([]);
     const fetchCommunities = async () => {
       if (currentTab === "all")
         try {
+          setIsLoading(true);
           const response = await getCommunities(
             localStorage.getItem("user_info")
           );
 
           if (response.status === 200) {
             setCommunities(response.data.communities);
+            setIsLoading(false);
           }
         } catch (error) {
           console.log(error);
         }
       else if (currentTab === "user") {
         try {
+          setIsLoading(true);
           const response = await getUserCommunities(
             currentUser._id,
             localStorage.getItem("user_info")
           );
           if (response.status === 200) {
             setCommunities(response.data.communities);
+            setIsLoading(false);
           }
         } catch (error) {
           console.log(error);
@@ -97,7 +105,15 @@ const CommunityPage = () => {
           </p>
         </div>
 
-        <ul className={styles.communities_list}>{output}</ul>
+        <ul className={styles.communities_list}>
+          {isLoading ? (
+            <div className={styles.error_box}>
+              <p className={styles.p_special}>Loading...</p>
+            </div>
+          ) : (
+            output
+          )}
+        </ul>
       </div>
     </React.Fragment>
   );

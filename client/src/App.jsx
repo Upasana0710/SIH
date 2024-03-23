@@ -36,8 +36,7 @@ import Authenticate from "./routes/Authenticate.jsx";
 import ConfigureLayout from "./components/Info/ConfigureLayout.jsx";
 import CreatePostLayout from "./components/create-post/CreatePostLayout.jsx";
 import AddCommunity from "./components/create-community/AddCommunity.jsx";
-import AllCommunities from "./components/feed/community/AllCommunities.jsx";
-import UserCommunities from "./components/feed/community/UserCommunities.jsx";
+import CommunityDisplay from "./components/communities/CommunityDisplay.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -81,6 +80,10 @@ function App() {
                 />
                 <Route path="create-community" element={<AddCommunity />} />
                 <Route path="slot" element={<SlotBooking />} />
+                <Route
+                  path="community/:id"
+                  element={<CommunityDisplay></CommunityDisplay>}
+                />
               </Route>
 
               <Route path="/room/:roomId" element={<Room />} />

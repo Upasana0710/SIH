@@ -27,16 +27,6 @@ export const getUserSubjects = (token) =>
     { withCredentials: true }
   );
 
-// get user's communities
-
-export const getUserCommunities = (id, token) =>
-  API.get(
-    "/community/getUser",
-    { id: id },
-    { headers: { Authorization: `Bearer ${token}` } },
-    { withCredentials: true }
-  );
-
 // get subject from ID
 
 export const getSubjectFromId = (subjectId, token) =>
@@ -85,6 +75,25 @@ export const getSubjects = (token) =>
 export const getCommunities = (token) =>
   API.get(
     "/community/getAll",
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+// get user's communities
+
+export const getUserCommunities = (id, token) =>
+  API.get(
+    "/community/getUser",
+    id,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+// get community by ID
+
+export const getCommunityById = (id, token) =>
+  API.get(
+    `/community/get?id=${id}`,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );

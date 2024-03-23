@@ -4,15 +4,16 @@ import {
   createCommunity,
   getCommunities,
   getCommunity,
+  getUserCommunities,
   joinCommunity,
 } from "../controllers/community.js";
 
 const router = express.Router();
 
+router.get("/getUser", [auth], getUserCommunities);
 router.post("/create", [auth], createCommunity);
 router.get("/getAll", [auth], getCommunities);
-router.get("/getUser", [auth], getCommunities);
-router.patch("/join", [auth], joinCommunity);
-router.get("/get/:id", [auth], getCommunity);
+router.get("/get", [auth], getCommunity);
+// router.patch("/join", [auth], joinCommunity);
 
 export default router;
