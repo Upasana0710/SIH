@@ -1,4 +1,5 @@
 import Post from "../models/post.js";
+import User from "../models/user.js";
 import Community from "../models/community.js";
 import multer from "multer";
 import fs from "fs";
@@ -59,6 +60,25 @@ export const fetchPosts = async (req, res) => {
   }
 };
 
+export const fetchPostsByUser = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+
+    const { id } = req.params;
+
+    const posts = await Post.find({ creator: id });
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No posts found for this user" });
+    }
+
+    return res.status(200).json({ message: "Posts fetched!", posts: posts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const uploadFile = upload.single("file");
 
 export const createPost = async (req, res) => {
@@ -99,6 +119,12 @@ export const createPost = async (req, res) => {
     console.log(post);
 
     await post.save();
+
+    await User.findByIdAndUpdate(
+      req.user,
+      { $push: { posts: post._id } },
+      { new: true }
+    );
 
     // if (isValidCommunityId) {
     //   await Community.findByIdAndUpdate(

@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -8,9 +7,9 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import styles from "./PostCard.module.css";
 import Btn02 from "../../../../ui/Btn_02";
 import Btn03 from "../../../../ui/Btn_03";
-import Btn04 from "../../../../ui/Btn_04";
 
 import { getSubjectFromId, getUser } from "../../../../api/api";
+import { Link } from "react-router-dom";
 
 const PostCard = (props) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -55,8 +54,6 @@ const PostCard = (props) => {
 
     fetchData();
   }, [category, creator]);
-
-  const navigate = useNavigate();
 
   const opinionHandler = (opinion) => {
     if (opinion === "like") {
@@ -146,7 +143,12 @@ const PostCard = (props) => {
           </div>
           <div className={styles.post_public}>
             <div className={styles.post_author}>
-              <p className={styles.author_name}>{username}</p>
+              <Link
+                to={`/home/profile?uid=${creator}`}
+                className={styles.author_name}
+              >
+                {username}
+              </Link>
             </div>
             <div className={styles.post_date}>
               <p className={styles.date}>

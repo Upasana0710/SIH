@@ -45,6 +45,15 @@ export const getPosts = (token) =>
     { withCredentials: true }
   );
 
+// get user posts
+
+export const getUserPosts = (id, token) =>
+  API.get(
+    `/post/creator/${id}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
 // post creation
 export const createPost = (post, token) =>
   API.post(

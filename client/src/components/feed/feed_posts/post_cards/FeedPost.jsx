@@ -83,7 +83,10 @@ const FeedPost = () => {
           if (userDetails) {
             setUserId(userDetails._id);
             const response = await getPosts(localStorage.getItem("user_info"));
-            setFeedPosts(response.data.posts);
+            const sorted_posts = response.data.posts.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+            setFeedPosts(sorted_posts);
           }
         } catch (err) {
           console.log(err);
