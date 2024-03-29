@@ -1,5 +1,6 @@
 import Community from "../models/community.js";
 import User from "../models/user.js";
+import Post from "../models/post.js";
 
 export const createCommunity = async (req, res) => {
   try {
@@ -47,13 +48,19 @@ export const getCommunities = async (req, res) => {
 export const getUserCommunities = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
-    const user_id = req.body.id;
+    const user_id = req.query.id;
 
-    const user = User.findById(user_id).populate("communities");
+    const user = await User.findById(user_id);
 
     if (!user) return res.status(404).json({ message: "User not found." });
 
-    return res.status(200).json({ communities: user.communities });
+    const user_communities = [];
+    for (const communityId of user.communities) {
+      const community = await Community.findById(communityId);
+      user_communities.push(community);
+    }
+
+    return res.status(200).json({ communities: user_communities });
   } catch (error) {
     console.log(error);
     return res.json(error);
@@ -64,7 +71,7 @@ export const getCommunity = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
     const id = req.query.id;
-    const community = await Community.findById(id).populate("posts");
+    const community = await Community.findById(id);
 
     if (!community)
       return res.status(404).json({ message: "Community not found!" });
@@ -73,6 +80,27 @@ export const getCommunity = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.json(error);
+  }
+};
+
+export const getCommunityPosts = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    const id = req.query.id;
+    const community = await Community.findById(id);
+
+    if (!community)
+      return res.status(404).json({ message: "No such community found!" });
+
+    const postIds = community.posts;
+    const posts = await Post.find({ _id: { $in: postIds } });
+
+    if (!posts) return res.status(404).json({ message: "No posts found!" });
+
+    return res.status(200).json({ posts: posts });
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
   }
 };
 

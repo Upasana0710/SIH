@@ -104,8 +104,6 @@ export const createPost = async (req, res) => {
       fileLink = `http://localhost:3300/uploads/${filename}`;
     }
 
-    // const isValidCommunityId = mongoose.isValidObjectId(community);
-
     const post = new Post({
       creator: req.user,
       title,
@@ -126,18 +124,44 @@ export const createPost = async (req, res) => {
       { new: true }
     );
 
-    // if (isValidCommunityId) {
-    //   await Community.findByIdAndUpdate(
-    //     community,
-    //     { $addToSet: { posts: post._id } },
-    //     { new: true }
-    //   );
-    // }
+    for (const community of communities) {
+      await Community.findByIdAndUpdate(
+        community,
+        { $push: { posts: post._id } },
+        { new: true }
+      );
+    }
 
     return res.status(201).json({ message: "Post created successfully", post });
   } catch (error) {
     console.error(`Here is the ${error}`);
     return res.status(500).json(error);
+  }
+};
+
+export const getPostsByCommunity = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+
+    const community = req.params.community;
+
+    if (!community) {
+      return res
+        .status(400)
+        .json({ message: "Community Parameter is required" });
+    }
+
+    const posts = await Post.find({ community });
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No Posts Found!" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Posts fetched successfully", posts });
+  } catch (err) {
+    console.log(err);
   }
 };
 
