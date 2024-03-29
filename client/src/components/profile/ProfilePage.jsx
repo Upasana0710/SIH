@@ -1,119 +1,81 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-import { getUser, getUserByToken } from '../../api/api';
+import { getUser, getUserByToken, getUserPosts } from "../../api/api";
 
-import ProfileCard from './ProfileCard/ProfileCard';
+import ProfileCard from "./ProfileCard/ProfileCard";
 
-import UserPost from './PostCard/PostCard';
+import Sidebar from "../right-sidebar/Sidebar";
 
-import Sidebar from '../right-sidebar/Sidebar';
-
-import styles from './ProfilePage.module.css';
-import { useSelector } from 'react-redux';
-
-const data1 = [
-  {
-    profilephoto: 'profilephoto.png',
-    postid: 1,
-    postname: 'Upasana',
-    post: `
-    Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
-    
-    BFS is a graph traversal algorithm that starts at a chosen node, explores all its neighbors first, and then systematically moves on to their neighbors, covering the graph layer by layer. It employs a queue data structure to keep track of the nodes to be visited. BFS is particularly useful for finding the shortest path between nodes in unweighted graphs, as it guarantees the shortest path by traversing levels of the graph incrementally.\n
-    
-    On the other hand, DFS is another traversal algorithm that starts at a node and explores as far as possible along each branch before backtracking. It employs a stack or recursion to maintain the traversal order. DFS is valuable for tasks like topological sorting, where the order of dependency matters, and it can also be used to detect cycles in a graph. However, DFS does not guarantee the shortest path as BFS does, making it less suitable for shortest path problems.\n
-    
-    \n`,
-    likes: 2873,
-    dislikes: 431,
-  },
-
-  {
-    postname: 'Upasana',
-    postid: 2,
-    post: `
-    A greedy algorithm is a strategy that makes the best choice at each step, with the goal of finding a globally optimal solution. This means the algorithm picks the best solution at the moment without regard for consequences.\n
-    
-    \n`,
-    likes: 2873,
-    dislikes: 431,
-  },
-  {
-    postname: 'Upasana',
-    postid: 3,
-    post: `
-    An array is a collection of items stored at contiguous memory locations. The idea is to store multiple items of the same type together. This makes it easier to calculate the position of each element by simply adding an offset to a base value, i.e., the memory location of the first element of the array (generally denoted by the name of the array)..\n
-    
-   \n`,
-    likes: 2873,
-    dislikes: 431,
-  },
-  {
-    postname: 'Upasana',
-    postid: 4,
-    post: `
-    Breadth-First Search (BFS) and Depth-First Search (DFS) are fundamental algorithms used to explore and traverse graphs, a type of data structure that consists of nodes interconnected by edges. These algorithms play a crucial role in various computer science applications, from pathfinding in maps to solving puzzles and analyzing social networks.\n
-    
-    BFS is a graph traversal algorithm that starts at a chosen node, explores all its neighbors first, and then systematically moves on to their neighbors, covering the graph layer by layer. It employs a queue data structure to keep track of the nodes to be visited. BFS is particularly useful for finding the shortest path between nodes in unweighted graphs, as it guarantees the shortest path by traversing levels of the graph incrementally.\n
-    
-    On the other hand, DFS is another traversal algorithm that starts at a node and explores as far as possible along each branch before backtracking. It employs a stack or recursion to maintain the traversal order. DFS is valuable for tasks like topological sorting, where the order of dependency matters, and it can also be used to detect cycles in a graph. However, DFS does not guarantee the shortest path as BFS does, making it less suitable for shortest path problems.\n
-    
-   \n`,
-    likes: 2873,
-    dislikes: 431,
-  },
-];
-
-let userDetails;
-let user_posts;
+import styles from "./ProfilePage.module.css";
+import { useSelector } from "react-redux";
+import PostCard from "../feed/feed_posts/post_cards/PostCard";
 
 function ProfilePage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const [myUser, setMyUser] = useState(null);
   const [hasUserdetails, setHasUserDetails] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
+  const [userPosts, setUserPosts] = useState(null);
 
-  const userId = params.get('uid');
+  let user_posts;
+
+  const userId = params.get("uid");
 
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     async function fetchUser() {
-      console.log(userId);
       try {
         if (userId) {
           setMyUser(false);
           const response = await getUser(userId);
-          userDetails = response.data;
+          setUserDetails(response.data);
           if (userId === currentUser._id) {
             setMyUser(true);
           }
           setHasUserDetails(true);
-          console.log(userDetails);
         } else {
           setMyUser(true);
           const response = await getUserByToken(
-            localStorage.getItem('user_info')
+            localStorage.getItem("user_info")
           );
-          userDetails = response.data;
+          setUserDetails(response.data);
           setHasUserDetails(true);
-          console.log(userDetails);
+        }
+
+        const response1 = await getUserPosts(
+          userId ? userId : currentUser._id,
+          localStorage.getItem("user_info")
+        );
+        if (response1.status === 404) {
+          setUserPosts([]);
+        }
+
+        if (response1.status === 200) {
+          const sorted_posts = response1.data.posts.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setUserPosts(sorted_posts);
         }
       } catch (err) {
         console.log(err);
       }
     }
     fetchUser();
-  }, [userId]);
+  }, [userId, currentUser._id]);
 
-  user_posts = hasUserdetails ? (
-    data1.map((item) => (
-      <UserPost key={item.postid} title={userDetails.name} text={item.post} />
-    ))
-  ) : (
-    <h3>Loading posts!</h3>
-  );
+  user_posts =
+    hasUserdetails && userPosts !== null ? (
+      userPosts.length !== 0 ? (
+        userPosts.map((item) => <PostCard key={item._id} post={item} />)
+      ) : (
+        <h3>No posts found!</h3>
+      )
+    ) : (
+      <h3>Loading posts!</h3>
+    );
   return (
     <div>
       <Sidebar />
@@ -137,7 +99,7 @@ function ProfilePage() {
             {(!userId || myUser) && (
               <button type="button" className={styles.redirect_post_button}>
                 <Link
-                  to={`/home/create-post/${userId}`}
+                  to={`/home/create-post/${userId ? userId : currentUser._id}`}
                   target="_blank"
                   className={styles.redirect_link_slot}
                 >
