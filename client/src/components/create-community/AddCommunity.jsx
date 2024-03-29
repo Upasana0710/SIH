@@ -110,7 +110,7 @@ const AddCommunity = () => {
 
         <div className={styles.form_btns_container}>
           <button type="submit" className={styles.form_submit_btn}>
-            Create Post
+            Create 
           </button>
           {createSuccess && <h3>Community Successfully created!</h3>}
         </div>

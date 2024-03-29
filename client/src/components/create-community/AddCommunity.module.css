@@ -1,19 +1,20 @@
 .create_post_container {
   margin-top: 6rem;
+  color: white;
 }
 
 .create_post_header {
   font-size: 2rem;
-  color: #0c0678;
+  color: white;
   text-align: center;
   padding-bottom: 2rem;
 }
 
 .create_post_form {
-  width: 70%;
+  width: 60%;
   margin: 3rem auto;
   padding: 2rem;
-  background-color: #83b1d7;
+  background-color: #2d2747;
   border-radius: 20px;
 }
 
@@ -79,7 +80,7 @@
 }
 
 .form_submit_btn:hover {
-  background-color: #0c0678;
+  background-color:rgb(178, 189, 235);
   cursor: pointer;
 }
 
@@ -104,6 +105,6 @@
 }
 
 .admin_box:hover {
-  background-color: #0c0678;
+  background-color:rgb(178, 189, 235);
   color: #fff;
 }
