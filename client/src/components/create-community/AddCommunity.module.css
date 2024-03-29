@@ -101,7 +101,7 @@
   padding: 1rem;
   background-color: #016abc;
   border-radius: 20px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .admin_box:hover {
