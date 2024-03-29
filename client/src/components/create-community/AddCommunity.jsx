@@ -77,7 +77,7 @@ const AddCommunity = () => {
         <h3 className={styles.create_post_header}>CREATE A COMMUNITY</h3>
 
         <label className={styles.create_form_label}>
-          Enter the Community Name:
+          Enter the Name of the community:
           <input
             type="text"
             value={formValues.title}
