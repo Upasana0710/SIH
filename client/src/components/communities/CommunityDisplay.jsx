@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./CommunityDisplay.module.css";
 
-import { getCommunityById, getUser } from "../../api/api";
+import { getCommunityById, getUser, getCommunityPosts } from "../../api/api";
 import { useParams } from "react-router-dom";
+import PostCard from "../feed/feed_posts/post_cards/PostCard";
 
 const CommunityDisplay = () => {
   const id = useParams().id;
 
   const [community, setCommunity] = useState(null);
+  const [posts, setPosts] = useState(null);
 
   useEffect(() => {
     const fetchCommunityById = async () => {
@@ -23,6 +25,14 @@ const CommunityDisplay = () => {
 
           if (user.status === 200) {
             setCommunity({ ...response.data.community, admin: user.data.name });
+            const response1 = await getCommunityPosts(
+              id,
+              localStorage.getItem("user_info")
+            );
+
+            if (response1.status === 200) {
+              setPosts(response1.data.posts);
+            }
           }
         }
       } catch (err) {
@@ -48,6 +58,21 @@ const CommunityDisplay = () => {
       ) : (
         <p>Loading...</p>
       )}
+      <div className={styles.community_posts_container}>
+        {posts ? (
+          posts.length !== 0 ? (
+            <div className={styles.community_posts}>
+              {posts.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+          ) : (
+            <p>No Posts Found</p>
+          )
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
     </div>
   );
 };
