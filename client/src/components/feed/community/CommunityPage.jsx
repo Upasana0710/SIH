@@ -79,7 +79,7 @@ const CommunityPage = () => {
             className={styles.create_community_btn}
             onClick={handleCreateCommunity}
           >
-            Create Community
+            Create Commuity
           </button>
         </div>
         <div className={styles.community_tab_view}>
