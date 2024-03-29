@@ -310,7 +310,7 @@ const CreatePostLayout = () => {
             accept="image/*, .pdf, .doc, .docx, .xlsx"
             maxFileSize={20480 * 1024}
             maxFiles={1}
-            color="#0c0678"
+            color="#fff"
             actionButtons={{ position: "bottom", cleanButton: {} }}
           >
             {files.map((file) => (
