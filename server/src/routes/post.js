@@ -3,6 +3,7 @@ import {
   createPost,
   downloadResource,
   getPostsByCategory,
+  getPostsByCommunity,
   uploadFile,
   fetchPosts,
   fetchPostsByUser,
@@ -14,6 +15,7 @@ const router = express.Router();
 router.get("/list", [auth], fetchPosts);
 router.get("/creator/:id", [auth], fetchPostsByUser);
 router.post("/create", [auth], uploadFile, createPost);
+router.get("/community/:community", [auth], getPostsByCommunity);
 // router.get("/:category", [auth], getPostsByCategory);
 // router.get("/download/:id", [auth], downloadResource);
 // router.post('/createImg', [auth], uploadFile, imageUpload);

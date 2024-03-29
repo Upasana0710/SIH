@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Dropzone, FileMosaic } from "@files-ui/react";
 
-import { getSubjects, createPost } from "../../api/api";
+import { getSubjects, createPost, getCommunities } from "../../api/api";
 
 import styles from "./CreatePostLayout.module.css";
 
@@ -22,8 +22,8 @@ const CreatePostLayout = () => {
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [communities, setCommunities] = useState([]);
 
-  const [communityInput, setCommunityInput] = useState("");
   const [conceptInput, setConceptInput] = useState("");
 
   const [postSuccess, setPostSuccess] = useState(false);
@@ -33,13 +33,22 @@ const CreatePostLayout = () => {
   };
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const response = await getSubjects(localStorage.getItem("user_info"));
-      const resData = response?.data?.subjects;
-      setSubjects(resData);
+    const fetchData = async () => {
+      try {
+        const response = await getSubjects(localStorage.getItem("user_info"));
+        const resData = response?.data?.subjects;
+        setSubjects(resData);
+        const commResponse = await getCommunities(
+          localStorage.getItem("user_info")
+        );
+        const resData1 = commResponse?.data?.communities;
+        setCommunities(resData1);
+      } catch (err) {
+        console.log(err);
+      }
     };
-    fetchSubjects();
-  }, [setSubjects]);
+    fetchData();
+  }, [setSubjects, setCommunities]);
 
   // const onFileChange = (e) => {
   //   setValue("file", e.target.files);
@@ -53,13 +62,19 @@ const CreatePostLayout = () => {
   //   setFiles(files.filter((x) => x.id !== id));
   // };
 
-  const addCommunityInput = () => {
-    if (communityInput.trim() !== "") {
+  const handleCommunityInput = (e) => {
+    if (!formValues.communities.includes(e.target.value)) {
       setFormValues({
         ...formValues,
-        communities: [...formValues.communities, communityInput.trim()],
+        communities: [...formValues.communities, e.target.value],
       });
-      setCommunityInput("");
+    } else {
+      setFormValues({
+        ...formValues,
+        communities: formValues.communities.filter(
+          (comm) => comm !== e.target.value
+        ),
+      });
     }
   };
 
@@ -203,43 +218,44 @@ const CreatePostLayout = () => {
         <label className={styles.create_form_label}>
           Post in Community (optional):
           <div className={styles.select_options}>
-            {formValues.communities.map((community) => (
-              <span
-                key={community}
-                className={styles.subject_span}
-                onClick={() => {
-                  if (formValues.communities.includes(community)) {
-                    setFormValues({
-                      ...formValues,
-                      communities: formValues.communities.filter(
-                        (comm) => comm !== community
-                      ),
-                    });
-                  } else {
-                    setFormValues({
-                      ...formValues,
-                      communities: [...formValues.communities, community],
-                    });
-                  }
-                }}
-              >
-                {community}
-              </span>
-            ))}
+            {communities.map((community) => {
+              return formValues.communities.includes(community._id) ? (
+                <span
+                  key={community._id}
+                  className={styles.subject_span}
+                  onClick={() => {
+                    if (formValues.communities.includes(community)) {
+                      setFormValues({
+                        ...formValues,
+                        communities: formValues.communities.filter(
+                          (comm) => comm !== community
+                        ),
+                      });
+                    }
+                  }}
+                >
+                  {community.title}
+                </span>
+              ) : null;
+            })}
           </div>
           <div className={styles.input_add_container}>
-            <input
-              type="text"
-              value={communityInput}
-              onChange={(e) => setCommunityInput(e.target.value)}
-            />
-            <button
-              type="button"
-              className={styles.add_btn}
-              onClick={addCommunityInput}
+            <select
+              multiple
+              value={formValues.communities}
+              className={styles.select_input}
             >
-              Add
-            </button>
+              {communities.map((community) => (
+                <option
+                  key={community._id}
+                  className={styles.select_option}
+                  value={community._id}
+                  onClick={handleCommunityInput}
+                >
+                  {community.title}
+                </option>
+              ))}
+            </select>
           </div>
         </label>
 

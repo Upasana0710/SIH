@@ -92,8 +92,7 @@ export const getCommunities = (token) =>
 
 export const getUserCommunities = (id, token) =>
   API.get(
-    "/community/getUser",
-    id,
+    `/community/getUser?id=${id}`,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
@@ -103,6 +102,15 @@ export const getUserCommunities = (id, token) =>
 export const getCommunityById = (id, token) =>
   API.get(
     `/community/get?id=${id}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+//  get posts of community
+
+export const getCommunityPosts = (id, token) =>
+  API.get(
+    `/community/posts?id=${id}`,
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );
