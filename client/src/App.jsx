@@ -10,9 +10,7 @@ import Newslet from "./components/Newslet/Newslet.jsx";
 
 import FeedPost from "./components/feed/feed_posts/post_cards/FeedPost";
 import Hot from "./components/feed/hot/Hot";
-import Latest from "./components/feed/latest/Latest";
 import CommunityPage from "./components/feed/community/CommunityPage";
-import Discover from "./components/feed/discover/Discover";
 import ProfilePage from "./components/profile/ProfilePage.jsx";
 
 import TopicFeed from "./components/Topics/topics_list/TopicFeed";
@@ -29,7 +27,7 @@ import Topic from "./routes/Topic";
 import Landing from "./components/Landing.jsx";
 import Review from "./screens/Review.jsx";
 
-import SlotBooking from "./slots/SlotBooking.jsx";
+import SlotBooking from "./components/slots/SlotBooking.jsx";
 import Signin from "./components/authenticate/Signin.jsx";
 import Signup from "./components/authenticate/Signup.jsx";
 import Authenticate from "./routes/Authenticate.jsx";
@@ -65,10 +63,7 @@ function App() {
               <Route path="/home" element={<Root />}>
                 <Route path="" element={<Home />}>
                   <Route path="" element={<FeedPost />} />
-
-                  <Route path="latest" element={<Latest />} />
                   <Route path="hot" element={<Hot />} />
-                  <Route path="discover" element={<Discover />} />
                   <Route path="communities" element={<CommunityPage />} />
                 </Route>
                 <Route path="lobby" element={<Lobby />} />

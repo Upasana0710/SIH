@@ -158,7 +158,7 @@ const PostCard = (props) => {
           </div>
         </div>
         <div className={styles.content}>
-          {content}
+          <p className={styles.formatted_text}>{content}</p>
           <Btn02 onClick={toggleShowHandler}>{showBtnContent}</Btn02>
         </div>
         <div className={styles.post_ratings}>
