@@ -6,11 +6,13 @@ import {
   getCommunity,
   getCommunityPosts,
   getUserCommunities,
+  getCommunityByName,
   joinCommunity,
 } from "../controllers/community.js";
 
 const router = express.Router();
 
+router.get("/search", [auth], getCommunityByName);
 router.get("/getUser", [auth], getUserCommunities);
 router.post("/create", [auth], createCommunity);
 router.get("/getAll", [auth], getCommunities);
