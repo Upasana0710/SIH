@@ -1,19 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App.jsx";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { store, persistor } from './redux/store';
 
-import "./index.css";
+import { SocketProvider } from './context/SocketProvider.jsx';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+import './index.css';
+
+const root = createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
+    <SocketProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </SocketProvider>
   </React.StrictMode>
 );

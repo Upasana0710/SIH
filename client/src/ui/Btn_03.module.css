@@ -1,30 +1,27 @@
 @property --myColor1_3 {
   syntax: "<color>";
-  initial-value: #ff6969;
+  initial-value: blue;
   inherits: false;
 }
 
 @property --myColor2_3 {
   syntax: "<color>";
-  initial-value: #ff6969;
+  initial-value: blue;
   inherits: false;
 }
 
 @property --myColor3_3 {
   syntax: "<color>";
-  initial-value: #ff6969;
+  initial-value: blue;
   inherits: false;
 }
 
 .topic_btn_03 {
   margin: 0.2rem 0.3rem;
   padding: 0.3rem 0.6rem;
-  background-image: linear-gradient(
-    45deg,
-    var(--myColor1_3),
-    var(--myColor2_3),
-    var(--myColor3_3)
-  );
+  font-weight: 600;
+  background-image: none;
+  background-color: #016abc;
   -webkit-text-fill-color: #fff;
   font-family: inherit;
   font-size: 0.8rem;
@@ -39,4 +36,12 @@
   --myColor1_3: rgba(255, 0, 0, 1);
   --myColor2_3: rgba(255, 0, 180, 1);
   --myColor3_3: rgba(0, 100, 200, 1);
+
+  background-color: transparent;
+  background-image: linear-gradient(
+    45deg,
+    var(--myColor1_3),
+    var(--myColor2_3),
+    var(--myColor3_3)
+  );
 }

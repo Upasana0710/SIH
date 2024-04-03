@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import React from 'react';
 
-import Sidebar from "../components/right-sidebar/Sidebar";
+import Sidebar from '../components/right-sidebar/Sidebar';
 
-import Trending from "../components/left-sidebar/Trending";
-import TabNav from "../components/nav/TabNav";
+import Trending from '../components/left-sidebar/Trending';
+import TabNav from '../components/nav/TabNav';
 
-import styles from "./route-styles/Home.module.css";
-import TopicsPage from "../components/Topics/TopicsPage";
+import styles from './route-styles/Home.module.css';
 
 const Home = () => {
   return (

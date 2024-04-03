@@ -1,18 +1,11 @@
-import React from "react";
-import letmainlogo from "../assets/letmainlogo.png";
-import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../redux/userSlice";
-import styles from "./Navbar.module.css";
+import React from 'react';
+import letmainlogo from '../assets/letmainlogo.png';
+import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function Navbar() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
+import styles from './Navbar.module.css';
+
+export default function Navbar(props) {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
@@ -74,32 +67,21 @@ export default function Navbar() {
         </ul>
       </div>
 
-      {/* <div className={styles.authenticate}>
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive
-              ? `${styles.landing_active} ${styles.nav_link} `
-              : `${styles.nav_link}`
-          }
-        >
-          LOG IN
-        </NavLink>
-      </div> */}
-
       <div>
         {currentUser ? (
-          <div className={styles.authenticate} onClick={handleLogout}>
-            Logout
+          <div className={styles.authenticate_container}>
+            <button className={styles.authenticate} onClick={props.openLogout}>
+              Logout
+            </button>
           </div>
         ) : (
           <NavLink
             className={({ isActive }) =>
               isActive
-                ? `${styles.landing_active} ${styles.nav_link} `
-                : `${styles.nav_link}`
+                ? `${styles.landing_active_authenticate} ${styles.authenticate} ${styles.authenticate_link}`
+                : `${styles.authenticate} ${styles.authenticate_link}`
             }
-            to="/login"
+            to="/authenticate/signin"
           >
             Login
           </NavLink>

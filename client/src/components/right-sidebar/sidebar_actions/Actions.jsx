@@ -5,12 +5,10 @@ import Action from "./Action";
 
 const Actions = () => {
   const actions = [
-    { name: "Create a Topic", id: "action1" },
-    { name: "Your Posts", id: "action2" },
-    { name: "Groups", id: "action3" },
-    { name: "Your Activity", id: "action4" },
-    { name: "Saved Posts", id: "action5" },
-    { name: "Generate Schedule", id: "action6", path: "/schedule" },
+    { name: "Join a Room", id: "action4", path: "/home/lobby" },
+    { name: "NewsLET", id: "action5", path: "/home/newslet" },
+    { name: "Schedule Generator", id: "action6", path: "/home/schedule" },
+    { name: "Your Slots", id: "action7", path: "/home/user-slots" },
   ];
 
   return (

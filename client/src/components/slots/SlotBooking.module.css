@@ -1,0 +1,126 @@
+.page {
+  min-width: 70vw;
+  max-width: 80vw;
+  height: 100vh;
+  margin: 8rem auto;
+  background-color: #edf6f6;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  height: fit-content;
+  background-color: #c7e1f5;
+  padding: 2rem 3rem;
+
+  border-radius: 12px;
+}
+
+.container .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.teachearInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.teachearInfo .teacherName {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.teachearInfo span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.datePicker {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.slotsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.slotTime {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.available {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #83b1d7;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.selected_time {
+  background-color: green;
+}
+
+.notavailable {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #ccd7e1;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.subjects_list {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin: 0.5rem 0.3rem;
+}
+
+.subject_container {
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  background-color: #83b1d7;
+}
+
+.selected_subject {
+  background-color: green;
+}
+
+.subject_container:hover {
+  cursor: pointer;
+}
+
+.error_msg {
+  color: red;
+  font-size: 0.8;
+}

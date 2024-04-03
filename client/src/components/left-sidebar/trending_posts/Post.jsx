@@ -9,7 +9,11 @@ const Post = (props) => {
         <div className={styles.number}>{props.id}</div>
         <div className={styles.text}>
           <div className={styles.name}>{props.name}</div>
-          <div className={styles.topic}>{props.topic}</div>
+          <div className={styles.topic}>
+            {props.topics.map((topic) => (
+              <p key={topic}>{topic}</p>
+            ))}
+          </div>
         </div>
       </li>
     </React.Fragment>
