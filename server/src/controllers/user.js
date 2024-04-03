@@ -4,8 +4,6 @@ import User from "../models/user.js";
 import Booking from "../models/booking.js";
 import Subject from "../models/subject.js";
 
-import mongoose from "mongoose";
-
 export const register = async (req, res) => {
   const { email, password } = req.body;
 
@@ -174,7 +172,7 @@ export const getByToken = async (req, res) => {
   if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
   try {
     const user = await User.findById(req.user);
-    return res.json(user);
+    return res.status(200).json(user);
   } catch (error) {
     console.log(error);
     return res.json(error);
@@ -197,156 +195,30 @@ export const searchUser = async (req, res) => {
   }
 };
 
-export const createSlots = async (req, res) => {
+export const getUserSlots = async (req, res) => {
+  if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+
   try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
-
-    const { day, time } = req.body;
-
     const user = await User.findById(req.user);
 
-    const existingSlot = user.slots?.find((slot) => slot.day === day);
+    if (!user) return res.status(404).json({ message: "User not found." });
 
-    // Create a new slot object
-    if (existingSlot) {
-      // If the day already exists, add the new time to the existing day
-      existingSlot.time.push(time);
-    } else {
-      // If the day doesn't exist, create a new slot object for the day
-      user.slots.push({
-        day,
-        time: [time],
-      });
-    }
+    const populatedUser = await User.populate(user, { path: "slots._id" });
 
-    // Save the updated user
-    await user.save();
-    return res.status(201).json({ message: "Slot created successfully", user });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
-};
+    const slots = populatedUser.slots.map((slot) => ({
+      _id: slot._id._id,
+      teacher: slot._id.teacher,
+      student: slot._id.student,
+      date: slot._id.date,
+      roomId: slot._id.roomId,
+      startTime: slot._id.startTime,
+      endTime: slot._id.endTime,
+      subject: slot._id.subject,
+      role: slot.role,
+    }));
 
-export const getTeacherSlots = async (req, res) => {
-  try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
-    const { teacherId } = req.body;
-    const today = new Date();
-    const nextMonth = new Date(today);
-    nextMonth.setMonth(today.getMonth() + 1);
-
-    // Find the teacher by ID
-    const teacher = await User.findById(teacherId);
-
-    if (!teacher) {
-      return res.status(404).json({ message: "Teacher not found." });
-    }
-
-    // Extract and format existing slots of the teacher for the next month
-    const slots = generateTeacherSlots(teacher.slots, today, nextMonth);
-
-    // Find bookings for the specified teacher within the next month
-    const bookings = await Booking.find({
-      teacher: teacherId,
-      slot: { $gte: today.toISOString(), $lt: nextMonth.toISOString() },
-    });
-
-    // Update the slots array to mark booked slots as unavailable
-    bookings.forEach((booking) => {
-      const bookedSlotIndex = slots.findIndex(
-        (slot) => slot.time === booking.slot
-      );
-      if (bookedSlotIndex !== -1) {
-        slots[bookedSlotIndex].available = false;
-      }
-    });
-
-    return res.status(200).json(slots);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal Server Error." });
-  }
-};
-
-const generateTeacherSlots = (teacherSlots, startDate, endDate) => {
-  const slots = [];
-
-  const currentDate = new Date(startDate);
-
-  while (currentDate < endDate) {
-    const daySlots = teacherSlots.find(
-      (slot) => slot.day === getDayName(currentDate.getDay())
-    );
-
-    if (daySlots) {
-      daySlots.time.forEach((time) => {
-        slots.push({
-          time: new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
-            parseInt(time.split("-")[0]),
-            0
-          ).toISOString(),
-          available: true,
-        });
-      });
-    }
-
-    currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
-  }
-
-  return slots;
-};
-
-const getDayName = (dayIndex) => {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  return days[dayIndex];
-};
-
-export const updateTeachRating = async (req, res) => {
-  try {
-    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
-
-    const user = await User.findById(req.body.teacherId);
-
-    const { rating } = req.body;
-
-    if (!user.teachRating) {
-      // If no teachRating exists, create a new one
-      user.teachRating = {
-        rating: rating,
-        total: "1",
-      };
-    } else {
-      // Update existing teachRating
-      const currentRating = parseInt(user.teachRating.rating) || 0;
-      const currentTotal = parseInt(user.teachRating.total) || 0;
-
-      const newRating =
-        (currentRating * currentTotal + parseInt(rating)) / (currentTotal + 1);
-
-      user.teachRating.rating = newRating.toString();
-      user.teachRating.total = (currentTotal + 1).toString();
-    }
-
-    await user.save();
-
-    return res.status(200).json({
-      message: "Teach rating updated successfully",
-      teachRating: user.teachRating,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json(error);
+    res.status(200).json(slots);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

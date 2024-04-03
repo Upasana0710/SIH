@@ -83,6 +83,22 @@ export const getCommunity = async (req, res) => {
   }
 };
 
+export const getCommunityByName = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+    const title = req.query.title;
+    const community = await Community.findOne({ title: title });
+
+    if (!community)
+      return res.status(404).json({ message: "Community not found!" });
+
+    return res.status(200).json({ community: community });
+  } catch (error) {
+    console.log(error);
+    return res.json(error);
+  }
+};
+
 export const getCommunityPosts = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
