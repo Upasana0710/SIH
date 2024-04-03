@@ -1,24 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./HotTopics.module.css";
 import TopicBtn from "./TopicBtn";
 
+import { getSubjects } from "../../../api/api";
+
 const HotTopics = () => {
-  const topic_list = [
-    { name: "Digital Electronics", id: "#topic1" },
-    { name: "DSA", id: "#topic2" },
-    { name: "Math - III", id: "#topic3" },
-    { name: "DBMS", id: "#topic4" },
-    { name: "MMI", id: "#topic5" },
-    { name: "OOP", id: "#topic6" },
-    { name: "Analog Elctronics", id: "#topic7" },
-    { name: "Programming in C", id: "#topic8" },
-    { name: "Signals & Networks", id: "#topic9" },
-    { name: "VLSI Design", id: "#topic10" },
-    { name: "Instrumentation", id: "#topic11" },
-    { name: "Cryptography", id: "#topic12" },
-  ];
+  const [topicList, setTopicList] = useState([]);
+  const [hasSubjects, setHasSubjects] = useState(false);
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await getSubjects(localStorage.getItem("user_info"));
+
+        if (response.status === 200) {
+          setTopicList(response.data.subjects);
+          setHasSubjects(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchSubjects();
+  }, []);
 
   return (
     <React.Fragment>
@@ -31,9 +38,13 @@ const HotTopics = () => {
           </Link>
         </div>
         <div className={styles.topics_container}>
-          {topic_list.map((topic) => (
-            <TopicBtn key={topic.id} name={topic.name} />
-          ))}
+          {hasSubjects ? (
+            topicList.map((topic) => (
+              <TopicBtn key={topic.id} name={topic.name} />
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
       </div>
     </React.Fragment>

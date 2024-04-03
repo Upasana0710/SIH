@@ -54,6 +54,15 @@ export const getUserPosts = (id, token) =>
     { withCredentials: true }
   );
 
+// get trending posts
+
+export const getTrendingPosts = (token) =>
+  API.get(
+    "/post/trending",
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
 // post creation
 export const createPost = (post, token) =>
   API.post(

@@ -1,36 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./TrendingPosts.module.css";
 import Post from "./Post";
+import { getSubjectFromId, getTrendingPosts } from "../../../api/api";
 
 const TrendingPosts = () => {
-  const trending_posts = [
-    {
-      name: "BFS, DFS easy and intuitive explanation 🔥🔥",
-      topic: "DSA",
-      id: "1",
-    },
-    {
-      name: "🤖 All about Transistor and Biasing ⚡",
-      topic: "Analog Electronics",
-      id: "2",
-    },
-    {
-      name: "Complete guide to Inheritance in C++",
-      topic: "OOP",
-      id: "3",
-    },
-    {
-      name: "Beginner's Intro to Graphs",
-      topic: "DSA",
-      id: "4",
-    },
-    {
-      name: "[EASY EXPLANATION] Normalization in DBMS",
-      topic: "DBMS",
-      id: "5",
-    },
-  ];
+  const [trendingPosts, setTrendingPosts] = useState([]);
+  const [hasPosts, setHasPosts] = useState(false);
+  let count = 0;
+  useEffect(() => {
+    const fetchTrendingPosts = async () => {
+      try {
+        const response = await getTrendingPosts(
+          localStorage.getItem("user_info")
+        );
+
+        if (response.status === 200) {
+          const posts = [];
+
+          for (let post of response.data.posts) {
+            const categories = [];
+            for (let category of post.category) {
+              const subject_response = await getSubjectFromId(
+                category,
+                localStorage.getItem("user_info")
+              );
+
+              if (subject_response.status === 200) {
+                categories.push(subject_response.data.subject.name);
+              }
+            }
+            posts.push({ ...post, category: categories });
+          }
+
+          setTrendingPosts(posts);
+          setHasPosts(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchTrendingPosts();
+  }, []);
 
   return (
     <React.Fragment>
@@ -42,14 +53,20 @@ const TrendingPosts = () => {
         </div>
         <div className={styles.trending_posts}>
           <ul className={styles.trending_list}>
-            {trending_posts.map((post) => (
-              <Post
-                key={post.id}
-                name={post.name}
-                topic={post.topic}
-                id={post.id}
-              />
-            ))}
+            {hasPosts ? (
+              trendingPosts.map((post) => {
+                return (
+                  <Post
+                    key={post._id}
+                    name={post.title}
+                    topics={post.category}
+                    id={++count}
+                  />
+                );
+              })
+            ) : (
+              <p>Loading...</p>
+            )}
           </ul>
         </div>
       </div>

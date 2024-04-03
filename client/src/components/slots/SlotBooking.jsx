@@ -3,11 +3,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./SlotBooking.module.css";
 
-import { getUser, getSubjectFromId } from "../api/api";
+import { getUser, getSubjectFromId } from "../../api/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { createSlot } from "../api/api";
+import { createSlot } from "../../api/api";
 
 const SlotBooking = () => {
   const { search } = useLocation();
