@@ -17,13 +17,14 @@ function ProfilePage() {
   const [myUser, setMyUser] = useState(null);
   const [hasUserdetails, setHasUserDetails] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
-  const [userPosts, setUserPosts] = useState(null);
-
-  let user_posts;
+  const [userPosts, setUserPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const userId = params.get("uid");
 
   const { currentUser } = useSelector((state) => state.user);
+
+  let user_posts;
 
   useEffect(() => {
     async function fetchUser() {
@@ -49,33 +50,29 @@ function ProfilePage() {
           userId ? userId : currentUser._id,
           localStorage.getItem("user_info")
         );
-        if (response1.status === 404) {
-          setUserPosts([]);
-        }
 
         if (response1.status === 200) {
           const sorted_posts = response1.data.posts.sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
           setUserPosts(sorted_posts);
+          setIsLoading(false);
         }
       } catch (err) {
         console.log(err);
       }
     }
+
     fetchUser();
-  }, [userId, currentUser._id]);
+  }, [userId, currentUser._id, hasUserdetails, userPosts, user_posts]);
 
   user_posts =
-    hasUserdetails && userPosts !== null ? (
-      userPosts.length !== 0 ? (
-        userPosts.map((item) => <PostCard key={item._id} post={item} />)
-      ) : (
-        <h3>No posts found!</h3>
-      )
+    userPosts.length !== 0 && userPosts !== null ? (
+      userPosts.map((item) => <PostCard key={item._id} post={item} />)
     ) : (
-      <h3>Loading posts!</h3>
+      <h3>No Posts Found!</h3>
     );
+
   return (
     <div>
       <Sidebar />
@@ -90,7 +87,10 @@ function ProfilePage() {
                   type="button"
                   className={styles.redirect_slot_booking_button}
                 >
-                  <Link to="/home/slot" className={styles.redirect_link_slot}>
+                  <Link
+                    to={`/home/slot?uid=${userId}`}
+                    className={styles.redirect_link_slot}
+                  >
                     GO TO SLOT BOOKING
                   </Link>
                 </button>
@@ -110,7 +110,7 @@ function ProfilePage() {
           </div>
         </div>
         <div className={styles.horizontal_line}></div>
-        {user_posts}
+        {!isLoading ? user_posts : <h3>Loading posts!</h3>}
       </section>
     </div>
   );

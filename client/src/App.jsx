@@ -37,6 +37,7 @@ import ConfigureLayout from "./components/Info/ConfigureLayout.jsx";
 import CreatePostLayout from "./components/create-post/CreatePostLayout.jsx";
 import AddCommunity from "./components/create-community/AddCommunity.jsx";
 import CommunityDisplay from "./components/communities/CommunityDisplay.jsx";
+import UserSlots from "./components/slots/UserSlots.jsx";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -74,6 +75,7 @@ function App() {
                 <Route path="schedule" element={<Schedule />} />
                 <Route path="newslet" element={<Newslet />} />
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="user-slots" element={<UserSlots />} />
                 <Route
                   path="create-post/:profId"
                   element={<CreatePostLayout />}

@@ -10,6 +10,7 @@ import scheduleRoutes from "./src/routes/schedule.js";
 import communityRoutes from "./src/routes/community.js";
 import eventRoutes from "./src/routes/event.js";
 import bookingRoutes from "./src/routes/booking.js";
+import slotRoutes from "./src/routes/slot.js";
 
 import { Server } from "socket.io";
 
@@ -49,6 +50,7 @@ app.use("/schedule", scheduleRoutes);
 app.use("/community", communityRoutes);
 app.use("/event", eventRoutes);
 app.use("/booking", bookingRoutes);
+app.use("/slot", slotRoutes);
 
 const io = new Server(8000, {
   cors: true,

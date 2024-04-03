@@ -106,6 +106,15 @@ export const getCommunityById = (id, token) =>
     { withCredentials: true }
   );
 
+// get community by name
+
+export const getCommunityByName = (title, token) =>
+  API.get(
+    `/community/search?title=${title}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
 //  get posts of community
 
 export const getCommunityPosts = (id, token) =>
@@ -154,6 +163,28 @@ export const getUser = (id) => API.get(`/user/getUser?id=${id}`);
 export const getUserByToken = (token) =>
   API.get(
     `/user/getByToken`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+export const createSlot = (slot, token) =>
+  API.post(
+    "/slot/create",
+    slot,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+export const getSlots = (id, token) =>
+  API.get(
+    `/slot/getSlot?id=${id}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    { withCredentials: true }
+  );
+
+export const getUserSlots = (token) =>
+  API.get(
+    "/user/getUserSlot",
     { headers: { Authorization: `Bearer ${token}` } },
     { withCredentials: true }
   );

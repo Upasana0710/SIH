@@ -2,14 +2,10 @@ import express from "express";
 import {
   register,
   login,
-  addSubjects,
   getUser,
   searchUser,
-  createSlots,
-  getTeacherSlots,
-  updateTeachRating,
   getByToken,
-  getUserSubjects,
+  getUserSlots,
 } from "../controllers/user.js";
 import { auth } from "../middleware/auth.js";
 
@@ -18,6 +14,7 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/login", login);
 router.get("/getUser", getUser);
+router.get("/getUserSlot", [auth], getUserSlots);
 router.get("/getByToken", [auth], getByToken);
 router.get("/search", [auth], searchUser);
 

@@ -8,6 +8,7 @@ const Actions = () => {
     { name: "Join a Room", id: "action4", path: "/home/lobby" },
     { name: "NewsLET", id: "action5", path: "/home/newslet" },
     { name: "Schedule Generator", id: "action6", path: "/home/schedule" },
+    { name: "Your Slots", id: "action7", path: "/home/user-slots" },
   ];
 
   return (
