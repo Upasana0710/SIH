@@ -60,6 +60,21 @@ export const fetchPosts = async (req, res) => {
   }
 };
 
+export const trendingPosts = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthenticated." });
+
+    const posts = await Post.find().sort({ createdAt: -1 }).limit(5);
+
+    return res
+      .status(200)
+      .json({ message: "Latest 5 posts fetched!", posts: posts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export const fetchPostsByUser = async (req, res) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthenticated." });

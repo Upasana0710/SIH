@@ -25,7 +25,9 @@ const UserSlots = () => {
 
           for (let slot of response.data) {
             try {
-              const user_response = await getUser(slot.teacher);
+              const user_response = await getUser(
+                response.data.role === "teacher" ? slot.student : slot.teacher
+              );
 
               if (user_response.status === 200) {
                 slot = { ...slot, teacher: user_response.data.name };
@@ -47,6 +49,8 @@ const UserSlots = () => {
               console.log(err);
             }
           }
+
+          fetchedSlots.sort((a, b) => new Date(a.date) - new Date(b.date));
 
           setSlots(fetchedSlots);
           setHasSlots(true);
@@ -74,7 +78,10 @@ const UserSlots = () => {
                     slot.role === "teacher" ? styles.teacher : styles.student
                   }`}
                 >
-                  <h5 className={styles.slot_teacher}>{slot.teacher}</h5>
+                  <h5 className={styles.slot_teacher}>
+                    WITH: {slot.teacher} (
+                    {slot.role === "teacher" ? "student" : "teacher"})
+                  </h5>
                   <div className={styles.slot_topic_container}>
                     <p className={styles.slot_topic_text}>Topic: </p>
                     <div className={styles.slot_topic}>{slot.subject}</div>
